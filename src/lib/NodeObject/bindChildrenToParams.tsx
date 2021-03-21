@@ -12,21 +12,19 @@ type Params<K extends string, C extends Record<K, NodeFn>> = {
 };
 
 export default function bindChildrenToParams<K extends string, C extends Record<K, NodeFn>>(params: Params<K, C>) {
-  const { children, value, onChange, store, onStoreChange } = params;
+  const { children, value, onChange } = params;
 
   return pipe(
     children,
     toArray,
     map(([key, node]) => {
-      return [
-        key,
-        node({
-          value: computed(() => value.get()[key]),
-          onChange: val => onChange({ ...value.get(), [key]: val }),
-          store,
-          onStoreChange
-        })
-      ];
+      const instance = node({
+        ...params,
+        value: computed(() => value.get()[key]),
+        onChange: val => onChange({ ...value.get(), [key]: val })
+      });
+
+      return [key, instance];
     }),
     entries => Object.fromEntries(entries)
   );

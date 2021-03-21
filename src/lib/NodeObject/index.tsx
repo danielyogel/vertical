@@ -16,7 +16,8 @@ export default function<K extends string, S, O>(params: { Render: FC<RecordBaseN
       withSelected(options),
       withVisibility(options),
       vm => {
-        return { ...vm, children: bindChildrenToParams(vm) };
+        const children = bindChildrenToParams(vm);
+        return { ...vm, children };
       },
       withViewRecord(params.Render)
     );

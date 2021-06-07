@@ -1,9 +1,9 @@
 import React from 'react';
 import { Observer, observer } from 'mobx-react-lite';
 import { FC } from '../../utils';
-import { BaseNode } from '../BaseNode';
+import { BaseNode } from '../interfaces/BaseNode';
 
-export default function withView<VM extends Partial<BaseNode<any, any, any>>>(Renderer: FC<VM>) {
+export default function withView<VM extends Partial<BaseNode<any, any, any, any>>>(Renderer: FC<VM>) {
   return function(obj: VM) {
     const Comp = observer(Renderer);
     return {

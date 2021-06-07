@@ -1,8 +1,12 @@
-export default function withOptions<O>(options: O) {
+export type Params<O> = {
+  options: O;
+};
+
+export default function withOptions<O>(options: Params<O>) {
   return function<T>(obj: T) {
     return {
-      ...options,
-      ...obj
+      ...obj,
+      options: options.options
     };
   };
 }

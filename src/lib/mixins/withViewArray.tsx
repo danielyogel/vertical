@@ -1,9 +1,9 @@
 import React from 'react';
 import { Observer, observer } from 'mobx-react-lite';
 import { FC } from '../../utils';
-import { RecordBaseNode } from '../interfaces/BaseNode';
+import { ArrayBaseNodeNoView } from '../interfaces/BaseNode';
 
-export default function withViewRecord<VM extends Partial<RecordBaseNode<any, any, any, any, any>>>(Renderer: FC<VM>) {
+export default function withViewArray<VM extends ArrayBaseNodeNoView<any, any, any>>(Renderer: FC<VM>) {
   return function(obj: VM) {
     const Comp = observer(Renderer);
     return {

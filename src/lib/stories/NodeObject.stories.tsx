@@ -3,8 +3,10 @@ import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ObjectN, StringN, NumberN } from './renderedNodes';
-import { observer } from 'mobx-react-lite';
+// import { observer } from 'mobx-react-lite';
 import { BaseNodeNoView } from '../interfaces/BaseNode';
+import { flow } from '../../utils';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../mixins';
 
 configure({ enforceActions: 'never' });
 
@@ -14,6 +16,7 @@ export const INITIAL_STATE = {
   phone: 323223 as number | null,
   id: 2 as number | null,
   age: 324 as number | null,
+  country: 'israel' as string | null,
   birthday: 23 as number | null,
   birthdayz: 23 as number | null
 };
@@ -37,24 +40,30 @@ const nodeaa = ArrayN({
       children: {
         id: NumberN({ options: { label: 'id' } }),
         birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'birthday' } }),
-        age: (parent: BaseNodeNoView<number | null, {}, {}, {}>) => {
-          return {
-            ...parent,
-            View: observer(() => {
-              const v = parent.value.get();
+        age: flow(
+          withParent<number | null, typeof INITIAL_STATE, {}>(),
+          withOptions({ options: {} }),
+          withLoading(),
+          withProgress(),
+          withSelected({}),
+          withVisibility({}),
+          withView(vm => {
+            const v = vm.value.get();
 
-              return (
-                <div>
-                  <div>age</div>
-                  <input
-                    style={{ color: 'red' }}
-                    value={!v ? '' : v}
-                    onChange={e => parent.onChange(e.target.value === null ? null : Number(e.target.value))}
-                  />
-                </div>
-              );
-            })
-          };
+            return (
+              <div>
+                <div>age</div>
+                <input
+                  style={{ color: 'red' }}
+                  value={!v ? '' : v}
+                  onChange={e => vm.onChange(e.target.value === null ? null : Number(e.target.value))}
+                />
+              </div>
+            );
+          })
+        ),
+        country: parent => {
+          return { ...parent, View: () => <div>country</div> };
         }
       }
     }),

@@ -27,9 +27,4 @@ export type RecordBaseNodeNoView<V, S, O, K extends string, P> = BaseNodeNoView<
   children: Record<K, BaseNode<any, S, any, O>>;
 };
 
-export type ArrayBaseNodeNoView<V, S, O> = BaseNodeNoView<V, S, O, any> & {
-  currentIndex: IObservableValue<number>;
-  children: ReadonlyArray<RecordBaseNode<any, S, any, any, any>>;
-};
-
 export type NodeFn<VM extends BaseNodeNoView<any, any, any, any>> = (arg: VM) => BaseNode<any, any, any, any>;

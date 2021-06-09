@@ -69,11 +69,8 @@ const nodeaa = ArrayN({
     }),
     (parent: BaseNodeNoView<{ age: string }, any, any, any>) => {
       return {
-        ...parent,
-        // parentOptios: {},
-        children: [] as any,
         View: () => (
-          <div>
+          <div onClick={() => parent.onChange({ age: parent.value.get().age + 1 })}>
             <b>pp</b>
           </div>
         )

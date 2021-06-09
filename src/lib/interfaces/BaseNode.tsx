@@ -33,5 +33,3 @@ export type ArrayBaseNodeNoView<V, S, O> = BaseNodeNoView<V, S, O, any> & {
 };
 
 export type NodeFn<VM extends BaseNodeNoView<any, any, any, any>> = (arg: VM) => BaseNode<any, any, any, any>;
-
-export type NodeObjectFn<VM extends BaseNodeNoView<any, any, any>> = (arg: VM) => RecordBaseNode<any, any, any, any, any>;

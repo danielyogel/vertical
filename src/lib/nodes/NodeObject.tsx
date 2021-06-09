@@ -1,8 +1,10 @@
+import React from 'react';
 import { computed } from 'mobx';
+import { Observer, observer } from 'mobx-react-lite';
 import { FC, flow, map, pipe } from '../../utils';
 import { RecordBaseNodeNoView, BaseNodeNoView, NodeFn } from '../interfaces/BaseNode';
 import { GetObjectVal } from '../interfaces/GetVaueTypes';
-import { withLoading, withOptions, withParent, withProgress, withViewRecord, withSelected, withVisibility } from '../mixins';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as OptionsParams } from '../mixins/withOptions';
@@ -37,7 +39,23 @@ export default function<K extends string, S, O, P = {}>(params: { Render: FC<Rec
         );
         return { ...vm, children };
       },
-      withViewRecord(params.Render)
+      obj => {
+        const Comp = observer(params.Render);
+        return {
+          ...obj,
+          View: () => (
+            <Observer>
+              {() => {
+                if (obj?.isSelected?.get() === false || obj?.isVisible?.get() === false) {
+                  return null;
+                }
+
+                return <Comp {...obj} />;
+              }}
+            </Observer>
+          )
+        };
+      }
     );
   };
 }

@@ -3,7 +3,6 @@ import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ObjectN, StringN, NumberN } from './renderedNodes';
-// import { observer } from 'mobx-react-lite';
 import { BaseNodeNoView } from '../interfaces/BaseNode';
 import { flow } from '../../utils';
 import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../mixins';

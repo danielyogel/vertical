@@ -1,7 +1,7 @@
 import { IComputedValue, IObservableValue } from 'mobx';
 import { FC } from '../utils';
 
-export type BaseNodeNoView<V, S, O> = {
+export type BaseNode<V, S, O> = {
   value: IComputedValue<V>;
   onChange: (value: V) => void;
   store: IComputedValue<S>;
@@ -11,9 +11,6 @@ export type BaseNodeNoView<V, S, O> = {
   isVisible: IComputedValue<boolean>;
   isSelected: IComputedValue<boolean>;
   options: O;
-};
-
-export type BaseNode<V, S, O> = BaseNodeNoView<V, S, O> & {
   View: FC<any>;
 };
 

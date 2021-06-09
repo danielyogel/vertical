@@ -1,9 +1,10 @@
 import React from 'react';
+import { Except } from 'type-fest';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ObjectN, StringN, NumberN } from './renderedNodes';
-import { BaseNodeNoView } from '../Interfaces';
+import { ArrayN, ObjectN, StringN, NumberN } from './NodeArrayStoriesRenderers';
+import { BaseNode } from '../Interfaces';
 import { flow } from '../../utils';
 import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../mixins';
 
@@ -66,15 +67,29 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (parent: BaseNodeNoView<{ age: string }, any, any>) => {
+    (parent: Except<BaseNode<{ age: number | null }, any, any>, 'View'>) => {
       return {
         View: () => (
-          <div onClick={() => parent.onChange({ age: parent.value.get().age + 1 })}>
-            <b>pp</b>
+          <div>
+            <p>{parent.value.get().age}</p>
+            <button onClick={() => parent.onChange({ age: (parent.value.get().age || 1) + 1 })}>
+              <b>plus one to age</b>
+            </button>
           </div>
         )
       };
-    }
+    },
+    flow(
+      withParent<{ age: number | null }, typeof INITIAL_STATE>(),
+      withView(parent => (
+        <div>
+          <p>{parent.value.get().age}</p>
+          <button onClick={() => parent.onChange({ age: (parent.value.get().age || 1) - 1 })}>
+            <b>minus one to age</b>
+          </button>
+        </div>
+      ))
+    )
   ] as const
 });
 

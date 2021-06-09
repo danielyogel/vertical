@@ -1,14 +1,12 @@
-import React from 'react';
 import { IObservableValue, observable } from 'mobx';
 import { Except, SetRequired } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility } from '../mixins';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as OptionsParams } from '../mixins/withOptions';
-import { Observer, observer } from 'mobx-react-lite';
 
 type Child = SetRequired<Partial<BaseNode<any, any, any>>, 'View'>;
 
@@ -32,31 +30,10 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
         return {
           ...vm,
           currentIndex,
-          children: [...options.children].map(node => {
-            return node({
-              ...vm,
-              currentIndex
-            });
-          })
+          children: [...options.children].map(node => node({ ...vm, currentIndex }))
         };
       },
-      vm => {
-        const Comp = observer(params.Render);
-        return {
-          ...vm,
-          View: () => (
-            <Observer>
-              {() => {
-                if (vm?.isSelected?.get() === false || vm?.isVisible?.get() === false) {
-                  return null;
-                }
-
-                return <Comp {...vm} />;
-              }}
-            </Observer>
-          )
-        };
-      }
+      withView(params.Render)
     );
   };
 }

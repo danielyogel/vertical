@@ -2,7 +2,7 @@ import { IComputedValue } from 'mobx';
 
 type NodeInfer<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;
 
-export type GetVal<T extends Record<string, any>> = {
+export type GetObjectVal<T extends Record<string, any>> = {
   [K in keyof T]: NodeInfer<T[K]>;
 };
 

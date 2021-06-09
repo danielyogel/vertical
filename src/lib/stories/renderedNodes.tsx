@@ -3,9 +3,9 @@ import NodeObject from '../nodes/NodeObject';
 import { NodeScalar } from '..';
 import { mapValues, pipe, mapWithIndexArr } from '../../utils';
 import NodeArray from '../nodes/NodeArray';
-import { INITIAL_STATE } from './NodeObject.stories';
+import { INITIAL_STATE } from './NodeArray.stories';
 
-export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }, { isNew: boolean }>({
+export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({
   Render: ({ value, onChange, options: { label } }) => {
     const v = value.get();
     return (
@@ -35,7 +35,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
   }
 });
 
-export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { isNew: boolean }, {}>({
+export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, {}>({
   Render: vm => {
     return (
       <div>

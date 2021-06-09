@@ -3,7 +3,7 @@ import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ObjectN, StringN, NumberN } from './renderedNodes';
-import { BaseNodeNoView } from '../interfaces/BaseNode';
+import { BaseNodeNoView } from '../Interfaces';
 import { flow } from '../../utils';
 import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../mixins';
 
@@ -40,7 +40,7 @@ const nodeaa = ArrayN({
         id: NumberN({ options: { label: 'id' } }),
         birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'birthday' } }),
         age: flow(
-          withParent<number | null, typeof INITIAL_STATE, {}>(),
+          withParent<number | null, typeof INITIAL_STATE>(),
           withOptions({ options: {} }),
           withLoading(),
           withProgress(),
@@ -66,7 +66,7 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (parent: BaseNodeNoView<{ age: string }, any, any, any>) => {
+    (parent: BaseNodeNoView<{ age: string }, any, any>) => {
       return {
         View: () => (
           <div onClick={() => parent.onChange({ age: parent.value.get().age + 1 })}>
@@ -79,7 +79,6 @@ const nodeaa = ArrayN({
 });
 
 const vm = nodeaa({
-  parentOptios: {},
   value: computed(() => state.get()),
   onChange: c => {
     state.set({ ...state.get(), ...c });

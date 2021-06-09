@@ -1,8 +1,8 @@
 import React from 'react';
-import NodeObject from '../nodes/NodeObject';
-import { NodeScalar } from '..';
-import { mapValues, pipe, mapWithIndexArr } from '../../utils';
-import NodeArray from '../nodes/NodeArray';
+import NodeObject from '../lib/nodes/NodeObject';
+import { NodeScalar } from '../lib';
+import { mapValues, pipe, mapWithIndexArr } from '../utils';
+import NodeArray from '../lib/nodes/NodeArray';
 import { INITIAL_STATE } from './NodeArray.stories';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({

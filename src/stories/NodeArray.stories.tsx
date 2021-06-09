@@ -4,9 +4,9 @@ import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ObjectN, StringN, NumberN } from './NodeArrayStoriesRenderers';
-import { BaseNode } from '../Interfaces';
-import { flow } from '../../utils';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../mixins';
+import { BaseNode } from '../lib/Interfaces';
+import { flow } from '../utils';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../lib/mixins';
 
 configure({ enforceActions: 'never' });
 

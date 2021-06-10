@@ -3,7 +3,9 @@ import NodeObject from '../lib/nodes/NodeObject';
 import { NodeScalar } from '../lib';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
-import { INITIAL_STATE } from './NodeArray.stories';
+import classnames from 'classnames';
+import { INITIAL_STATE } from './INITIAL_STATE';
+import { Loader } from './StorybookComponents';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({
   Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
@@ -45,8 +47,10 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
 export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { bla: string }>({
   Render: vm => {
     return (
-      <div className="bg-red">
-        <div>is object loading: {String(vm.isLoading.get())}</div>
+      <div className={classnames('p-4 border border-gray-400 rounded', { 'bg-red-400': false })}>
+        <div>
+          <Loader />
+        </div>
         <div
           className="p-10"
           onClick={() => {

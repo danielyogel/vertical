@@ -1,4 +1,5 @@
 require('./tailwind.css');
+require('antd/dist/antd.css');
 
 // https://storybook.js.org/docs/react/writing-stories/parameters#global-parameters
 export const parameters = {

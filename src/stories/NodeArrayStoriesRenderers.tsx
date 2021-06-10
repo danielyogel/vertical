@@ -35,7 +35,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
   }
 });
 
-export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, {}>({
+export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { bla: string }>({
   Render: vm => {
     return (
       <div>
@@ -48,6 +48,7 @@ export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STA
           <b style={{ cursor: 'pointer' }}>Clear All</b>
         </div>
         <div>
+          <div>Inner options: {vm.options.bla}</div>
           {Object.entries(vm.children).map(([key, node]) => {
             return (
               <div key={key} style={{ padding: '10px', margin: '10px', border: '1px solid black' }}>

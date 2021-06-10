@@ -7,11 +7,13 @@ import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as OptionsParams } from '../mixins/withOptions';
 
+type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value';
+
 type Child<S> = SetRequired<Partial<BaseNode<any, S, any>>, 'View'>;
 
 type VM<V, S, O, K extends string> = BaseNode<V, S, O> & { children: Record<K, Child<S>> };
 
-type Children<keys extends string, S, O> = Record<keys, (parent: Except<VM<any, S, O, any>, 'View' | 'children'>) => Child<S>>;
+type Children<keys extends string, S, O> = Record<keys, (parent: Pick<VM<any, S, O, any>, ChildrenKeys>) => Child<S>>;
 
 type Renderer<K extends string, S, O> = FC<Except<VM<any, S, O, K>, 'View'>>;
 
@@ -20,10 +22,6 @@ export default function<K extends string, S, O>(params: { Render: Renderer<K, S,
     return flow(
       withParent<InferObjectValue<typeof options.children>, S>(),
       withOptions(options),
-      withLoading(),
-      withProgress(),
-      withSelected(options),
-      withVisibility(options),
       vm => {
         const keys = Object.keys(options.children) as Array<keyof typeof options.children>;
         const children = pipe(
@@ -41,6 +39,10 @@ export default function<K extends string, S, O>(params: { Render: Renderer<K, S,
         );
         return { ...vm, children };
       },
+      withLoading(),
+      withProgress(),
+      withSelected(options),
+      withVisibility(options),
       withView(params.Render)
     );
   };

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Except } from 'type-fest';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ObjectN, StringN, NumberN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withView, withVisibility } from '../lib/mixins';
+import { withParent, withView } from '../lib/mixins';
 
 configure({ enforceActions: 'never' });
 
@@ -27,7 +26,7 @@ const nodeaa = ArrayN({
   options: {},
   children: [
     ObjectN({
-      options: { isNew: true },
+      options: { bla: 'a' },
       children: {
         name: StringN({ options: { label: 'Name' } }),
         lastName: StringN({ options: { label: 'lastName' }, isVisible: ({ store }) => store.get().age !== 3 }),
@@ -36,17 +35,12 @@ const nodeaa = ArrayN({
       }
     }),
     ObjectN({
-      options: { isNew: true },
+      options: { bla: 'a' },
       children: {
         id: NumberN({ options: { label: 'id' } }),
         birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'birthday' } }),
         age: flow(
           withParent<number | null, typeof INITIAL_STATE>(),
-          withOptions({ options: {} }),
-          withLoading(),
-          withProgress(),
-          withSelected({}),
-          withVisibility({}),
           withView(vm => {
             const v = vm.value.get();
 
@@ -67,7 +61,7 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (parent: Except<BaseNode<{ age: number | null }, any, any>, 'View'>) => {
+    (parent: Pick<BaseNode<{ age: number | null }, any, any>, 'onChange' | 'value'>) => {
       return {
         View: () => (
           <div>

@@ -10,8 +10,9 @@ export default function<V, S, O>(params: { Render: FC<Except<BaseNode<V, S, O>, 
   return function(options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S>) {
     return flow(
       withParent<V, S>(),
-      withOptions(options),
+      vm => ({ ...vm, children: null }), // Hack for resloving type issues further away
       withLoading(),
+      withOptions(options),
       withProgress(),
       withSelected(options),
       withVisibility(options),

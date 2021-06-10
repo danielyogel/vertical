@@ -6,11 +6,18 @@ import NodeArray from '../lib/nodes/NodeArray';
 import { INITIAL_STATE } from './NodeArray.stories';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, options: { label } }) => {
+  Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
     const v = value.get();
     return (
       <div>
         <div>{String(label)}</div>
+        <b
+          onClick={() => {
+            setLoading(!isLoading.get());
+          }}
+        >
+          Toggle Loading - {String(isLoading.get())}
+        </b>
         <div>
           <input type="number" value={!v ? '' : v} onChange={e => onChange(!e.target.value ? null : Number(e.target.value))} />
         </div>
@@ -38,20 +45,21 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
 export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { bla: string }>({
   Render: vm => {
     return (
-      <div>
+      <div className="bg-red">
+        <div>is object loading: {String(vm.isLoading.get())}</div>
         <div
-          style={{ padding: '10px' }}
+          className="p-10"
           onClick={() => {
             vm.onStoreChange(mapValues(vm.store.get(), () => null));
           }}
         >
-          <b style={{ cursor: 'pointer' }}>Clear All</b>
+          <b className="cursor-pointer">Clear All</b>
         </div>
         <div>
           <div>Inner options: {vm.options.bla}</div>
           {Object.entries(vm.children).map(([key, node]) => {
             return (
-              <div key={key} style={{ padding: '10px', margin: '10px', border: '1px solid black' }}>
+              <div className="text-red border border-red-600 p-10 m-10" key={key}>
                 <node.View />
               </div>
             );
@@ -66,8 +74,10 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
   Render: vm => {
     return (
       <div>
+        <div>is array loading: {String(vm.isLoading.get())}</div>
+
         <div
-          style={{ padding: '10px' }}
+          className="p-10"
           onClick={() => {
             vm.onStoreChange(mapValues(vm.store.get(), () => null));
           }}

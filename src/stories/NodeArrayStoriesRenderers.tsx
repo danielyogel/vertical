@@ -87,8 +87,8 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
         </Space>
 
         <Space>
-          <Button onClick={() => vm.currentIndex.set(vm.currentIndex.get() - 1)}>Back</Button>
-          <Button onClick={() => vm.currentIndex.set(vm.currentIndex.get() + 1)}>Next</Button>
+          {!vm.isFirst.get() && <Button onClick={vm.back}>Back</Button>}
+          {!vm.isLast.get() && <Button onClick={vm.next}>Next</Button>}
           {vm.isLoading.get() && (
             <div>
               <LoaderOne />

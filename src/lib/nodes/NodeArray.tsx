@@ -1,4 +1,4 @@
-import { IObservableValue, observable } from 'mobx';
+import { computed, IComputedValue, IObservableValue, observable } from 'mobx';
 import { Except, SetRequired } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow } from '../../utils';
@@ -12,7 +12,14 @@ type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value'
 
 type Child = SetRequired<Partial<BaseNode<any, any, any>>, 'View'>;
 
-type VM<S, O> = BaseNode<any, S, O> & { currentIndex: IObservableValue<number>; children: Array<Child> };
+type VM<S, O> = BaseNode<any, S, O> & {
+  currentIndex: IObservableValue<number>;
+  isFirst: IComputedValue<boolean>;
+  isLast: IComputedValue<boolean>;
+  back: () => void;
+  next: () => void;
+  children: Array<Child>;
+};
 
 type Children<S, O> = ReadonlyArray<(parent: Pick<VM<S, O>, ChildrenKeys>) => Child>;
 
@@ -25,7 +32,15 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
       withOptions(options),
       vm => {
         const currentIndex = observable.box(1);
-        return { ...vm, currentIndex, children: [...options.children].map(node => node({ ...vm, currentIndex })) };
+        return {
+          ...vm,
+          currentIndex,
+          isFirst: computed(() => currentIndex.get() === 1),
+          isLast: computed(() => currentIndex.get() === options.children.length),
+          back: () => currentIndex.set(currentIndex.get() - 1),
+          next: () => currentIndex.set(currentIndex.get() + 1),
+          children: [...options.children].map(node => node({ ...vm, currentIndex }))
+        };
       },
       withLoading(),
       withProgress(),

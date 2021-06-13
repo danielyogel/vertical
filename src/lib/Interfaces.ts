@@ -11,6 +11,7 @@ export type BaseNode<V, S, O> = {
   progress: IObservableValue<number>;
   isVisible: IComputedValue<boolean>;
   isSelected: IComputedValue<boolean>;
+  isDisabled: IComputedValue<boolean>;
   options: O;
   View: FC<any>;
 };

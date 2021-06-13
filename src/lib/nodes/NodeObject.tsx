@@ -2,10 +2,11 @@ import { computed } from 'mobx';
 import { Except, SetRequired } from 'type-fest';
 import { FC, flow, map, pipe } from '../../utils';
 import { BaseNode, InferObjectValue } from '../Interfaces';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView } from '../mixins';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView, withDisabled } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as OptionsParams } from '../mixins/withOptions';
+import { Params as DisabledParams } from '../mixins/withDisabled';
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value';
 
@@ -18,7 +19,9 @@ type Children<keys extends string, S, O> = Record<keys, (parent: Pick<VM<any, S,
 type Renderer<K extends string, S, O> = FC<Except<VM<any, S, O, K>, 'View'>>;
 
 export default function<K extends string, S, O>(params: { Render: Renderer<K, S, O> }) {
-  return function<Keys extends K>(options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & { children: Children<Keys, S, O> }) {
+  return function<Keys extends K>(
+    options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S, O> & { children: Children<Keys, S, O> }
+  ) {
     return flow(
       withParent<InferObjectValue<typeof options.children>, S>(),
       withOptions(options),
@@ -42,6 +45,7 @@ export default function<K extends string, S, O>(params: { Render: Renderer<K, S,
       withLoading(),
       withProgress(),
       withSelected(options),
+      withDisabled(options),
       withVisibility(options),
       withView(params.Render)
     );

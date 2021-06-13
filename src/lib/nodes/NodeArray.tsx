@@ -3,10 +3,11 @@ import { Except, SetRequired } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView } from '../mixins';
+import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView, withDisabled } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as OptionsParams } from '../mixins/withOptions';
+import { Params as DisabledParams } from '../mixins/withDisabled';
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value' | 'currentIndex';
 
@@ -26,7 +27,9 @@ type Children<S, O> = ReadonlyArray<(parent: Pick<VM<S, O>, ChildrenKeys>) => Ch
 type Renderer<S, O> = FC<Except<VM<S, O>, 'View'>>;
 
 export default function<S, O>(params: { Render: Renderer<S, O> }) {
-  return function<C extends Children<S, O>>(options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & { children: C }) {
+  return function<C extends Children<S, O>>(
+    options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S, O> & { children: C }
+  ) {
     return flow(
       withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(),
       withOptions(options),
@@ -45,6 +48,7 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
       withLoading(),
       withProgress(),
       withSelected(options),
+      withDisabled(options),
       withVisibility(options),
       withView(params.Render)
     );

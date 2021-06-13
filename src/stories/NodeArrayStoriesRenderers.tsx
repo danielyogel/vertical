@@ -87,8 +87,16 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
         </Space>
 
         <Space>
-          {!vm.isFirst.get() && <Button onClick={vm.back}>Back</Button>}
-          {!vm.isLast.get() && <Button onClick={vm.next}>Next</Button>}
+          {!vm.isFirst.get() && (
+            <Button onClick={vm.back} disabled={vm.isDisabled.get()}>
+              Back
+            </Button>
+          )}
+          {!vm.isLast.get() && (
+            <Button onClick={vm.next} disabled={vm.isDisabled.get()}>
+              Next
+            </Button>
+          )}
           {vm.isLoading.get() && (
             <div>
               <LoaderOne />
@@ -118,7 +126,7 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
               );
             })}
           </ul>
-          <Button type="primary" danger onClick={() => vm.onStoreChange(mapValues(vm.store.get(), () => null))}>
+          <Button type="primary" disabled={vm.isDisabled.get()} danger onClick={() => vm.onStoreChange(mapValues(vm.store.get(), () => null))}>
             Clear All
           </Button>
         </Space>

@@ -1,75 +1,76 @@
 import React from 'react';
 import NodeObject from '../lib/nodes/NodeObject';
 import { NodeScalar } from '../lib';
+import { Divider } from 'antd';
+import { Button, InputNumber, Space, Input } from 'antd';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
 import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
-import { Loader } from './StorybookComponents';
+import { LoaderOne, LoaderTwo } from './StorybookComponents';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({
   Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
     const v = value.get();
+    const toggleLoading = () => setLoading(!isLoading.get());
+
     return (
-      <div>
-        <div>{String(label)}</div>
-        <b
-          onClick={() => {
-            setLoading(!isLoading.get());
-          }}
-        >
-          Toggle Loading - {String(isLoading.get())}
-        </b>
-        <div>
-          <input type="number" value={!v ? '' : v} onChange={e => onChange(!e.target.value ? null : Number(e.target.value))} />
-        </div>
-      </div>
+      <Space>
+        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+        <InputNumber value={!v ? undefined : v} onChange={e => onChange(!e.valueOf() ? null : Number(e.valueOf()))} />
+        <Button type="primary" onClick={toggleLoading}>
+          <div className="flex justify-center items-center">
+            <span className="mr-1">{isLoading.get() ? 'Cancel' : 'Submit'}</span>
+            {isLoading.get() && <LoaderTwo />}
+          </div>
+        </Button>
+      </Space>
     );
   }
 });
 
 export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, options: { label } }) => {
+  Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
     const v = value.get();
+    const toggleLoading = () => setLoading(!isLoading.get());
+
     return (
-      <div>
+      <Space>
+        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+
         <div>
-          <b>{label}</b>
+          <Input value={!v ? '' : v} onChange={e => onChange(e.target.value)} />
         </div>
-        <div>
-          <input value={!v ? '' : v} onChange={e => onChange(e.target.value === null ? null : e.target.value)} />
-        </div>
-      </div>
+
+        <Button type="primary" onClick={toggleLoading}>
+          <div className="flex justify-center items-center">
+            <span className="mr-1">{isLoading.get() ? 'Cancel' : 'Submit'}</span>
+            {isLoading.get() && <LoaderTwo />}
+          </div>
+        </Button>
+      </Space>
     );
   }
 });
 
 export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { bla: string }>({
-  Render: vm => {
+  Render: ({ children, isLoading }) => {
     return (
-      <div className={classnames('p-4 border border-gray-400 rounded', { 'bg-red-400': false })}>
+      <Space direction="vertical" className={classnames('border border-gray-400 rounded p-4', { 'bg-red-400': false })}>
         <div>
-          <Loader />
+          {isLoading.get() && (
+            <>
+              <LoaderOne />
+              <span className="ml-3 text-green-600">Loading...</span>
+            </>
+          )}
         </div>
-        <div
-          className="p-10"
-          onClick={() => {
-            vm.onStoreChange(mapValues(vm.store.get(), () => null));
-          }}
-        >
-          <b className="cursor-pointer">Clear All</b>
-        </div>
-        <div>
-          <div>Inner options: {vm.options.bla}</div>
-          {Object.entries(vm.children).map(([key, node]) => {
-            return (
-              <div className="text-red border border-red-600 p-10 m-10" key={key}>
-                <node.View />
-              </div>
-            );
+        <Space direction="vertical">
+          {Object.entries(children).map(([key, node]) => {
+            return <node.View key={key} />;
           })}
-        </div>
-      </div>
+        </Space>
+      </Space>
     );
   }
 });
@@ -77,30 +78,51 @@ export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STA
 export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
   Render: vm => {
     return (
-      <div>
-        <div>is array loading: {String(vm.isLoading.get())}</div>
-
-        <div
-          className="p-10"
-          onClick={() => {
-            vm.onStoreChange(mapValues(vm.store.get(), () => null));
-          }}
-        >
-          ALL OBJECT STORE: {Object.values(vm.store.get()).join(' ')}
-        </div>
-        <div>
+      <Space direction="vertical">
+        <Space>
           {pipe(
             [...vm.children],
-            mapWithIndexArr((indwx, node) => {
-              return vm.currentIndex.get() === indwx + 1 && <node.View key={indwx} />;
-            })
+            mapWithIndexArr((indwx, node) => vm.currentIndex.get() === indwx + 1 && <node.View key={indwx} />)
           )}
-        </div>
-        <div>
-          <button onClick={() => vm.currentIndex.set(vm.currentIndex.get() - 1)}>Back</button>
-          <button onClick={() => vm.currentIndex.set(vm.currentIndex.get() + 1)}>Next</button>
-        </div>
-      </div>
+        </Space>
+
+        <Space>
+          <Button onClick={() => vm.currentIndex.set(vm.currentIndex.get() - 1)}>Back</Button>
+          <Button onClick={() => vm.currentIndex.set(vm.currentIndex.get() + 1)}>Next</Button>
+          {vm.isLoading.get() && (
+            <div>
+              <LoaderOne />
+              <span className="ml-3 text-green-600">Loading...</span>
+            </div>
+          )}
+        </Space>
+
+        <Divider />
+
+        <Space direction="vertical">
+          <div>
+            <b className="text-green-600">isLoading:</b> <span> {String(vm.isLoading.get())}</span>
+          </div>
+
+          <Divider />
+
+          <ul>
+            {Object.entries(vm.store.get()).map(([k, v]) => {
+              return (
+                <li key={k}>
+                  <Space>
+                    <b>{k}</b>
+                    <span>{v}</span>
+                  </Space>
+                </li>
+              );
+            })}
+          </ul>
+          <Button type="primary" danger onClick={() => vm.onStoreChange(mapValues(vm.store.get(), () => null))}>
+            Clear All
+          </Button>
+        </Space>
+      </Space>
     );
   }
 });

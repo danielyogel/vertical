@@ -7,6 +7,7 @@ import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
 import { withParent, withView } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
+import { Button, InputNumber, Space } from 'antd';
 
 configure({ enforceActions: 'never' });
 
@@ -35,43 +36,47 @@ const nodeaa = ArrayN({
             const v = vm.value.get();
 
             return (
-              <div>
-                <div>age</div>
-                <input
-                  style={{ color: 'red' }}
-                  value={!v ? '' : v}
-                  onChange={e => vm.onChange(e.target.value === null ? null : Number(e.target.value))}
-                />
+              <div className="bg-yellow-400">
+                <b>Age Custom Node</b>
+                <InputNumber value={!v ? '' : v} onChange={v => vm.onChange(!v ? null : v)} />
               </div>
             );
           })
         ),
         country: parent => {
-          return { ...parent, View: () => <div>country</div> };
+          return { ...parent, View: () => <div>~~ Node Custom view ~~</div> };
         }
       }
     }),
-    (parent: Pick<BaseNode<{ age: number | null }, any, any>, 'onChange' | 'value'>) => {
+    (params: Pick<BaseNode<{ age: number | null }, any, any>, 'onChange' | 'value'>) => {
       return {
         View: () => (
-          <div>
-            <p>{parent.value.get().age}</p>
-            <button onClick={() => parent.onChange({ age: (parent.value.get().age || 1) + 1 })}>
+          <Space direction="vertical">
+            <b>Object Custom Node</b>
+
+            <Button onClick={() => params.onChange({ age: (params.value.get().age || 1) + 1 })}>
               <b>plus one to age</b>
-            </button>
-          </div>
+            </Button>
+            <div>
+              <b>Age: </b> <span>{params.value.get().age}</span>
+            </div>
+          </Space>
         )
       };
     },
     flow(
       withParent<{ age: number | null }, typeof INITIAL_STATE>(),
-      withView(parent => (
-        <div>
-          <p>{parent.value.get().age}</p>
-          <button onClick={() => parent.onChange({ age: (parent.value.get().age || 1) - 1 })}>
+      withView(vm => (
+        <Space direction="vertical">
+          <b>Object Custom Node Using Mixins</b>
+
+          <Button onClick={() => vm.onChange({ age: (vm.value.get().age || 1) - 1 })}>
             <b>minus one to age</b>
-          </button>
-        </div>
+          </Button>
+          <div>
+            <b>Age: </b> <span>{vm.value.get().age}</span>
+          </div>
+        </Space>
       ))
     )
   ] as const

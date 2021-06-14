@@ -1,6 +1,5 @@
 import { BaseNode } from '../Interfaces';
 import { observable, computed } from 'mobx';
-import { isArray } from 'lodash';
 
 type Node = Partial<BaseNode<any, any, any>>;
 
@@ -12,7 +11,7 @@ export default function withLoading() {
     return {
       ...obj,
       isLoading: computed(() => {
-        const someChildrenLoading = children && (isArray(children) ? children : Object.values(children)).some(vm => vm?.isLoading?.get());
+        const someChildrenLoading = children && (Array.isArray(children) ? children : Object.values(children)).some(vm => vm?.isLoading?.get());
         const isNodeLoading = _isLoading.get();
 
         return Boolean(isNodeLoading || someChildrenLoading);

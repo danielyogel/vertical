@@ -6721,10 +6721,10 @@ forwarded@~0.1.2:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
-fp-ts@^2.10.5:
-  version "2.10.5"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.10.5.tgz#7c77868fe8bd9b229743303c1bec505b959f631b"
-  integrity sha512-X2KfTIV0cxIk3d7/2Pvp/pxL/xr2MV1WooyEzKtTWYSc1+52VF4YzjBTXqeOlSiZsPCxIBpDGfT9Dyo7WEY0DQ==
+fp-ts@^2.11.0-rc.2:
+  version "2.11.0-rc.2"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.0-rc.2.tgz#59b069bc5ff9c53a23e7a834e92de7a42ac8c6be"
+  integrity sha512-XTLbBN5C6vU4OK8HHqRgRl2g/3oBVGl9mXrVhGSVBFHSoUCEWXh/KKUCdIgGFtX8dTQ++SB1fWGdcYADyB7ZOg==
 
 fragment-cache@^0.2.1:
   version "0.2.1"

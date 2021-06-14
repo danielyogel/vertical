@@ -19,7 +19,7 @@ const nodeaa = ArrayN({
     ObjectN({
       options: { bla: 'a' },
       children: {
-        name: StringN({ options: { label: 'Name' } }),
+        name: StringN({ options: { label: 'Name' }, errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
         lastName: StringN({ options: { label: 'lastName' }, isVisible: ({ store }) => store.get().age !== 3 }),
         phone: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'phone' } }),
         id: NumberN({ options: { label: 'id' } })

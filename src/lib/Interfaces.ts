@@ -12,6 +12,7 @@ export type BaseNode<V, S, O> = {
   isVisible: IComputedValue<boolean>;
   isSelected: IComputedValue<boolean>;
   isDisabled: IComputedValue<boolean>;
+  errors: IComputedValue<Array<{ message: string }>>;
   options: O;
   View: FC<any>;
 };

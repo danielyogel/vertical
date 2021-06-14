@@ -30,7 +30,7 @@ export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: 
 });
 
 export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
+  Render: ({ value, onChange, setLoading, isLoading, errors, options: { label } }) => {
     const v = value.get();
     const toggleLoading = () => setLoading(!isLoading.get());
 
@@ -42,7 +42,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
           <Input value={!v ? '' : v} onChange={e => onChange(e.target.value)} />
         </div>
 
-        <Button type="primary" onClick={toggleLoading}>
+        <Button type="primary" onClick={toggleLoading} disabled={!!errors.get().length}>
           <div className="flex justify-center items-center">
             <span className="mr-1">{isLoading.get() ? 'Cancel' : 'Submit'}</span>
             {isLoading.get() && <LoaderTwo />}
@@ -110,6 +110,8 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
         <Space direction="vertical">
           <div>
             <b className="text-green-600">isLoading:</b> <span> {String(vm.isLoading.get())}</span>
+            <b className="text-green-600">isDisabled:</b> <span> {String(vm.isDisabled.get())}</span>
+            <b className="text-green-600">errors:</b> <span> {JSON.stringify(vm.errors.get())}</span>
           </div>
 
           <Divider />

@@ -1,4 +1,4 @@
-# ~~ Abstract ~~
+# ~~ Verical ~~
 
 ## Objectives
 
@@ -12,10 +12,6 @@
 8. Dependecy Injection
 
 ## Commands
-
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
-
-The recommended workflow is to run TSDX in one terminal:
 
 ```bash
 npm start # or yarn start
@@ -32,7 +28,3 @@ Run inside another terminal:
 ```bash
 yarn storybook
 ```
-
-This loads the stories from `./stories`.
-
-> NOTE: Stories should reference the components as if using the library, similar to the example playground. This means importing from the root project directory. This has been aliased in the tsconfig and the storybook webpack config as a helper.

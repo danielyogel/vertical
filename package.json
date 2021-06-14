@@ -1,6 +1,6 @@
 {
   "name": "@daniely/vertical",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -38,7 +38,6 @@
     "arrowParens": "avoid"
   },
   "author": "Daniel Yogel",
-  "module": "dist/auto-generate-tsdx.esm.js",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@size-limit/preset-small-lib": "^4.9.1",

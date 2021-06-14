@@ -36,7 +36,7 @@
     "trailingComma": "none",
     "arrowParens": "avoid"
   },
-  "name": "@stoa/abstract-ui",
+  "name": "abstract",
   "author": "Daniel Yogel",
   "module": "dist/auto-generate-tsdx.esm.js",
   "size-limit": [

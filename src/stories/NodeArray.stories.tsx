@@ -36,7 +36,7 @@ const nodeaa = ArrayN({
             const v = vm.value.get();
 
             return (
-              <div className="bg-yellow-400">
+              <div>
                 <b>Age Custom Node</b>
                 <InputNumber value={!v ? '' : v} onChange={v => vm.onChange(!v ? null : v)} />
               </div>

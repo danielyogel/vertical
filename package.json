@@ -1,5 +1,5 @@
 {
-  "name": "vertical",
+  "name": "@daniely/vertical",
   "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -71,5 +71,17 @@
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
     "type-fest": "0.21.3"
-  }
+  },
+  "description": "Vertical Abstract Software",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielyogel/vertical.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danielyogel/vertical/issues"
+  },
+  "homepage": "https://github.com/danielyogel/vertical#readme"
 }

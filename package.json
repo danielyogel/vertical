@@ -1,6 +1,7 @@
 {
-  "version": "0.7.0",
-  "license": "UNLICENSED",
+  "name": "mesh",
+  "version": "0.1.0",
+  "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -36,19 +37,8 @@
     "trailingComma": "none",
     "arrowParens": "avoid"
   },
-  "name": "abstract",
   "author": "Daniel Yogel",
   "module": "dist/auto-generate-tsdx.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/auto-generate-tsdx.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/auto-generate-tsdx.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@size-limit/preset-small-lib": "^4.9.1",

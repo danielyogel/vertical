@@ -1,7 +1,8 @@
 module.exports = {
   stories: ['../**/*.stories.@(ts|tsx|js|jsx)'],
-  addons: [],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   typescript: {
-    check: true
+    check: true,
+    reactDocgen: 'none'
   }
 };

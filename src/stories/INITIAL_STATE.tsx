@@ -1,5 +1,6 @@
 export const INITIAL_STATE = {
   name: 'John Doe' as string | null,
+  gender: null as null | 'male' | 'female',
   lastName: '' as string | null,
   phone: 323223 as number | null,
   id: 2 as number | null,

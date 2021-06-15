@@ -2,9 +2,10 @@ import React from 'react';
 import NodeObject from '../lib/nodes/NodeObject';
 import { NodeScalar } from '../lib';
 import { Divider } from 'antd';
-import { Button, InputNumber, Space, Input } from 'antd';
+import { Button, InputNumber, Space, Input, Radio } from 'antd';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
+import NodeRadio from '../lib/nodes/NodeRadio';
 import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { LoaderOne, LoaderTwo } from './StorybookComponents';
@@ -40,6 +41,37 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
 
         <div>
           <Input value={!v ? '' : v} onChange={e => onChange(e.target.value)} />
+        </div>
+
+        <Button type="primary" onClick={toggleLoading} disabled={!!errors.get().length}>
+          <div className="flex justify-center items-center">
+            <span className="mr-1">{isLoading.get() ? 'Cancel' : 'Submit'}</span>
+            {isLoading.get() && <LoaderTwo />}
+          </div>
+        </Button>
+      </Space>
+    );
+  }
+});
+
+export const OptionsN = NodeRadio<typeof INITIAL_STATE, { label: string }>({
+  Render: ({ value, onChange, setLoading, isLoading, errors, items, options: { label } }) => {
+    const toggleLoading = () => setLoading(!isLoading.get());
+
+    return (
+      <Space>
+        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+
+        <div>
+          <Radio.Group onChange={e => onChange(e.target.value)} value={value.get()}>
+            {items
+              .filter(i => i.key !== null)
+              .map(i => (
+                <Radio key={i.key} value={i.key}>
+                  {i?.label ?? i.key}
+                </Radio>
+              ))}
+          </Radio.Group>
         </div>
 
         <Button type="primary" onClick={toggleLoading} disabled={!!errors.get().length}>

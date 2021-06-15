@@ -5,7 +5,7 @@ import { Divider } from 'antd';
 import { Button, InputNumber, Space, Input, Radio } from 'antd';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
-import NodeRadio from '../lib/nodes/NodeRadio';
+import NodeOneOf from '../lib/nodes/NodeOneOf';
 import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { LoaderOne, LoaderTwo } from './StorybookComponents';
@@ -54,7 +54,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
   }
 });
 
-export const OptionsN = NodeRadio<typeof INITIAL_STATE, { label: string }>({
+export const OneOfN = NodeOneOf<typeof INITIAL_STATE, { label: string }>({
   Render: ({ value, onChange, setLoading, isLoading, errors, items, options: { label } }) => {
     const toggleLoading = () => setLoading(!isLoading.get());
 

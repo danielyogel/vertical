@@ -2,7 +2,7 @@ import React from 'react';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ObjectN, StringN, NumberN, OptionsN } from './NodeArrayStoriesRenderers';
+import { ArrayN, ObjectN, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
 import { withParent, withView } from '../lib/mixins';
@@ -23,7 +23,7 @@ const nodeaa = ArrayN({
         lastName: StringN({ options: { label: 'lastName' }, isVisible: ({ store }) => store.get().age !== 3 }),
         phone: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'phone' } }),
         id: NumberN({ options: { label: 'id' } }),
-        gender: OptionsN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })), options: { label: 'gender' } })
+        gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })), options: { label: 'gender' } })
       }
     }),
     ObjectN({

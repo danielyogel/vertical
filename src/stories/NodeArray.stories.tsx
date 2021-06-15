@@ -23,7 +23,7 @@ const nodeaa = ArrayN({
         lastName: StringN({ options: { label: 'lastName' }, isVisible: ({ store }) => store.get().age !== 3 }),
         phone: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'phone' } }),
         id: NumberN({ options: { label: 'id' } }),
-        gender: OptionsN({ items: ['male', 'fenale', null].map(k => ({ key: k, title: k })), options: { label: 'gender' } })
+        gender: OptionsN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })), options: { label: 'gender' } })
       }
     }),
     ObjectN({
@@ -85,15 +85,9 @@ const nodeaa = ArrayN({
 
 const vm = nodeaa({
   value: computed(() => state.get()),
-  onChange: c => {
-    state.set({ ...state.get(), ...c });
-  },
-  store: computed(() => {
-    return state.get();
-  }),
-  onStoreChange: change => {
-    state.set({ ...state.get(), ...change });
-  }
+  onChange: c => state.set({ ...state.get(), ...c }),
+  store: computed(() => state.get()),
+  onStoreChange: change => state.set({ ...state.get(), ...change })
 });
 
 export default {

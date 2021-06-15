@@ -85,7 +85,7 @@ export const OptionsN = NodeRadio<typeof INITIAL_STATE, { label: string }>({
   }
 });
 
-export const ObjectN = NodeObject<keyof typeof INITIAL_STATE, typeof INITIAL_STATE, { bla: string }>({
+export const ObjectN = NodeObject<typeof INITIAL_STATE, { bla: string }>({
   Render: ({ children, isLoading }) => {
     return (
       <Space direction="vertical" className={classnames('border border-gray-400 rounded p-4', { 'bg-red-400': false })}>

@@ -13,21 +13,17 @@ type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value'
 
 type Child<S> = SetRequired<Partial<BaseNode<any, S, any>>, 'View'>;
 
-type VM<V, S, O, K extends string> = BaseNode<V, S, O> & { children: Record<K, Child<S>> };
+type VM<V, S, O> = BaseNode<V, S, O> & { children: Record<string, Child<S>> };
 
-type Children<keys extends string, S, O> = Record<keys, (parent: Pick<VM<any, S, O, any>, ChildrenKeys>) => Child<S>>;
+type Children<keys extends string, S, O> = Record<keys, (parent: Pick<VM<any, S, O>, ChildrenKeys>) => Child<S>>;
 
-type Renderer<K extends string, S, O> = FC<Except<VM<any, S, O, K>, 'View'>>;
+type Renderer<S, O> = FC<Except<VM<any, S, O>, 'View'>>;
 
-export default function<K extends string, S, O>(params: { Render: Renderer<K, S, O> }) {
-  return function<Keys extends K>(
-    options: OptionsParams<O> &
-      SelectedParams<S> &
-      VisibilityParams<S> &
-      DisabledParams<any, S, O> &
-      ErrorParams<any, S, O> & { children: Children<Keys, S, O> }
+export default function<S, O>(params: { Render: Renderer<S, O> }) {
+  return function<T extends Children<string, S, O>>(
+    options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S, O> & ErrorParams<any, S, O> & { children: T }
   ) {
-    return flow(withParent<InferObjectValue<typeof options.children>, S>(), vm => {
+    return flow(withParent<InferObjectValue<T>, S>(), vm => {
       return pipe(
         vm,
         withOptions(options),

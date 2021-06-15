@@ -1,6 +1,6 @@
 import { computed } from 'mobx';
 import { Except, SetRequired } from 'type-fest';
-import { FC, flow, map, pipe } from '../../utils';
+import { FC, flow, map, pipe, keys } from '../../utils';
 import { BaseNode, InferObjectValue } from '../Interfaces';
 import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
@@ -27,10 +27,10 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
       return pipe(
         vm,
         withOptions(options),
-        vm => {
-          const keys = Object.keys(options.children) as Array<keyof typeof options.children>;
-          const children = pipe(
-            keys,
+        vm => ({
+          ...vm,
+          children: pipe(
+            keys(options.children),
             map(key => {
               const instance = options.children[key]({
                 ...vm,
@@ -41,9 +41,8 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
               return [key, instance];
             }),
             Object.fromEntries
-          );
-          return { ...vm, children };
-        },
+          )
+        }),
         withLoading(),
         withProgress(),
         withSelected(options),

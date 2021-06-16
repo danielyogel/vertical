@@ -1,5 +1,5 @@
 import { computed, IComputedValue, IObservableValue, observable } from 'mobx';
-import { Except, SetRequired } from 'type-fest';
+import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
@@ -12,7 +12,7 @@ import { Params as ErrorParams } from '../mixins/withErrors';
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value' | 'currentIndex';
 
-type Child = SetRequired<Partial<BaseNode<any, any, any>>, 'View'>;
+type Child = O.Required<Partial<BaseNode<any, any, any>>, 'View'>;
 
 type VM<S, O> = BaseNode<any, S, O> & {
   currentIndex: IObservableValue<number>;

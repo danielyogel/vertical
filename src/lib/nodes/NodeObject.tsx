@@ -1,5 +1,6 @@
 import { computed } from 'mobx';
-import { Except, SetRequired } from 'type-fest';
+import { Except } from 'type-fest';
+import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
 import { BaseNode, InferObjectValue } from '../Interfaces';
 import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors } from '../mixins';
@@ -11,7 +12,7 @@ import { Params as ErrorParams } from '../mixins/withErrors';
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value';
 
-type Child<S> = SetRequired<Partial<BaseNode<any, S, any>>, 'View'>;
+type Child<S> = O.Required<Partial<BaseNode<any, S, any>>, 'View'>;
 
 type VM<V, S, O> = BaseNode<V, S, O> & { children: Record<string, Child<S>> };
 

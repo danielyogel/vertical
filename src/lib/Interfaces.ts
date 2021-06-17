@@ -1,11 +1,12 @@
 import { IComputedValue, IObservableValue } from 'mobx';
 import { FC } from '../utils';
 
-export type BaseNode<V, S, O> = {
+export type BaseNode<V, S> = {
   value: IComputedValue<V>;
   onChange: (value: V) => void;
   store: IComputedValue<S>;
   onStoreChange: (change: Partial<S>) => void;
+  label: string;
   isLoading: IComputedValue<boolean>;
   setLoading: (isLoading: boolean) => void;
   progress: IObservableValue<number>;
@@ -13,7 +14,6 @@ export type BaseNode<V, S, O> = {
   isSelected: IComputedValue<boolean>;
   isDisabled: IComputedValue<boolean>;
   errors: IComputedValue<Array<{ message: string }>>;
-  options: O;
   View: FC<any>;
 };
 

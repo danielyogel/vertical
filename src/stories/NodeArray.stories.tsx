@@ -14,23 +14,23 @@ configure({ enforceActions: 'never' });
 const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 const nodeaa = ArrayN({
-  options: {},
+  label: '',
   children: [
     ObjectN({
-      options: { bla: 'a' },
+      label: '',
       children: {
-        name: StringN({ options: { label: 'Name' }, errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
-        lastName: StringN({ options: { label: 'lastName' }, isVisible: ({ store }) => store.get().age !== 3 }),
-        phone: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'phone' } }),
-        id: NumberN({ options: { label: 'id' } }),
-        gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })), options: { label: 'gender' } })
+        name: StringN({ label: 'Name', errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
+        lastName: StringN({ label: 'Last Name', isVisible: ({ store }) => store.get().age !== 3 }),
+        phone: NumberN({ label: 'Phone', isVisible: ({ store }) => store.get().name !== 'daniel' }),
+        id: NumberN({ label: 'Id' }),
+        gender: OneOfN({ label: 'Gender', items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
       }
     }),
     ObjectN({
-      options: { bla: 'a' },
+      label: '',
       children: {
-        id: NumberN({ options: { label: 'id' } }),
-        birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel', options: { label: 'birthday' } }),
+        id: NumberN({ label: 'Id' }),
+        birthday: NumberN({ label: 'Birthday', isVisible: ({ store }) => store.get().name !== 'daniel' }),
         age: flow(
           withParent<number | null, typeof INITIAL_STATE>(),
           withView(vm => {
@@ -49,7 +49,7 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (params: Pick<BaseNode<{ age: number | null }, any, any>, 'onChange' | 'value'>) => {
+    (params: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'>) => {
       return {
         View: () => (
           <Space direction="vertical">

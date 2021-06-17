@@ -10,15 +10,15 @@ import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { LoaderOne, LoaderTwo } from './StorybookComponents';
 
-export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, setLoading, isLoading, options: { label } }) => {
+export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
+  Render: ({ value, onChange, setLoading, isLoading, label }) => {
     const v = value.get();
     const toggleLoading = () => setLoading(!isLoading.get());
 
     return (
       <Space>
         <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
-        <InputNumber value={!v ? undefined : v} onChange={e => onChange(!e.valueOf() ? null : Number(e.valueOf()))} />
+        <InputNumber value={!v ? undefined : v} onChange={onChange} />
         <Button type="primary" onClick={toggleLoading}>
           <div className="flex justify-center items-center">
             <span className="mr-1">{isLoading.get() ? 'Cancel' : 'Submit'}</span>
@@ -30,8 +30,8 @@ export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE, { label: 
   }
 });
 
-export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, setLoading, isLoading, errors, options: { label } }) => {
+export const StringN = NodeScalar<string | null, typeof INITIAL_STATE>({
+  Render: ({ value, onChange, setLoading, isLoading, errors, label }) => {
     const v = value.get();
     const toggleLoading = () => setLoading(!isLoading.get());
 
@@ -40,7 +40,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
         <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
 
         <div>
-          <Input value={!v ? '' : v} onChange={e => onChange(e.target.value)} />
+          <Input value={v === null ? '' : v} onChange={e => onChange(e.target.value)} />
         </div>
 
         <Button type="primary" onClick={toggleLoading} disabled={!!errors.get().length}>
@@ -54,8 +54,8 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE, { label: 
   }
 });
 
-export const OneOfN = NodeOneOf<typeof INITIAL_STATE, { label: string }>({
-  Render: ({ value, onChange, setLoading, isLoading, errors, items, options: { label } }) => {
+export const OneOfN = NodeOneOf<typeof INITIAL_STATE>({
+  Render: ({ value, onChange, setLoading, isLoading, errors, items, label }) => {
     const toggleLoading = () => setLoading(!isLoading.get());
 
     return (
@@ -85,7 +85,7 @@ export const OneOfN = NodeOneOf<typeof INITIAL_STATE, { label: string }>({
   }
 });
 
-export const ObjectN = NodeObject<typeof INITIAL_STATE, { bla: string }>({
+export const ObjectN = NodeObject<typeof INITIAL_STATE>({
   Render: ({ children, isLoading }) => {
     return (
       <Space direction="vertical" className={classnames('border border-gray-400 rounded p-4', { 'bg-red-400': false })}>
@@ -107,7 +107,7 @@ export const ObjectN = NodeObject<typeof INITIAL_STATE, { bla: string }>({
   }
 });
 
-export const ArrayN = NodeArray<typeof INITIAL_STATE, {}>({
+export const ArrayN = NodeArray<typeof INITIAL_STATE>({
   Render: vm => {
     return (
       <Space direction="vertical">

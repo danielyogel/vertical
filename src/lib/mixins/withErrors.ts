@@ -4,16 +4,16 @@ import { BaseNode } from '../Interfaces';
 
 type Error = { message: string };
 
-type Node<V, S, O> = Except<BaseNode<V, S, O>, 'View' | 'isDisabled' | 'isVisible' | 'errors'> & {
-  children: null | Array<Partial<BaseNode<any, S, O>>> | Record<string, Partial<BaseNode<any, S, O>>>;
+type Node<V, S> = Except<BaseNode<V, S>, 'View' | 'isDisabled' | 'isVisible' | 'errors'> & {
+  children: null | Array<Partial<BaseNode<any, S>>> | Record<string, Partial<BaseNode<any, S>>>;
 };
 
-export type Params<V, S, O> = {
-  errrors?: (node: Node<V, S, O>) => Array<Error | undefined> | undefined | false;
+export type Params<V, S> = {
+  errrors?: (node: Node<V, S>) => Array<Error | undefined> | undefined | false;
 };
 
-export default function withErrors<V, S, O>(params: Params<V, S, O>) {
-  return function<VM extends Node<V, S, O>>(vm: VM) {
+export default function withErrors<V, S>(params: Params<V, S>) {
+  return function<VM extends Node<V, S>>(vm: VM) {
     const children = vm.children;
 
     const errors = computed(() => {

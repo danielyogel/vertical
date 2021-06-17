@@ -1,7 +1,7 @@
 import { BaseNode } from '../Interfaces';
 import { observable, computed } from 'mobx';
 
-type Node = Partial<BaseNode<any, any, any>>;
+type Node = Partial<BaseNode<any, any>>;
 
 export default function withLoading() {
   return function<N extends Node, T extends Partial<{ children: null | Array<N> | Record<string, N> }>>(obj: T) {

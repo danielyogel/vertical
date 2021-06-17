@@ -3,18 +3,18 @@ import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
-import { withLoading, withOptions, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors } from '../mixins';
+import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { Params as SelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
-import { Params as OptionsParams } from '../mixins/withOptions';
 import { Params as DisabledParams } from '../mixins/withDisabled';
 import { Params as ErrorParams } from '../mixins/withErrors';
+import { Params as MetaParams } from '../mixins/withMeta';
 
-type ChildrenKeys = 'onChange' | 'onStoreChange' | 'options' | 'store' | 'value' | 'currentIndex';
+type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex';
 
-type Child = O.Required<Partial<BaseNode<any, any, any>>, 'View'>;
+type Child = O.Required<Partial<BaseNode<any, any>>, 'View'>;
 
-type VM<S, O> = BaseNode<any, S, O> & {
+type VM<S> = BaseNode<any, S> & {
   currentIndex: IObservableValue<number>;
   isFirst: IComputedValue<boolean>;
   isLast: IComputedValue<boolean>;
@@ -23,18 +23,17 @@ type VM<S, O> = BaseNode<any, S, O> & {
   children: Array<Child>;
 };
 
-type Children<S, O> = ReadonlyArray<(parent: Pick<VM<S, O>, ChildrenKeys>) => Child>;
+type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys>) => Child>;
 
-type Renderer<S, O> = FC<Except<VM<S, O>, 'View'>>;
+type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
-export default function<S, O>(params: { Render: Renderer<S, O> }) {
-  return function<C extends Children<S, O>>(
-    options: OptionsParams<O> & SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S, O> & ErrorParams<any, S, O> & { children: C }
+export default function<S>(params: { Render: Renderer<S> }) {
+  return function<C extends Children<S>>(
+    options: SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S> & ErrorParams<any, S> & MetaParams & { children: C }
   ) {
     return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
       return pipe(
         vm,
-        withOptions(options),
         vm => {
           const currentIndex = observable.box(1);
           return {
@@ -47,6 +46,7 @@ export default function<S, O>(params: { Render: Renderer<S, O> }) {
             children: [...options.children].map(node => node({ ...vm, currentIndex }))
           };
         },
+        withMeta(options),
         withLoading(),
         withProgress(),
         withSelected(options),

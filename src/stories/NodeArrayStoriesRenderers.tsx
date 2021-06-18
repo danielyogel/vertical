@@ -1,5 +1,5 @@
 import React from 'react';
-import NodeObject from '../lib/nodes/NodeObject';
+import NodeArrayChild from '../lib/nodes/NodeArrayChild';
 import { NodeScalar } from '../lib';
 import { Divider } from 'antd';
 import { Button, InputNumber, Space, Input, Radio } from 'antd';
@@ -85,8 +85,8 @@ export const OneOfN = NodeOneOf<typeof INITIAL_STATE>({
   }
 });
 
-export const ObjectN = NodeObject<typeof INITIAL_STATE>({
-  Render: ({ children, isLoading }) => {
+export const ArrayChild = NodeArrayChild<typeof INITIAL_STATE>({
+  Render: ({ children, isLoading, back, next, isFirst, isLast, isDisabled }) => {
     return (
       <Space direction="vertical" className={classnames('border border-gray-400 rounded p-4', { 'bg-red-400': false })}>
         <div>
@@ -102,6 +102,25 @@ export const ObjectN = NodeObject<typeof INITIAL_STATE>({
             return <node.View key={key} />;
           })}
         </Space>
+
+        <Space>
+          {!isFirst.get() && (
+            <Button onClick={back} disabled={isDisabled.get()}>
+              Back
+            </Button>
+          )}
+          {!isLast.get() && (
+            <Button onClick={next} disabled={isDisabled.get()}>
+              Next
+            </Button>
+          )}
+          {isLoading.get() && (
+            <div>
+              <LoaderOne />
+              <span className="ml-3 text-green-600">Loading...</span>
+            </div>
+          )}
+        </Space>
       </Space>
     );
   }
@@ -115,25 +134,6 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE>({
           {pipe(
             [...vm.children],
             mapWithIndexArr((indwx, node) => vm.currentIndex.get() === indwx + 1 && <node.View key={indwx} />)
-          )}
-        </Space>
-
-        <Space>
-          {!vm.isFirst.get() && (
-            <Button onClick={vm.back} disabled={vm.isDisabled.get()}>
-              Back
-            </Button>
-          )}
-          {!vm.isLast.get() && (
-            <Button onClick={vm.next} disabled={vm.isDisabled.get()}>
-              Next
-            </Button>
-          )}
-          {vm.isLoading.get() && (
-            <div>
-              <LoaderOne />
-              <span className="ml-3 text-green-600">Loading...</span>
-            </div>
           )}
         </Space>
 

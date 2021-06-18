@@ -1,7 +1,7 @@
 import { IComputedValue } from 'mobx';
 
-export default function withParent<V, S>() {
-  type Params = {
+export default function withParent<V, S, Extra = {}>() {
+  type Params = Extra & {
     value: IComputedValue<V>;
     onChange: (value: V) => void;
     store: IComputedValue<S>;

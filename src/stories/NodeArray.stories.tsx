@@ -2,12 +2,14 @@ import React from 'react';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ObjectN, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
+import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
-import { withParent, withView } from '../lib/mixins';
+import { withLoading, withMeta, withParent, withProgress, withView } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
+import { Special } from '../lib/nodes/NodeArray';
+import { LoaderOne } from './StorybookComponents';
 
 configure({ enforceActions: 'never' });
 
@@ -16,7 +18,7 @@ const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 const nodeaa = ArrayN({
   label: '',
   children: [
-    ObjectN({
+    ArrayChild({
       label: '',
       children: {
         name: StringN({ label: 'Name', errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
@@ -26,7 +28,7 @@ const nodeaa = ArrayN({
         gender: OneOfN({ label: 'Gender', items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
       }
     }),
-    ObjectN({
+    ArrayChild({
       label: '',
       children: {
         id: NumberN({ label: 'Id' }),
@@ -49,24 +51,54 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (params: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'>) => {
+    (vm: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'> & Special) => {
+      const isLoading = computed(() => false);
+      const isDisabled = computed(() => false);
       return {
+        ...vm,
+        isLoading,
+        isDisabled,
         View: () => (
           <Space direction="vertical">
             <b>Object Custom Node</b>
 
-            <Button onClick={() => params.onChange({ age: (params.value.get().age || 1) + 1 })}>
+            <Button onClick={() => vm.onChange({ age: (vm.value.get().age || 1) + 1 })}>
               <b>plus one to age</b>
             </Button>
             <div>
-              <b>Age: </b> <span>{params.value.get().age}</span>
+              <b>Age: </b> <span>{vm.value.get().age}</span>
             </div>
+
+            <Space>
+              {!vm.isFirst.get() && (
+                <Button onClick={vm.back} disabled={isDisabled.get()}>
+                  Back
+                </Button>
+              )}
+              {!vm.isLast.get() && (
+                <Button onClick={vm.next} disabled={isDisabled.get()}>
+                  Next
+                </Button>
+              )}
+              {isLoading.get() && (
+                <div>
+                  <LoaderOne />
+                  <span className="ml-3 text-green-600">Loading...</span>
+                </div>
+              )}
+            </Space>
           </Space>
         )
       };
     },
     flow(
-      withParent<{ age: number | null }, typeof INITIAL_STATE>(),
+      withParent<{ age: number | null }, typeof INITIAL_STATE, Special>(),
+      vm => ({ ...vm, children: null, isDisabled: computed(() => false) }),
+      withLoading(),
+      withMeta({ label: '' }),
+      withProgress(),
+      // withSelected({}),
+      // withDisabled({ isDisabled: () => false }),
       withView(vm => (
         <Space direction="vertical">
           <b>Object Custom Node Using Mixins</b>
@@ -77,6 +109,25 @@ const nodeaa = ArrayN({
           <div>
             <b>Age: </b> <span>{vm.value.get().age}</span>
           </div>
+
+          <Space>
+            {!vm.isFirst.get() && (
+              <Button onClick={vm.back} disabled={vm.isDisabled.get()}>
+                Back
+              </Button>
+            )}
+            {!vm.isLast.get() && (
+              <Button onClick={vm.next} disabled={vm.isDisabled.get()}>
+                Next
+              </Button>
+            )}
+            {vm.isLoading.get() && (
+              <div>
+                <LoaderOne />
+                <span className="ml-3 text-green-600">Loading...</span>
+              </div>
+            )}
+          </Space>
         </Space>
       ))
     )

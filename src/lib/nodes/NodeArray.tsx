@@ -10,40 +10,56 @@ import { Params as DisabledParams } from '../mixins/withDisabled';
 import { Params as ErrorParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
 
-type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex';
-
-type Child = O.Required<Partial<BaseNode<any, any>>, 'View'>;
-
-type VM<S> = BaseNode<any, S> & {
+export type Special = {
   currentIndex: IObservableValue<number>;
   isFirst: IComputedValue<boolean>;
   isLast: IComputedValue<boolean>;
   back: () => void;
   next: () => void;
-  children: Array<Child>;
 };
 
-type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys>) => Child>;
+type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex';
+
+type Child = O.Required<Partial<BaseNode<any, any>>, 'View'>;
+
+type VM<S> = BaseNode<any, S> & { children: Array<Child> } & Special;
+
+type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & Special) => Child>;
 
 type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
-  return function<C extends Children<S>>(
-    options: SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S> & ErrorParams<any, S> & MetaParams & { children: C }
-  ) {
+  type Options<C extends Children<S>> = SelectedParams<S> &
+    VisibilityParams<S> &
+    DisabledParams<any, S> &
+    ErrorParams<any, S> &
+    MetaParams & { children: C };
+
+  return function<C extends Children<S>>(options: Options<C>) {
     return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
       return pipe(
         vm,
         vm => {
           const currentIndex = observable.box(1);
+          const back = () => currentIndex.set(currentIndex.get() - 1);
+          const next = () => currentIndex.set(currentIndex.get() + 1);
           return {
             ...vm,
             currentIndex,
             isFirst: computed(() => currentIndex.get() === 1),
             isLast: computed(() => currentIndex.get() === options.children.length),
-            back: () => currentIndex.set(currentIndex.get() - 1),
-            next: () => currentIndex.set(currentIndex.get() + 1),
-            children: [...options.children].map(node => node({ ...vm, currentIndex }))
+            back,
+            next,
+            children: [...options.children].map((node, index) => {
+              return node({
+                ...vm,
+                currentIndex,
+                isFirst: computed(() => index === 0),
+                isLast: computed(() => index + 1 === options.children.length),
+                back,
+                next
+              });
+            })
           };
         },
         withMeta(options),

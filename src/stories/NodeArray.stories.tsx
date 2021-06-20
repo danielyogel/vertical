@@ -24,7 +24,7 @@ const nodeaa = ArrayN({
         name: StringN({ label: 'Name', errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
         lastName: StringN({ label: 'Last Name', isVisible: ({ store }) => store.get().age !== 3 }),
         phone: NumberN({ label: 'Phone', isVisible: ({ store }) => store.get().name !== 'daniel' }),
-        id: NumberN({ label: 'Id' }),
+        id: NumberN({ label: 'Id', isDisabled: vm => vm.store.get().age === 3 }),
         gender: OneOfN({ label: 'Gender', items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
       }
     }),

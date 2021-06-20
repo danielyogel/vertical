@@ -1,14 +1,17 @@
-import { computed, IComputedValue } from 'mobx';
+import { computed } from 'mobx';
+import { BaseNode } from '../Interfaces';
 
-export type Params<S> = {
-  isSelected?: (args: { store: IComputedValue<S> }) => boolean;
+type Node<V, S> = Pick<BaseNode<V, S>, 'store' | 'label' | 'value' | 'onChange'>;
+
+export type Params<V, S> = {
+  isSelected?: (node: Node<V, S>) => boolean;
 };
 
-export default function withSelected<S>(params: Params<S>) {
-  return function<O extends { store: IComputedValue<S> }>(obj: O) {
+export default function withSelected<V, S>(params: Params<V, S>) {
+  return function<VM extends Node<V, S>>(vm: VM) {
     return {
-      ...obj,
-      isSelected: computed(() => !params.isSelected || params.isSelected(obj))
+      ...vm,
+      isSelected: computed(() => !params.isSelected || params.isSelected(vm))
     };
   };
 }

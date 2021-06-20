@@ -29,7 +29,7 @@ type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & Special) =
 type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
-  type Options<C extends Children<S>> = SelectedParams<S> &
+  type Options<C extends Children<S>> = SelectedParams<any, S> &
     VisibilityParams<S> &
     DisabledParams<any, S> &
     ErrorParams<any, S> &

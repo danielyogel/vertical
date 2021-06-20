@@ -1,11 +1,14 @@
-import { computed, IComputedValue } from 'mobx';
+import { computed } from 'mobx';
+import { BaseNode } from '../Interfaces';
 
-export type Params<S> = {
-  isVisible?: (args: { store: IComputedValue<S> }) => boolean;
+type Node<V, S> = Pick<BaseNode<V, S>, 'store' | 'label'>;
+
+export type Params<V, S> = {
+  isVisible?: (args: Node<V, S>) => boolean;
 };
 
-export default function withVisibility<S>(params: Params<S>) {
-  return function<O extends { store: IComputedValue<S> }>(obj: O) {
+export default function withVisibility<V, S>(params: Params<V, S>) {
+  return function<O extends Node<V, S>>(obj: O) {
     return {
       ...obj,
       isVisible: computed(() => !params.isVisible || params.isVisible(obj))

@@ -30,7 +30,7 @@ type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
   type Options<C extends Children<S>> = SelectedParams<any, S> &
-    VisibilityParams<S> &
+    VisibilityParams<any, S> &
     DisabledParams<any, S> &
     ErrorParams<any, S> &
     MetaParams & { children: C };

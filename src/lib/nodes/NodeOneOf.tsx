@@ -11,7 +11,7 @@ import { Params as MetaParams } from '../mixins/withMeta';
 export default function<S>(params: { Render: FC<Except<BaseNode<any, S>, 'View'> & { items: Array<{ key: string | null; label?: string }> }> }) {
   return function<K extends string | null>(
     options: SelectedParams<K, S> &
-      VisibilityParams<S> &
+      VisibilityParams<K, S> &
       DisabledParams<K, S> &
       DisabledParams<K, S> &
       ErrorParams<K, S> & { items: Array<{ key: K; label?: string }> } & MetaParams

@@ -1,6 +1,7 @@
 import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { BaseNode } from '../Interfaces';
+import { notUndefined } from '../../utils';
 
 type Error = { message: string };
 
@@ -29,5 +30,3 @@ export default function withErrors<V, S>(params: Params<V, S>) {
     };
   };
 }
-
-const notUndefined = <T>(v: T | undefined): v is T => v !== undefined;

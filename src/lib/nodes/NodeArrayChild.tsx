@@ -23,7 +23,7 @@ type Renderer<S> = FC<Except<VM<any, S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
   return function<T extends Children<string, S>>(
-    options: SelectedParams<S> & VisibilityParams<S> & DisabledParams<any, S> & ErrorParams<any, S> & { children: T } & MetaParams
+    options: SelectedParams<any, S> & VisibilityParams<S> & DisabledParams<any, S> & ErrorParams<any, S> & { children: T } & MetaParams
   ) {
     return flow(withParent<InferObjectValue<T>, S, Special>(), vm => {
       return pipe(

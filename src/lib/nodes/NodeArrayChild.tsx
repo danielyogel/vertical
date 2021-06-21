@@ -6,7 +6,7 @@ import { BaseNode, InferObjectValue } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
-import { Params as DisabledParams } from '../mixins/withDisabled';
+import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
 import { Special } from './NodeArray';
@@ -25,8 +25,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
   type Options<T extends Children<string, S>> = {
     isSelected?: isSelectedParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-  } & VisibilityParams<any, S> &
-    DisabledParams<any, S> & {
+    isDisabled?: isDisabledParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
+  } & VisibilityParams<any, S> & {
       children: T;
     } & MetaParams;
 
@@ -57,7 +57,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
         withProgress(),
         withSelected(options.isSelected),
         withErrors(options.errors),
-        withDisabled(options),
+        withDisabled(options.isDisabled),
         withVisibility(options),
         withView(params.Render)
       );

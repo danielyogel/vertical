@@ -1,9 +1,11 @@
 import { computed } from 'mobx';
 import { BaseNode } from '../Interfaces';
 
-export type isSelected<V, S, VM extends Pick<BaseNode<V, S>, 'value' | 'store'>> = (vm: VM) => boolean;
+type PreviusVM<V, S> = Pick<BaseNode<V, S>, 'value' | 'store'>;
 
-export default function withSelected<V, S, VM extends Pick<BaseNode<V, S>, 'value' | 'store'>>(isSelected?: isSelected<V, S, VM>) {
+export type isSelected<V, S, VM extends PreviusVM<V, S>> = (vm: VM) => boolean;
+
+export default function withSelected<V, S, VM extends PreviusVM<V, S>>(isSelected?: isSelected<V, S, VM>) {
   return function(vm: VM) {
     return {
       ...vm,

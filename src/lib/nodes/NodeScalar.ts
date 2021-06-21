@@ -4,17 +4,16 @@ import { BaseNode } from '../Interfaces';
 import { withLoading, withParent, withProgress, withView, withSelected, withVisibility, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
-import { Params as DisabledParams } from '../mixins/withDisabled';
+import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
 
 export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'>> }) {
   type Options = {
     isSelected?: isSelectedParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     errors?: errorsParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
   } & VisibilityParams<V, S> &
-    DisabledParams<V, S> &
-    DisabledParams<V, S> &
     MetaParams;
 
   return function(options: Options) {
@@ -26,7 +25,7 @@ export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'
         withProgress(),
         withSelected(options.isSelected),
         withErrors(options.errors),
-        withDisabled(options),
+        withDisabled(options.isDisabled),
         withVisibility(options),
         withView(params.Render)
       );

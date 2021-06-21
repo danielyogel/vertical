@@ -5,7 +5,7 @@ import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
-import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors } from '../lib/mixins';
+import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { Special } from '../lib/nodes/NodeArray';
@@ -98,7 +98,7 @@ const nodeaa = ArrayN({
       withProgress(),
       withSelected(({ value }) => !!value.get()),
       withErrors(({ value }) => [{ message: String(value.get().age) }]),
-      // withDisabled({ isDisabled: () => false }),
+      withDisabled(vm => !!vm.value.get().age && vm.progress.get() !== 3),
       withView(vm => (
         <Space direction="vertical">
           <b>Object Custom Node Using Mixins</b>

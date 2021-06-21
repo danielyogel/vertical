@@ -8,7 +8,6 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
-import { Params as MetaParams } from '../mixins/withMeta';
 
 export type Special = {
   currentIndex: IObservableValue<number>;
@@ -34,7 +33,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
     errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<S>, 'View' | 'isVisible'>>;
-  } & MetaParams & { children: C };
+    label?: string;
+  } & { children: C };
 
   return function<C extends Children<S>>(options: Options<C>) {
     return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
@@ -64,7 +64,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
             })
           };
         },
-        withMeta(options),
+        withMeta({ label: options.label }),
         withLoading(),
         withProgress(),
         withSelected(options.isSelected),

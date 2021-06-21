@@ -6,7 +6,6 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
-import { Params as MetaParams } from '../mixins/withMeta';
 
 export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'>> }) {
   type Options = {
@@ -14,13 +13,14 @@ export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'
     errors?: errorsParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible'>>;
-  } & MetaParams;
+    label?: string;
+  };
 
   return function(options: Options) {
     return flow(withParent<V, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null },
-        withMeta(options),
+        withMeta({ label: options.label }),
         withLoading(),
         withProgress(),
         withSelected(options.isSelected),

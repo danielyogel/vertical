@@ -17,10 +17,10 @@ configure({ enforceActions: 'never' });
 const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 const nodeaa = ArrayN({
-  isSelected: vm => vm.progress.get() > 3 || vm.store.get().id === 21,
+  isSelected: vm => vm.progress.get() !== 33223 || vm.store.get().id === 21,
   children: [
     ArrayChild({
-      isSelected: vm => vm.progress.get() > 3,
+      isSelected: vm => vm.progress.get() !== 3233,
       children: {
         name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
         lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
@@ -97,10 +97,10 @@ const nodeaa = ArrayN({
         withLoading(),
         withMeta({}),
         withProgress(),
-        withSelected(({ value }) => !!value.get()),
+        withSelected(({ value }) => value.get().age !== 232323),
         withErrors(({ value }) => [{ message: String(value.get().age) }]),
-        withDisabled(vm => !!vm.value.get().age && vm.progress.get() !== 3),
-        withVisibility(vm => !!vm.label.get() && vm.progress.get() !== 4),
+        withDisabled(vm => vm.value.get().age === 310),
+        withVisibility(vm => vm.progress.get() !== 4),
         withView(vm => (
           <Space direction="vertical">
             <b>Object Custom Node Using Mixins</b>

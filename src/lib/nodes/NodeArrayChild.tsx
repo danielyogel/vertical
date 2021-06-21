@@ -8,7 +8,6 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
-import { Params as MetaParams } from '../mixins/withMeta';
 import { Special } from './NodeArray';
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value';
@@ -27,7 +26,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
     errors?: errorsParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<any, S>, 'View' | 'isVisible'>>;
-  } & { children: T } & MetaParams;
+    label?: string;
+  } & { children: T };
 
   return function<T extends Children<string, S>>(options: Options<T>) {
     return flow(withParent<InferObjectValue<T>, S, Special>(), vm => {
@@ -52,7 +52,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
           )
         }),
         withLoading(),
-        withMeta(options),
+        withMeta({ label: options.label }),
         withProgress(),
         withSelected(options.isSelected),
         withErrors(options.errors),

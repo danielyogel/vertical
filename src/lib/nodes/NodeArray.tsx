@@ -4,10 +4,10 @@ import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
-import { Params as SelectedParams } from '../mixins/withSelected';
+import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as DisabledParams } from '../mixins/withDisabled';
-import { Params as ErrorParams } from '../mixins/withErrors';
+import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
 
 export type Special = {
@@ -29,10 +29,11 @@ type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & Special) =
 type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
-  type Options<C extends Children<S>> = SelectedParams<any, S> &
-    VisibilityParams<any, S> &
+  type Options<C extends Children<S>> = {
+    isSelected?: isSelectedParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+  } & VisibilityParams<any, S> &
     DisabledParams<any, S> &
-    ErrorParams<any, S> &
     MetaParams & { children: C };
 
   return function<C extends Children<S>>(options: Options<C>) {
@@ -66,8 +67,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
         withMeta(options),
         withLoading(),
         withProgress(),
-        withSelected(options),
-        withErrors(options),
+        withSelected(options.isSelected),
+        withErrors(options.errors),
         withDisabled(options),
         withVisibility(options),
         withView(params.Render)

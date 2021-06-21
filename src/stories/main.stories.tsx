@@ -5,7 +5,7 @@ import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
-import { withLoading, withMeta, withParent, withProgress, withView } from '../lib/mixins';
+import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { Special } from '../lib/nodes/NodeArray';
@@ -16,10 +16,12 @@ configure({ enforceActions: 'never' });
 const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 const nodeaa = ArrayN({
+  isSelected: vm => vm.progress.get() > 3 || vm.store.get().id === 21,
   children: [
     ArrayChild({
+      isSelected: vm => vm.progress.get() > 3,
       children: {
-        name: StringN({ errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
+        name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
         lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
         phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
         id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
@@ -94,7 +96,8 @@ const nodeaa = ArrayN({
       withLoading(),
       withMeta({}),
       withProgress(),
-      // withSelected({}),
+      withSelected(({ value }) => !!value.get()),
+      withErrors(({ value }) => [{ message: String(value.get().age) }]),
       // withDisabled({ isDisabled: () => false }),
       withView(vm => (
         <Space direction="vertical">

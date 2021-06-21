@@ -1,32 +1,28 @@
 import { computed } from 'mobx';
-import { Except } from 'type-fest';
 import { BaseNode } from '../Interfaces';
 import { notUndefined } from '../../utils';
 
 type Error = { message: string };
 
-type Node<V, S> = Except<BaseNode<V, S>, 'View' | 'isDisabled' | 'isVisible' | 'errors'> & {
+type Node<V, S> = Pick<BaseNode<V, S>, 'value' | 'store'> & {
   children: null | Array<Partial<BaseNode<any, S>>> | Record<string, Partial<BaseNode<any, S>>>;
 };
 
-export type Params<V, S> = {
-  errrors?: (node: Node<V, S>) => Array<Error | undefined> | undefined | false;
-};
+export type errors<V, S, VM extends Node<V, S>> = (node: VM) => Array<Error | undefined> | undefined | false;
 
-export default function withErrors<V, S>(params: Params<V, S>) {
-  return function<VM extends Node<V, S>>(vm: VM) {
-    const children = vm.children;
+export default function withErrors<V, S, VM extends Node<V, S>>(errors?: errors<V, S, VM>) {
+  return function(vm: VM) {
+    const { children } = vm;
 
-    const errors = computed(() => {
-      const childrenErrors = children ? (Array.isArray(children) ? children : Object.values(children)).flatMap(vm => vm.errors?.get() ?? []) : [];
-
-      const errrors = params.errrors && params.errrors(vm);
-
-      return (errrors || childrenErrors).filter(notUndefined);
-    });
     return {
       ...vm,
-      errors
+      errors: computed(() => {
+        const childrenErrors = children ? (Array.isArray(children) ? children : Object.values(children)).flatMap(vm => vm.errors?.get() ?? []) : [];
+
+        const errrors = errors && errors(vm);
+
+        return (errrors || childrenErrors).filter(notUndefined);
+      })
     };
   };
 }

@@ -1,4 +1,5 @@
 import { IComputedValue, IObservableValue } from 'mobx';
+import { O } from 'ts-toolbelt';
 import { FC } from '../utils';
 
 export type BaseNode<V, S> = {
@@ -15,6 +16,7 @@ export type BaseNode<V, S> = {
   isDisabled: IComputedValue<boolean>;
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
+  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, Partial<O.Required<Partial<BaseNode<any, S>>, 'View'>>>;
 };
 
 type InferScalarValue<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;

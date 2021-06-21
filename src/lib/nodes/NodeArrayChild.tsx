@@ -4,10 +4,10 @@ import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
 import { BaseNode, InferObjectValue } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
-import { Params as SelectedParams } from '../mixins/withSelected';
+import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { Params as VisibilityParams } from '../mixins/withVisibility';
 import { Params as DisabledParams } from '../mixins/withDisabled';
-import { Params as ErrorParams } from '../mixins/withErrors';
+import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
 import { Special } from './NodeArray';
 
@@ -22,9 +22,15 @@ type Children<keys extends string, S> = Record<keys, (parent: Pick<VM<any, S>, C
 type Renderer<S> = FC<Except<VM<any, S>, 'View'>>;
 
 export default function<S>(params: { Render: Renderer<S> }) {
-  return function<T extends Children<string, S>>(
-    options: SelectedParams<any, S> & VisibilityParams<any, S> & DisabledParams<any, S> & ErrorParams<any, S> & { children: T } & MetaParams
-  ) {
+  type Options<T extends Children<string, S>> = {
+    isSelected?: isSelectedParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+  } & VisibilityParams<any, S> &
+    DisabledParams<any, S> & {
+      children: T;
+    } & MetaParams;
+
+  return function<T extends Children<string, S>>(options: Options<T>) {
     return flow(withParent<InferObjectValue<T>, S, Special>(), vm => {
       return pipe(
         vm,
@@ -41,16 +47,16 @@ export default function<S>(params: { Render: Renderer<S> }) {
                 index: key
               });
 
-              return [key, instance];
+              return [key, instance] as const;
             }),
-            Object.fromEntries
+            e => Object.fromEntries(e)
           )
         }),
         withLoading(),
         withMeta(options),
         withProgress(),
-        withSelected(options),
-        withErrors(options),
+        withSelected(options.isSelected),
+        withErrors(options.errors),
         withDisabled(options),
         withVisibility(options),
         withView(params.Render)

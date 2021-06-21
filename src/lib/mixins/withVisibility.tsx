@@ -1,17 +1,15 @@
 import { computed } from 'mobx';
 import { BaseNode } from '../Interfaces';
 
-type Node<V, S> = Pick<BaseNode<V, S>, 'store' | 'label'>;
+type PreviusVM<V, S> = Pick<BaseNode<V, S>, 'value' | 'store' | 'label'>;
 
-export type Params<V, S> = {
-  isVisible?: (args: Node<V, S>) => boolean;
-};
+export type isVisible<V, S, VM extends PreviusVM<V, S>> = (vm: VM) => boolean;
 
-export default function withVisibility<V, S>(params: Params<V, S>) {
-  return function<O extends Node<V, S>>(obj: O) {
+export default function withVisibility<V, S, VM extends PreviusVM<V, S>>(isVisible?: isVisible<V, S, VM>) {
+  return function(vm: VM) {
     return {
-      ...obj,
-      isVisible: computed(() => !params.isVisible || params.isVisible(obj))
+      ...vm,
+      isVisible: computed(() => !isVisible || isVisible(vm))
     };
   };
 }

@@ -5,7 +5,7 @@ import { FC, flow, pipe } from '../../utils';
 import { BaseNode, InferArrayValue } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
-import { Params as VisibilityParams } from '../mixins/withVisibility';
+import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
@@ -33,8 +33,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
     isSelected?: isSelectedParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'isDisabled'>>;
-  } & VisibilityParams<any, S> &
-    MetaParams & { children: C };
+    isVisible?: isVisibleParams<any, S, Except<VM<S>, 'View' | 'isVisible'>>;
+  } & MetaParams & { children: C };
 
   return function<C extends Children<S>>(options: Options<C>) {
     return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
@@ -70,7 +70,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
         withSelected(options.isSelected),
         withErrors(options.errors),
         withDisabled(options.isDisabled),
-        withVisibility(options),
+        withVisibility(options.isVisible),
         withView(params.Render)
       );
     });

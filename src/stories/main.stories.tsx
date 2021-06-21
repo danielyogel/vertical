@@ -5,11 +5,12 @@ import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
-import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled } from '../lib/mixins';
+import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { Special } from '../lib/nodes/NodeArray';
 import { LoaderOne } from './StorybookComponents';
+import { pipe } from 'fp-ts/lib/function';
 
 configure({ enforceActions: 'never' });
 
@@ -90,47 +91,49 @@ const nodeaa = ArrayN({
         )
       };
     },
-    flow(
-      withParent<{ age: number | null }, typeof INITIAL_STATE, Special>(),
-      vm => ({ ...vm, children: null, isDisabled: computed(() => false), index: null }),
-      withLoading(),
-      withMeta({}),
-      withProgress(),
-      withSelected(({ value }) => !!value.get()),
-      withErrors(({ value }) => [{ message: String(value.get().age) }]),
-      withDisabled(vm => !!vm.value.get().age && vm.progress.get() !== 3),
-      withView(vm => (
-        <Space direction="vertical">
-          <b>Object Custom Node Using Mixins</b>
+    flow(withParent<{ age: number | null }, typeof INITIAL_STATE, Special>(), vm => {
+      return pipe(
+        { ...vm, children: null, isDisabled: computed(() => false), index: null },
+        withLoading(),
+        withMeta({}),
+        withProgress(),
+        withSelected(({ value }) => !!value.get()),
+        withErrors(({ value }) => [{ message: String(value.get().age) }]),
+        withDisabled(vm => !!vm.value.get().age && vm.progress.get() !== 3),
+        withVisibility(vm => !!vm.label.get() && vm.progress.get() !== 4),
+        withView(vm => (
+          <Space direction="vertical">
+            <b>Object Custom Node Using Mixins</b>
 
-          <Button onClick={() => vm.onChange({ age: (vm.value.get().age || 1) - 1 })}>
-            <b>minus one to age</b>
-          </Button>
-          <div>
-            <b>Age: </b> <span>{vm.value.get().age}</span>
-          </div>
+            <Button onClick={() => vm.onChange({ age: (vm.value.get().age || 1) - 1 })}>
+              <b>minus one to age</b>
+            </Button>
+            <div>
+              <b>Age: </b> <span>{vm.value.get().age}</span>
+            </div>
 
-          <Space>
-            {!vm.isFirst.get() && (
-              <Button onClick={vm.back} disabled={vm.isDisabled.get()}>
-                Back
-              </Button>
-            )}
-            {!vm.isLast.get() && (
-              <Button onClick={vm.next} disabled={vm.isDisabled.get()}>
-                Next
-              </Button>
-            )}
-            {vm.isLoading.get() && (
-              <div>
-                <LoaderOne />
-                <span className="ml-3 text-green-600">Loading...</span>
-              </div>
-            )}
+            <Space>
+              {!vm.isFirst.get() && (
+                <Button onClick={vm.back} disabled={vm.isDisabled.get()}>
+                  Back
+                </Button>
+              )}
+              {!vm.isLast.get() && (
+                <Button onClick={vm.next} disabled={vm.isDisabled.get()}>
+                  Next
+                </Button>
+              )}
+              {vm.isLoading.get() && (
+                <div>
+                  <LoaderOne />
+                  <span className="ml-3 text-green-600">Loading...</span>
+                </div>
+              )}
+            </Space>
           </Space>
-        </Space>
-      ))
-    )
+        ))
+      );
+    })
   ] as const
 });
 

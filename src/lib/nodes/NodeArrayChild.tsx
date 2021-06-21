@@ -5,7 +5,7 @@ import { FC, flow, map, pipe, keys } from '../../utils';
 import { BaseNode, InferObjectValue } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
-import { Params as VisibilityParams } from '../mixins/withVisibility';
+import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 import { Params as MetaParams } from '../mixins/withMeta';
@@ -26,9 +26,8 @@ export default function<S>(params: { Render: Renderer<S> }) {
     isSelected?: isSelectedParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-  } & VisibilityParams<any, S> & {
-      children: T;
-    } & MetaParams;
+    isVisible?: isVisibleParams<any, S, Except<VM<any, S>, 'View' | 'isVisible'>>;
+  } & { children: T } & MetaParams;
 
   return function<T extends Children<string, S>>(options: Options<T>) {
     return flow(withParent<InferObjectValue<T>, S, Special>(), vm => {
@@ -58,7 +57,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
         withSelected(options.isSelected),
         withErrors(options.errors),
         withDisabled(options.isDisabled),
-        withVisibility(options),
+        withVisibility(options.isVisible),
         withView(params.Render)
       );
     });

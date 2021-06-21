@@ -12,7 +12,7 @@ export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'
   return function(
     options: SelectedParams<V, S> & VisibilityParams<V, S> & DisabledParams<V, S> & DisabledParams<V, S> & ErrorParams<V, S> & MetaParams
   ) {
-    return flow(withParent<V, S>(), vm => {
+    return flow(withParent<V, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null },
         withMeta(options),

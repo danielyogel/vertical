@@ -50,6 +50,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
             isLast: computed(() => currentIndex.get() === options.children.length),
             back,
             next,
+            index: null,
             children: [...options.children].map((node, index) => {
               return node({
                 ...vm,

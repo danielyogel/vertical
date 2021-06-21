@@ -16,23 +16,20 @@ configure({ enforceActions: 'never' });
 const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 const nodeaa = ArrayN({
-  label: '',
   children: [
     ArrayChild({
-      label: '',
       children: {
-        name: StringN({ label: 'Name', errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
-        lastName: StringN({ label: 'Last Name', isVisible: ({ store }) => store.get().age !== 3 }),
-        phone: NumberN({ label: 'Phone', isVisible: ({ store }) => store.get().name !== 'daniel' }),
-        id: NumberN({ label: 'Id', isDisabled: vm => vm.store.get().age === 3 }),
-        gender: OneOfN({ label: 'Gender', items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
+        name: StringN({ errrors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }] }),
+        lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
+        phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
+        id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
+        gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
       }
     }),
     ArrayChild({
-      label: '',
       children: {
-        id: NumberN({ label: 'Id' }),
-        birthday: NumberN({ label: 'Birthday', isVisible: ({ store }) => store.get().name !== 'daniel' }),
+        id: NumberN({}),
+        birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel' }),
         age: flow(
           withParent<number | null, typeof INITIAL_STATE>(),
           withView(vm => {
@@ -93,9 +90,9 @@ const nodeaa = ArrayN({
     },
     flow(
       withParent<{ age: number | null }, typeof INITIAL_STATE, Special>(),
-      vm => ({ ...vm, children: null, isDisabled: computed(() => false) }),
+      vm => ({ ...vm, children: null, isDisabled: computed(() => false), index: null }),
       withLoading(),
-      withMeta({ label: '' }),
+      withMeta({}),
       withProgress(),
       // withSelected({}),
       // withDisabled({ isDisabled: () => false }),

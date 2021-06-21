@@ -6,7 +6,7 @@ export type BaseNode<V, S> = {
   onChange: (value: V) => void;
   store: IComputedValue<S>;
   onStoreChange: (change: Partial<S>) => void;
-  label: string;
+  label: IComputedValue<string>;
   isLoading: IComputedValue<boolean>;
   setLoading: (isLoading: boolean) => void;
   progress: IObservableValue<number>;

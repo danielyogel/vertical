@@ -16,7 +16,7 @@ export default function<S>(params: { Render: FC<Except<BaseNode<any, S>, 'View'>
       DisabledParams<K, S> &
       ErrorParams<K, S> & { items: Array<{ key: K; label?: string }> } & MetaParams
   ) {
-    return flow(withParent<K, S>(), vm => {
+    return flow(withParent<K, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null, items: options.items },
         withMeta(options),

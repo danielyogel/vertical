@@ -17,7 +17,7 @@ type Child<S> = O.Required<Partial<BaseNode<any, S>>, 'View'>;
 
 type VM<V, S> = BaseNode<V, S> & { children: Record<string, Child<S>> } & Special;
 
-type Children<keys extends string, S> = Record<keys, (parent: Pick<VM<any, S>, ChildrenKeys>) => Child<S>>;
+type Children<keys extends string, S> = Record<keys, (parent: Pick<VM<any, S>, ChildrenKeys> & { index: string }) => Child<S>>;
 
 type Renderer<S> = FC<Except<VM<any, S>, 'View'>>;
 
@@ -30,13 +30,15 @@ export default function<S>(params: { Render: Renderer<S> }) {
         vm,
         vm => ({
           ...vm,
+          index: null,
           children: pipe(
             keys(options.children),
             map(key => {
               const instance = options.children[key]({
                 ...vm,
                 value: computed(() => vm.value.get()[key]) as any,
-                onChange: val => vm.onChange({ ...vm.value.get(), [key]: val }) as any
+                onChange: val => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
+                index: key
               });
 
               return [key, instance];

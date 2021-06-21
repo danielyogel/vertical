@@ -1,7 +1,7 @@
 import React from 'react';
 import NodeArrayChild from '../lib/nodes/NodeArrayChild';
 import { NodeScalar } from '../lib';
-import { Divider } from 'antd';
+import { Divider, Typography } from 'antd';
 import { Button, InputNumber, Space, Input, Radio } from 'antd';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
@@ -17,7 +17,7 @@ export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
 
     return (
       <Space>
-        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+        <Typography.Title level={5}>{String(label.get())}</Typography.Title>
         <InputNumber value={!v ? undefined : v} onChange={onChange} />
         <Button type="primary" onClick={toggleLoading}>
           <div className="flex justify-center items-center">
@@ -37,7 +37,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE>({
 
     return (
       <Space>
-        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+        <Typography.Title level={5}>{String(label.get())}</Typography.Title>
 
         <div>
           <Input value={v === null ? '' : v} onChange={e => onChange(e.target.value)} />
@@ -60,7 +60,7 @@ export const OneOfN = NodeOneOf<typeof INITIAL_STATE>({
 
     return (
       <Space>
-        <b className="inline-block capitalize w-16 pr-1">{String(label)}</b>
+        <b className="inline-block capitalize w-16 pr-1">{String(label.get())}</b>
 
         <div>
           <Radio.Group onChange={e => onChange(e.target.value)} value={value.get()}>

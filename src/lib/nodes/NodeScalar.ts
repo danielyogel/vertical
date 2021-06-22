@@ -16,17 +16,17 @@ export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'
     label?: string;
   };
 
-  return function(options: Options) {
+  return function(options?: Options) {
     return flow(withParent<V, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null },
-        withMeta({ label: options.label }),
+        withMeta({ label: options?.label }),
         withLoading(),
         withProgress(),
-        withSelected(options.isSelected),
-        withErrors(options.errors),
-        withDisabled(options.isDisabled),
-        withVisibility(options.isVisible),
+        withSelected(options?.isSelected),
+        withErrors(options?.errors),
+        withDisabled(options?.isDisabled),
+        withVisibility(options?.isVisible),
         withView(params.Render)
       );
     });

@@ -14,12 +14,13 @@ export default function<V, S>(params: { Render: FC<Except<BaseNode<V, S>, 'View'
     isDisabled?: isDisabledParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<V, S, Except<BaseNode<V, S>, 'View' | 'isVisible'>>;
     label?: string;
+    autoFocus?: boolean;
   };
 
   return function(options?: Options) {
     return flow(withParent<V, S, { index: string }>(), vm => {
       return pipe(
-        { ...vm, children: null },
+        { ...vm, children: null, autoFocus: options?.autoFocus ?? false },
         withMeta({ label: options?.label }),
         withLoading(),
         withProgress(),

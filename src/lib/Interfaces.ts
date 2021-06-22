@@ -16,6 +16,7 @@ export type BaseNode<V, S> = {
   isDisabled: IComputedValue<boolean>;
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
+  autoFocus: boolean;
   children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, Partial<O.Required<Partial<BaseNode<any, S>>, 'View'>>>;
 };
 

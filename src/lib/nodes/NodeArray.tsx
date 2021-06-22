@@ -33,6 +33,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
     errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<S>, 'View' | 'isVisible'>>;
+    autoFocus?: boolean;
     label?: string;
   } & { children: C };
 
@@ -46,6 +47,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
           const next = () => currentIndex.set(currentIndex.get() + 1);
           return {
             ...vm,
+            autoFocus: options?.autoFocus ?? false,
             currentIndex,
             isFirst: computed(() => currentIndex.get() === 1),
             isLast: computed(() => currentIndex.get() === options.children.length),

@@ -27,6 +27,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
     isDisabled?: isDisabledParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<any, S>, 'View' | 'isVisible'>>;
     label?: string;
+    autoFocus?: boolean;
   } & { children: T };
 
   return function<T extends Children<string, S>>(options: Options<T>) {
@@ -36,6 +37,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
         vm => ({
           ...vm,
           index: null,
+          autoFocus: options?.autoFocus ?? false,
           children: pipe(
             keys(options.children),
             map(key => {

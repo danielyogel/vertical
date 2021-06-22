@@ -16,12 +16,13 @@ export default function<S>(params: { Render: FC<Except<BaseNode<any, S>, 'View'>
     isDisabled?: isDisabledParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible' | 'isDisabled'> & Items<K>>;
     isVisible?: isVisibleParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible'> & Items<K>>;
     label?: string;
+    autoFocus?: boolean;
   } & Items<K>;
 
   return function<K extends string | null>(options: Options<K>) {
     return flow(withParent<K, S, { index: string }>(), vm => {
       return pipe(
-        { ...vm, children: null, items: options.items },
+        { ...vm, children: null, items: options.items, autoFocus: options?.autoFocus ?? false },
         withMeta({ label: options.label }),
         withLoading(),
         withProgress(),

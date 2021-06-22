@@ -2,14 +2,14 @@ import React from 'react';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './NodeArrayStoriesRenderers';
+import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './storyRenderers';
 import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
 import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { Special } from '../lib/nodes/NodeArray';
-import { LoaderOne } from './StorybookComponents';
+import { LoaderOne } from './storyComponents';
 import { pipe } from 'fp-ts/lib/function';
 
 configure({ enforceActions: 'never' });

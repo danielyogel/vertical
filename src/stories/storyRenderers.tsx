@@ -8,7 +8,7 @@ import NodeArray from '../lib/nodes/NodeArray';
 import NodeOneOf from '../lib/nodes/NodeOneOf';
 import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
-import { LoaderOne, LoaderTwo } from './StorybookComponents';
+import { LoaderOne, LoaderTwo } from './storyComponents';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
   Render: ({ value, onChange, setLoading, isLoading, label }) => {

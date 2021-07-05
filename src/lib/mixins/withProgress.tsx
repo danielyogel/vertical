@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 
 export default function withProgress() {
-  return function<T>(obj: T) {
+  return function <VM>(obj: VM) {
     return {
       ...obj,
       progress: observable.box(0)

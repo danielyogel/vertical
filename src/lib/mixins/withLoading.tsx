@@ -1,8 +1,10 @@
 import { BaseNode } from '../Interfaces';
 import { observable, computed } from 'mobx';
 
-export default function withLoading<N extends Partial<BaseNode<any, any>>>() {
-  return function(obj: N) {
+type PreviusVM = Partial<BaseNode<any, any>>;
+
+export default function withLoading<VM extends PreviusVM>() {
+  return function (obj: VM) {
     const _isLoading = observable.box(false);
     const children = obj.children;
 

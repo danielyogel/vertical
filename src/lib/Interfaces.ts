@@ -17,7 +17,7 @@ export type BaseNode<V, S> = {
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
   autoFocus: boolean;
-  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, Partial<O.Required<Partial<BaseNode<any, S>>, 'View'>>>;
+  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View'>>;
 };
 
 type InferScalarValue<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;

@@ -1,7 +1,7 @@
 import { computed } from 'mobx';
-import { BaseNode } from '../Interfaces';
+import { Node } from '../Interfaces';
 
-type PreviusVM<V, S> = Pick<BaseNode<V, S>, 'value' | 'store' | 'isLoading' | 'errors'>;
+type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'isLoading' | 'errors'>;
 
 export type isDisabled<V, S, VM extends PreviusVM<V, S>> = (vm: VM) => boolean;
 

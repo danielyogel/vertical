@@ -2,36 +2,33 @@ import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
-import { BaseNode, InferObjectValue } from '../Interfaces';
+import { BaseNode } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
-import { Special } from './NodeArray';
+import { ArrayProps } from './NodeArray';
 
-type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value';
+type VM<V, S> = BaseNode<V, S> & ArrayProps & { children: Record<string, O.Required<Partial<BaseNode<V, S>>, 'View'>> };
 
-type Child<S> = O.Required<Partial<BaseNode<any, S>>, 'View'>;
-
-type VM<V, S> = BaseNode<V, S> & { children: Record<string, Child<S>> } & Special;
-
-type Children<keys extends string, S> = Record<keys, (parent: Pick<VM<any, S>, ChildrenKeys> & { index: string }) => Child<S>>;
-
-type Renderer<S> = FC<Except<VM<any, S>, 'View'>>;
-
-export default function<S>(params: { Render: Renderer<S> }) {
-  type Options<T extends Children<string, S>> = {
+export default function <S extends Record<string, any>>(params: { Render: FC<Except<VM<S, S>, 'View'>> }) {
+  return function (options: {
     isSelected?: isSelectedParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<any, S>, 'View' | 'isVisible'>>;
     label?: string;
     autoFocus?: boolean;
-  } & { children: T };
-
-  return function<T extends Children<string, S>>(options: Options<T>) {
-    return flow(withParent<InferObjectValue<T>, S, Special>(), vm => {
+    children: Partial<
+      {
+        [K in keyof S]: (
+          parent: Pick<VM<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value'> & { index: string }
+        ) => O.Required<Partial<BaseNode<S[K], S>>, 'View'>;
+      }
+    >;
+  }) {
+    return flow(withParent<S, S, ArrayProps>(), vm => {
       return pipe(
         vm,
         vm => ({
@@ -41,10 +38,10 @@ export default function<S>(params: { Render: Renderer<S> }) {
           children: pipe(
             keys(options.children),
             map(key => {
-              const instance = options.children[key]({
+              const instance = (options.children[key] as any)({
                 ...vm,
                 value: computed(() => vm.value.get()[key]) as any,
-                onChange: val => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
+                onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
                 index: key
               });
 

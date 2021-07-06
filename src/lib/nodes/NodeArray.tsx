@@ -2,14 +2,14 @@ import { computed, IComputedValue, IObservableValue, observable } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
-import { BaseNode, InferArrayValue } from '../Interfaces';
+import { InferArrayValue, ArrayNode, Node } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
-export type Special = {
+export type ArrayProps = {
   currentIndex: IObservableValue<number>;
   isFirst: IComputedValue<boolean>;
   isLast: IComputedValue<boolean>;
@@ -19,15 +19,15 @@ export type Special = {
 
 type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex';
 
-type Child = O.Required<Partial<BaseNode<any, any>>, 'View'>;
+type Child = O.Required<Partial<Node<any, any>>, 'View'>;
 
-type VM<S> = BaseNode<any, S> & { children: Array<Child> } & Special;
+type VM<S> = ArrayNode<any, S> & { children: Array<Child> } & ArrayProps;
 
-type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & Special) => Child>;
+type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & ArrayProps) => Child>;
 
 type Renderer<S> = FC<Except<VM<S>, 'View'>>;
 
-export default function<S>(params: { Render: Renderer<S> }) {
+export default function <S>(params: { Render: Renderer<S> }) {
   type Options<C extends Children<S>> = {
     isSelected?: isSelectedParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
@@ -37,7 +37,7 @@ export default function<S>(params: { Render: Renderer<S> }) {
     label?: string;
   } & { children: C };
 
-  return function<C extends Children<S>>(options: Options<C>) {
+  return function <C extends Children<S>>(options: Options<C>) {
     return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
       return pipe(
         vm,

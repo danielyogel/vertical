@@ -1,7 +1,7 @@
-import { BaseNode } from '../Interfaces';
+import { Node } from '../Interfaces';
 import { observable, computed } from 'mobx';
 
-type PreviusVM = Partial<BaseNode<any, any>>;
+type PreviusVM = Partial<Node<any, any>>;
 
 export default function withLoading<VM extends PreviusVM>() {
   return function (obj: VM) {

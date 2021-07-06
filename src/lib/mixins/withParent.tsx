@@ -8,7 +8,7 @@ export default function withParent<V, S, Extra = {}>() {
     onStoreChange: (change: Partial<S>) => void;
   };
 
-  return function(params: Params) {
+  return function (params: Params) {
     return params;
   };
 }

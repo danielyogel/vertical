@@ -2,6 +2,10 @@ import { IComputedValue, IObservableValue } from 'mobx';
 import { O } from 'ts-toolbelt';
 import { FC } from '../utils';
 
+//
+//  Nodes
+//
+
 export type BaseNode<V, S> = {
   value: IComputedValue<V>;
   onChange: (value: V) => void;
@@ -20,11 +24,25 @@ export type BaseNode<V, S> = {
   children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View'>>;
 };
 
-type InferScalarValue<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;
-
-export type InferObjectValue<T extends Record<string, any>> = {
-  [K in keyof T]: InferScalarValue<T[K]>;
+export type ScalarNode<V, S> = BaseNode<V, S> & {
+  children: null;
 };
+
+export type RecordNode<V, S> = BaseNode<V, S> & {
+  children: Record<string, O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+};
+
+export type ArrayNode<V, S> = BaseNode<V, S> & {
+  children: Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+};
+
+export type Node<V, S> = ScalarNode<V, S> | RecordNode<V, S> | ArrayNode<V, S>;
+
+//
+//  Utils
+//
+
+type InferScalarValue<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;
 
 export type InferArrayValue<T extends ReadonlyArray<any>> = {
   [K in keyof T]: InferScalarValue<T[K]>;

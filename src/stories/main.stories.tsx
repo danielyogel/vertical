@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure } from 'mobx';
+import { configure, IComputedValue, IObservableValue } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './storyRenderers';
@@ -8,7 +8,7 @@ import { flow } from '../utils';
 import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
-import { Special } from '../lib/nodes/NodeArray';
+import { ArrayProps } from '../lib/nodes/NodeArray';
 import { LoaderOne } from './storyComponents';
 import { pipe } from 'fp-ts/lib/function';
 
@@ -51,7 +51,15 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (vm: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'> & Special) => {
+    (
+      vm: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'> & {
+        currentIndex: IObservableValue<number>;
+        isFirst: IComputedValue<boolean>;
+        isLast: IComputedValue<boolean>;
+        back: () => void;
+        next: () => void;
+      }
+    ) => {
       const isLoading = computed(() => false);
       const isDisabled = computed(() => false);
       return {
@@ -91,7 +99,7 @@ const nodeaa = ArrayN({
         )
       };
     },
-    flow(withParent<{ age: number | null }, typeof INITIAL_STATE, Special>(), vm => {
+    flow(withParent<{ age: number | null }, typeof INITIAL_STATE, ArrayProps>(), vm => {
       return pipe(
         { ...vm, children: null, isDisabled: computed(() => false), index: null },
         withLoading(),

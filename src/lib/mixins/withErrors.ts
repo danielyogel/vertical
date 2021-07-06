@@ -1,10 +1,10 @@
 import { computed } from 'mobx';
-import { BaseNode } from '../Interfaces';
+import { Node } from '../Interfaces';
 import { notUndefined } from '../../utils';
 
 type Error = { message: string };
 
-type PreviusVM<V, S> = Pick<BaseNode<V, S>, 'value' | 'store' | 'children'>;
+type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'children'>;
 
 export type errors<V, S, VM extends PreviusVM<V, S>> = (node: VM) => Array<Error | undefined> | undefined | false;
 

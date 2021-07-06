@@ -1,9 +1,9 @@
 import React from 'react';
 import { Observer, observer } from 'mobx-react-lite';
 import { FC } from '../../utils';
-import { BaseNode } from '../Interfaces';
+import { Node } from '../Interfaces';
 
-type PreviusVM = Partial<BaseNode<any, any>>;
+type PreviusVM = Partial<Node<any, any>>;
 
 export default function withView<VM extends PreviusVM>(Renderer: FC<VM>) {
   return function (obj: VM) {

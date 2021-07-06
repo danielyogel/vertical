@@ -1,9 +1,8 @@
 import React from 'react';
-import { configure, IComputedValue, IObservableValue } from 'mobx';
+import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './storyRenderers';
-import { BaseNode } from '../lib/Interfaces';
 import { flow } from '../utils';
 import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
@@ -51,15 +50,7 @@ const nodeaa = ArrayN({
         }
       }
     }),
-    (
-      vm: Pick<BaseNode<{ age: number | null }, any>, 'onChange' | 'value'> & {
-        currentIndex: IObservableValue<number>;
-        isFirst: IComputedValue<boolean>;
-        isLast: IComputedValue<boolean>;
-        back: () => void;
-        next: () => void;
-      }
-    ) => {
+    vm => {
       const isLoading = computed(() => false);
       const isDisabled = computed(() => false);
       return {

@@ -1,6 +1,6 @@
 import { Except } from 'type-fest';
 import { FC, flow, pipe } from '../../utils';
-import { BaseNode } from '../Interfaces';
+import { ScalarNode } from '../Interfaces';
 import { withLoading, withParent, withProgress, withView, withSelected, withVisibility, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
@@ -9,17 +9,17 @@ import { errors as errorsParams } from '../mixins/withErrors';
 
 type Items<K = string | null> = { items: { key: K; label?: string }[] };
 
-export default function<S>(params: { Render: FC<Except<BaseNode<any, S>, 'View'> & Items> }) {
+export default function <S>(params: { Render: FC<Except<ScalarNode<any, S>, 'View'> & Items> }) {
   type Options<K extends string | null> = {
-    isSelected?: isSelectedParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'> & Items<K>>;
-    errors?: errorsParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'> & Items<K>>;
-    isDisabled?: isDisabledParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible' | 'isDisabled'> & Items<K>>;
-    isVisible?: isVisibleParams<K, S, Except<BaseNode<K, S>, 'View' | 'isVisible'> & Items<K>>;
+    isSelected?: isSelectedParams<K, S, Except<ScalarNode<K, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'> & Items<K>>;
+    errors?: errorsParams<K, S, Except<ScalarNode<K, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'> & Items<K>>;
+    isDisabled?: isDisabledParams<K, S, Except<ScalarNode<K, S>, 'View' | 'isVisible' | 'isDisabled'> & Items<K>>;
+    isVisible?: isVisibleParams<K, S, Except<ScalarNode<K, S>, 'View' | 'isVisible'> & Items<K>>;
     label?: string;
     autoFocus?: boolean;
   } & Items<K>;
 
-  return function<K extends string | null>(options: Options<K>) {
+  return function <K extends string | null>(options: Options<K>) {
     return flow(withParent<K, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null, items: options.items, autoFocus: options?.autoFocus ?? false },

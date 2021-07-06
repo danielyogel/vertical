@@ -2,7 +2,7 @@ import { computed, IComputedValue, IObservableValue, observable } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
-import { InferArrayValue, ArrayNode, Node } from '../Interfaces';
+import { ArrayNode, Node } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
@@ -17,28 +17,23 @@ export type ArrayProps = {
   next: () => void;
 };
 
-type ChildrenKeys = 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex';
+type VM<S> = ArrayNode<S, S> & ArrayProps & { children: Array<O.Required<Partial<Node<any, any>>, 'View'>> };
 
-type Child = O.Required<Partial<Node<any, any>>, 'View'>;
-
-type VM<S> = ArrayNode<any, S> & { children: Array<Child> } & ArrayProps;
-
-type Children<S> = ReadonlyArray<(parent: Pick<VM<S>, ChildrenKeys> & ArrayProps) => Child>;
-
-type Renderer<S> = FC<Except<VM<S>, 'View'>>;
-
-export default function <S>(params: { Render: Renderer<S> }) {
-  type Options<C extends Children<S>> = {
+export default function <S>(params: { Render: FC<Except<VM<S>, 'View'>> }) {
+  return function (options: {
     isSelected?: isSelectedParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<VM<S>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
     label?: string;
-  } & { children: C };
-
-  return function <C extends Children<S>>(options: Options<C>) {
-    return flow(withParent<O.MergeAll<{}, InferArrayValue<C>>, S>(), vm => {
+    children: ReadonlyArray<
+      (
+        parent: Pick<VM<S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex'> & ArrayProps
+      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View'>
+    >;
+  }) {
+    return flow(withParent<S, S>(), vm => {
       return pipe(
         vm,
         vm => {

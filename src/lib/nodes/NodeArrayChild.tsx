@@ -2,7 +2,7 @@ import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
-import { BaseNode } from '../Interfaces';
+import { RecordNode, Node } from '../Interfaces';
 import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
@@ -10,7 +10,7 @@ import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 import { ArrayProps } from './NodeArray';
 
-type VM<V, S> = BaseNode<V, S> & ArrayProps & { children: Record<string, O.Required<Partial<BaseNode<V, S>>, 'View'>> };
+type VM<V, S> = RecordNode<V, S> & ArrayProps & { children: Record<string, O.Required<Partial<Node<V, S>>, 'View'>> };
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<VM<S, S>, 'View'>> }) {
   return function (options: {
@@ -24,7 +24,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
       {
         [K in keyof S]: (
           parent: Pick<VM<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value'> & { index: string }
-        ) => O.Required<Partial<BaseNode<S[K], S>>, 'View'>;
+        ) => O.Required<Partial<Node<S[K], S>>, 'View'>;
       }
     >;
   }) {

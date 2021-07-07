@@ -26,16 +26,29 @@ type BaseNode<V, S> = {
 export type ScalarNode<V, S> = BaseNode<V, S> & {
   onChange: (value: V) => void;
   children: null;
+  index: string | number;
 };
 
-export type RecordNode<V, S> = BaseNode<V, S> & {
-  onChange: (value: Partial<V>) => void;
-  children: Record<string, O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+export type ArrayProps = {
+  currentIndex: IObservableValue<number>;
+  isFirst: IComputedValue<boolean>;
+  isLast: IComputedValue<boolean>;
+  back: () => void;
+  next: () => void;
 };
 
-export type ArrayNode<V, S> = BaseNode<V, S> & {
-  onChange: (value: Partial<V>) => void;
-  children: Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>;
-};
+export type RecordNode<V, S> = BaseNode<V, S> &
+  ArrayProps & {
+    onChange: (value: Partial<V>) => void;
+    children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View'>>;
+    index: string | number;
+  };
+
+export type ArrayNode<V, S> = BaseNode<V, S> &
+  ArrayProps & {
+    onChange: (value: Partial<V>) => void;
+    children: Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+    index: null;
+  };
 
 export type Node<V, S> = ScalarNode<V, S> | RecordNode<V, S> | ArrayNode<V, S>;

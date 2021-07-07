@@ -28,10 +28,11 @@ export default function <S>(params: { Render: FC<Except<ScalarNode<any, S>, 'Vie
     isVisible?: isVisibleParams<K, S, Except<ScalarNode<K, S>, 'View' | 'isVisible'> & Items<K>>;
     label?: string;
     autoFocus?: boolean;
+    items: { key: K; label?: string }[];
   } & Items<K>;
 
   return function <K extends string | null>(options: Options<K>) {
-    return flow(withSkalarParent<K, S, { index: string }>(), vm => {
+    return flow(withSkalarParent<K, S>(), vm => {
       return pipe(
         { ...vm, children: null, items: options.items, autoFocus: options?.autoFocus ?? false },
         withId(),

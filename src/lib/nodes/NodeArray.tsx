@@ -1,39 +1,40 @@
-import { computed, IComputedValue, IObservableValue, observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
-import { ArrayNode, Node } from '../Interfaces';
-import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta, withId } from '../mixins';
+import { ArrayNode, ArrayProps, Node, RecordNode } from '../Interfaces';
+import {
+  withLoading,
+  withArrayParent,
+  withProgress,
+  withSelected,
+  withVisibility,
+  withView,
+  withDisabled,
+  withErrors,
+  withMeta,
+  withId
+} from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
-export type ArrayProps = {
-  currentIndex: IObservableValue<number>;
-  isFirst: IComputedValue<boolean>;
-  isLast: IComputedValue<boolean>;
-  back: () => void;
-  next: () => void;
-};
-
-type VM<S> = ArrayNode<S, S> & ArrayProps & { children: Array<O.Required<Partial<Node<any, any>>, 'View'>> };
-
-export default function <S>(params: { Render: FC<Except<VM<S>, 'View'>> }) {
+export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>> }) {
   return function (options: {
-    isSelected?: isSelectedParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<VM<S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<VM<S>, 'View' | 'isVisible'>>;
+    isSelected?: isSelectedParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
     label?: string;
     children: ReadonlyArray<
       (
-        parent: Pick<VM<S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex'> & ArrayProps
+        parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex' | 'index' | keyof ArrayProps>
       ) => O.Required<Partial<Node<Partial<S>, S>>, 'View'>
     >;
   }) {
-    return flow(withParent<S, S>(), vm => {
+    return flow(withArrayParent<S, S>(), vm => {
       return pipe(
         vm,
         withId(),
@@ -53,6 +54,7 @@ export default function <S>(params: { Render: FC<Except<VM<S>, 'View'>> }) {
             children: [...options.children].map((node, index) => {
               return node({
                 ...vm,
+                index,
                 currentIndex,
                 isFirst: computed(() => index === 0),
                 isLast: computed(() => index + 1 === options.children.length),

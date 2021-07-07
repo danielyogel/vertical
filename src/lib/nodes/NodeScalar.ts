@@ -29,7 +29,7 @@ export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'Vi
   };
 
   return function (options?: Options) {
-    return flow(withSkalarParent<V, S, { index: string }>(), vm => {
+    return flow(withSkalarParent<V, S>(), vm => {
       return pipe(
         { ...vm, children: null, autoFocus: options?.autoFocus ?? false },
         withId(),

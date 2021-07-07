@@ -4,10 +4,9 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './storyRenderers';
 import { flow } from '../utils';
-import { withLoading, withMeta, withParent, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
+import { withLoading, withMeta, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
-import { ArrayProps } from '../lib/nodes/NodeArray';
 import { LoaderOne } from './storyComponents';
 import { pipe } from 'fp-ts/lib/function';
 
@@ -33,10 +32,8 @@ const nodeaa = ArrayN({
         id: NumberN({}),
         birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel' }),
         age: flow(
-          withParent<number | null, typeof INITIAL_STATE>(),
           withView(vm => {
             const v = vm.value.get();
-
             return (
               <div>
                 <b>Age Custom Node</b>
@@ -45,8 +42,8 @@ const nodeaa = ArrayN({
             );
           })
         ),
-        country: parent => {
-          return { ...parent, View: () => <div>~~ Node Custom view ~~</div> };
+        country: params => {
+          return { ...params, View: () => <div>~~ Node Custom view ~~</div> };
         }
       }
     }),
@@ -90,9 +87,9 @@ const nodeaa = ArrayN({
         )
       };
     },
-    flow(withParent<{ age: number | null }, typeof INITIAL_STATE, ArrayProps>(), vm => {
+    flow(vm => {
       return pipe(
-        { ...vm, children: null, isDisabled: computed(() => false), index: null },
+        { ...vm, children: null, isDisabled: computed(() => false) },
         withLoading(),
         withMeta({}),
         withProgress(),

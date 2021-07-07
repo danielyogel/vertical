@@ -1,4 +1,5 @@
-export { default as withParent } from './withParent';
+export { default as withArrayChildParent } from './withArrayChildParent';
+export { default as withArrayParent } from './withArrayParent';
 export { default as withSkalarParent } from './withSkalarParent';
 export { default as withView } from './withView';
 export { default as withVisibility } from './withVisibility';

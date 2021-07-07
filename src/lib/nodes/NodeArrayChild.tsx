@@ -3,7 +3,7 @@ import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
 import { RecordNode, Node } from '../Interfaces';
-import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta } from '../mixins';
+import { withLoading, withParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta, withId } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
@@ -31,6 +31,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     return flow(withParent<S, S, ArrayProps>(), vm => {
       return pipe(
         vm,
+        withId(),
         vm => ({
           ...vm,
           index: null,

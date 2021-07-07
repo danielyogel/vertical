@@ -6,6 +6,7 @@ import { FC } from '../utils';
 //  Nodes
 //
 type BaseNode<V, S> = {
+  id: string;
   value: IComputedValue<V>;
   store: IComputedValue<S>;
   onStoreChange: (change: Partial<S>) => void;

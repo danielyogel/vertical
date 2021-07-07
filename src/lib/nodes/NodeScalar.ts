@@ -1,7 +1,18 @@
 import { Except } from 'type-fest';
 import { FC, flow, pipe } from '../../utils';
 import { ScalarNode } from '../Interfaces';
-import { withLoading, withParent, withProgress, withView, withSelected, withVisibility, withDisabled, withErrors, withMeta } from '../mixins';
+import {
+  withLoading,
+  withProgress,
+  withView,
+  withSelected,
+  withVisibility,
+  withDisabled,
+  withErrors,
+  withMeta,
+  withSkalarParent,
+  withId
+} from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
@@ -18,9 +29,10 @@ export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'Vi
   };
 
   return function (options?: Options) {
-    return flow(withParent<V, S, { index: string }>(), vm => {
+    return flow(withSkalarParent<V, S, { index: string }>(), vm => {
       return pipe(
         { ...vm, children: null, autoFocus: options?.autoFocus ?? false },
+        withId(),
         withMeta({ label: options?.label }),
         withLoading(),
         withProgress(),

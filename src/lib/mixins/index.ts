@@ -1,4 +1,5 @@
 export { default as withParent } from './withParent';
+export { default as withSkalarParent } from './withSkalarParent';
 export { default as withView } from './withView';
 export { default as withVisibility } from './withVisibility';
 export { default as withSelected } from './withSelected';
@@ -7,3 +8,4 @@ export { default as withProgress } from './withProgress';
 export { default as withDisabled } from './withDisabled';
 export { default as withErrors } from './withErrors';
 export { default as withMeta } from './withMeta';
+export { default as withId } from './withId';

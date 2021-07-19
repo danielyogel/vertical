@@ -1,4 +1,4 @@
-# ~~ Verical ~~
+# ~~ Vertical ~~
 
 ## Objectives
 

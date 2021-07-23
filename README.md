@@ -10,6 +10,8 @@
 6. Statically typed data.
 7. 100% cusomizable - prefer composability over inheritence and/or big config.
 8. Dependecy Injection
+9. Future: Dynamic children (for editors and similar), 
+10. Future: Auto Normalization/Denormalization of API response
 
 ## Commands
 

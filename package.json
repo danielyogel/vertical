@@ -1,6 +1,6 @@
 {
   "name": "@daniely/vertical",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.171",
-    "fp-ts": "^2.11.0-rc.2",
+    "fp-ts": "2.11",
     "io-ts": "^2.2.16",
     "lodash": "^4.17.21",
     "mobx": "^6.3.2",

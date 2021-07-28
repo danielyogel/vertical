@@ -1,8 +1,8 @@
 import React from 'react';
 import NodeArrayChild from '../lib/nodes/NodeArrayChild';
+import NodeArrayChildLogical from '../lib/nodes/NodeArrayChildLogical';
 import { NodeScalar } from '../lib';
-import { Divider, Typography } from 'antd';
-import { Button, InputNumber, Space, Input, Radio } from 'antd';
+import { Button, InputNumber, Space, Input, Radio, Divider, Typography } from 'antd';
 import { mapValues, pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
 import NodeOneOf from '../lib/nodes/NodeOneOf';
@@ -100,6 +100,66 @@ export const ArrayChild = NodeArrayChild<typeof INITIAL_STATE>({
         <Space direction="vertical">
           {Object.entries(children).map(([key, node]) => {
             return <node.View key={key} />;
+          })}
+        </Space>
+
+        <Space>
+          {!isFirst.get() && (
+            <Button onClick={back} disabled={isDisabled.get()}>
+              Back
+            </Button>
+          )}
+          {!isLast.get() && (
+            <Button onClick={next} disabled={isDisabled.get()}>
+              Next
+            </Button>
+          )}
+          {isLoading.get() && (
+            <div>
+              <LoaderOne />
+              <span className="ml-3 text-green-600">Loading...</span>
+            </div>
+          )}
+        </Space>
+      </Space>
+    );
+  }
+});
+
+export const ArrayChildViewOnly = NodeArrayChild<typeof INITIAL_STATE>({
+  Render: ({ children, errors }) => {
+    const hasError = Boolean(errors.get().length);
+
+    return (
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'white' }}>
+        {Object.entries(children).map(([_, node]) => {
+          return <node.View key={node.id} />;
+        })}
+      </Space>
+    );
+  }
+});
+
+export const ArrayChildLogical = NodeArrayChildLogical<typeof INITIAL_STATE>({
+  Render: ({ children, isLoading, back, next, isFirst, isLast, isDisabled }) => {
+    return (
+      <Space direction="vertical">
+        <div>
+          {isLoading.get() && (
+            <>
+              <LoaderOne />
+              <span className="ml-3 text-green-600">Loading...</span>
+            </>
+          )}
+        </div>
+        <Space direction="vertical">
+          {Object.entries(children).map(([_, node]) => {
+            return (
+              <div key={node.id}>
+                <node.View />
+                <Divider />
+              </div>
+            );
           })}
         </Space>
 

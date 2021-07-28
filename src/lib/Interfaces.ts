@@ -20,7 +20,7 @@ type BaseNode<V, S> = {
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
   autoFocus: boolean;
-  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
 };
 
 export type ScalarNode<V, S> = BaseNode<V, S> & {

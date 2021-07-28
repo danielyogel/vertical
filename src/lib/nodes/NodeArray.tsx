@@ -30,8 +30,8 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
     label?: string;
     children: ReadonlyArray<
       (
-        parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'currentIndex' | 'index' | keyof ArrayProps>
-      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View'>
+        parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
+      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>
     >;
   }) {
     return flow(withArrayParent<S, S>(), vm => {

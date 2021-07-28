@@ -2,9 +2,9 @@ import React from 'react';
 import { configure } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ArrayChild, StringN, NumberN, OneOfN } from './storyRenderers';
+import { ArrayN, ArrayChild, StringN, NumberN, OneOfN, ArrayChildLogical, ArrayChildViewOnly } from './storyRenderers';
 import { flow } from '../utils';
-import { withLoading, withMeta, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility } from '../lib/mixins';
+import { withLoading, withMeta, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility, withId } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { LoaderOne } from './storyComponents';
@@ -17,14 +17,30 @@ const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 const nodeaa = ArrayN({
   isSelected: vm => vm.progress.get() !== 33223 || vm.store.get().id === 21,
   children: [
-    ArrayChild({
-      isSelected: vm => vm.progress.get() !== 3233,
+    ArrayChildLogical({
       children: {
-        name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
-        lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
-        phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
-        id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
-        gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
+        one: ArrayChildViewOnly({
+          isSelected: vm => vm.progress.get() !== 3233,
+          errors: vm => vm.store.get().name === 'foo' && [{ message: 'foo' }],
+          children: {
+            name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
+            lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
+            phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
+            id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
+            gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
+          }
+        }),
+        two: ArrayChildViewOnly({
+          isSelected: vm => vm.progress.get() !== 3233,
+          errors: vm => vm.store.get().name === 'bar' && [{ message: 'bar' }],
+          children: {
+            name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
+            lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
+            phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
+            id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
+            gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) })
+          }
+        })
       }
     }),
     ArrayChild({
@@ -32,6 +48,7 @@ const nodeaa = ArrayN({
         id: NumberN({}),
         birthday: NumberN({ isVisible: ({ store }) => store.get().name !== 'daniel' }),
         age: flow(
+          withId(),
           withView(vm => {
             const v = vm.value.get();
             return (
@@ -43,7 +60,7 @@ const nodeaa = ArrayN({
           })
         ),
         country: params => {
-          return { ...params, View: () => <div>~~ Node Custom view ~~</div> };
+          return { ...params, View: () => <div>~~ Node Custom view ~~</div>, id: 'asdsd2323Afdfpr' };
         }
       }
     }),
@@ -54,6 +71,7 @@ const nodeaa = ArrayN({
         ...vm,
         isLoading,
         isDisabled,
+        id: 'sdsdrtZZZZA',
         View: () => (
           <Space direction="vertical">
             <b>Object Custom Node</b>
@@ -91,6 +109,7 @@ const nodeaa = ArrayN({
       return pipe(
         { ...vm, children: null, isDisabled: computed(() => false) },
         withLoading(),
+        withId(),
         withMeta({}),
         withProgress(),
         withSelected(({ value }) => value.get().age !== 232323),

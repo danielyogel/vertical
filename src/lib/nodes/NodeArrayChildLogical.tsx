@@ -1,8 +1,7 @@
-import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
-import { RecordNode, ScalarNode } from '../Interfaces';
+import { RecordNode, Node, ArrayProps } from '../Interfaces';
 import {
   withLoading,
   withArrayChildParent,
@@ -28,13 +27,11 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     isVisible?: isVisibleParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible'>>;
     label?: string;
     autoFocus?: boolean;
-    children: Partial<
-      {
-        [K in keyof S]: (
-          params: Pick<ScalarNode<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<S[K], S>>, 'View' | 'id'>;
-      }
-    >;
+    children: {
+      [key: string]: (
+        params: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
+      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>;
+    };
   }) {
     return flow(withArrayChildParent<S, S>(), vm => {
       return pipe(
@@ -48,8 +45,8 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
             map(key => {
               const instance = (options.children[key] as any)({
                 ...vm,
-                value: computed(() => vm.value.get()[key]) as any,
-                onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
+                value: vm.value,
+                onChange: vm.onChange,
                 index: key
               });
 

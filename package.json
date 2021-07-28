@@ -70,7 +70,7 @@
     "mobx-react-lite": "^3.2.0",
     "nanoid": "^3.1.23",
     "ts-toolbelt": "9.6.0",
-    "type-fest": "1.2.1"
+    "type-fest": "1.2.2"
   },
   "description": "Vertical Abstract Software",
   "directories": {

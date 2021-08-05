@@ -20,6 +20,7 @@ type BaseNode<V, S> = {
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
   autoFocus: boolean;
+  currentIndex?: IObservableValue<number>;
   children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
 };
 

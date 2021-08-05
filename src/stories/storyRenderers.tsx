@@ -228,3 +228,35 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE>({
     );
   }
 });
+
+export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
+  Render: vm => {
+    return (
+      <div style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center', paddingRight: '10px' }}>
+        <div style={{ width: '100px', flexShrink: 0 }}>
+          <div>
+            <button style={{ cursor: 'pointer' }} onClick={() => vm.currentIndex.set(vm.currentIndex.get() === 1 ? 2 : 1)}>
+              toggle View
+            </button>
+          </div>
+          {vm.currentIndex.get() === 2 && (
+            <div>
+              <button style={{ cursor: 'pointer' }} onClick={() => vm.children[1]?.currentIndex?.set(1)}>
+                one
+              </button>
+              <button style={{ cursor: 'pointer' }} onClick={() => vm.children[1]?.currentIndex?.set(2)}>
+                two
+              </button>
+            </div>
+          )}
+        </div>
+        <div style={{ flexGrow: 1, padding: '10px' }}>
+          {pipe(
+            [...vm.children],
+            mapWithIndexArr((indwx, node) => vm.currentIndex.get() === indwx + 1 && <node.View key={indwx} />)
+          )}
+        </div>
+      </div>
+    );
+  }
+});

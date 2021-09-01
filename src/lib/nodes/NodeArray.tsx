@@ -50,7 +50,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
             isLast: computed(() => currentIndex.get() === options.children.length),
             back,
             next,
-            index: null,
+            index: vm.index,
             children: [...options.children].map((node, index) => {
               return node({
                 ...vm,

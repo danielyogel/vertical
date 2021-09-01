@@ -2,9 +2,6 @@ import { IComputedValue, IObservableValue } from 'mobx';
 import { O } from 'ts-toolbelt';
 import { FC } from '../utils';
 
-//
-//  Nodes
-//
 type BaseNode<V, S> = {
   id: string;
   value: IComputedValue<V>;
@@ -21,14 +18,43 @@ type BaseNode<V, S> = {
   View: FC<any>;
   autoFocus: boolean;
   currentIndex?: IObservableValue<number>;
-  children: null | Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>> | Record<string, O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
 };
 
+//
+//  Instances
+//
+
 export type ScalarNode<V, S> = BaseNode<V, S> & {
+  index: string | number;
   onChange: (value: V) => void;
   children: null;
-  index: string | number;
 };
+
+export type RecordNode<V, S> = BaseNode<V, S> &
+  ArrayProps & {
+    index: string | number;
+    onChange: (value: Partial<V>) => void;
+    children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View'>>;
+  };
+
+export type ArrayNode<V, S> = BaseNode<V, S> &
+  ArrayProps & {
+    index: string | number;
+    onChange: (value: Partial<V>) => void;
+    children: Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>;
+  };
+
+export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
+  index: string | number;
+  onChange: (value: V[]) => void;
+  children: IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>>;
+};
+
+export type Node<V, S> = ScalarNode<V, S> | RecordNode<V, S> | ArrayNode<V, S> | DynamicArrayNode<V, S>;
+
+//
+// props
+//
 
 export type ArrayProps = {
   currentIndex: IObservableValue<number>;
@@ -37,19 +63,3 @@ export type ArrayProps = {
   back: () => void;
   next: () => void;
 };
-
-export type RecordNode<V, S> = BaseNode<V, S> &
-  ArrayProps & {
-    onChange: (value: Partial<V>) => void;
-    children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View'>>;
-    index: string | number;
-  };
-
-export type ArrayNode<V, S> = BaseNode<V, S> &
-  ArrayProps & {
-    onChange: (value: Partial<V>) => void;
-    children: Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>;
-    index: null;
-  };
-
-export type Node<V, S> = ScalarNode<V, S> | RecordNode<V, S> | ArrayNode<V, S>;

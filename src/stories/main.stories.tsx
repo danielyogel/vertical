@@ -163,7 +163,8 @@ const vm = nodeaa({
   value: computed(() => state.get()),
   onChange: c => state.set({ ...state.get(), ...c }),
   store: computed(() => state.get()),
-  onStoreChange: change => state.set({ ...state.get(), ...change })
+  onStoreChange: change => state.set({ ...state.get(), ...change }),
+  index: 0
 });
 
 export default {

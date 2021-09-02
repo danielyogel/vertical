@@ -3,7 +3,7 @@ import NodeArrayChild from '../lib/nodes/NodeArrayChild';
 import NodeArrayChildLogical from '../lib/nodes/NodeArrayChildLogical';
 import { NodeScalar } from '../lib';
 import { Button, InputNumber, Space, Input, Radio, Divider, Typography } from 'antd';
-import { pipe, mapWithIndexArr } from '../utils';
+import { pipe, mapWithIndexArr, sortBy } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
 import NodeOneOf from '../lib/nodes/NodeOneOf';
 import classnames from 'classnames';
@@ -271,10 +271,10 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 });
 
 export const List = DynamicArray<typeof INITIAL_STATE>({
-  Render: ({ children, add }) => {
+  Render: ({ children, add, onChange, value }) => {
     return (
       <div>
-        <div style={{ border: '1px solid lightgray', padding: '5px' }}>
+        <div style={{ border: '1px solid lightgray', margin: '5px', padding: '5px' }}>
           {children.get().map((currChild, currIndex) => {
             return <currChild.View key={currChild?.id ?? currIndex} />;
           })}
@@ -282,6 +282,14 @@ export const List = DynamicArray<typeof INITIAL_STATE>({
         <div>
           <Button type="primary" onClick={() => add()}>
             Add
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              onChange(sortBy(value.get(), 'id'));
+            }}
+          >
+            Reorder
           </Button>
         </div>
       </div>
@@ -294,7 +302,7 @@ export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
     const hasError = Boolean(errors.get().length);
 
     return (
-      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'white' }}>
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'gray' }}>
         {Object.entries(children).map(([_, node]) => {
           return <node.View key={node.id} />;
         })}

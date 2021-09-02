@@ -21,23 +21,22 @@ import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
-  return function <
-    C extends Record<
-      string,
-      (
-        params: Pick<DynamicArrayChildNode<any, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-      ) => O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>
-    >
-  >(options: {
+  return function <V>(options: {
     isSelected?: isSelectedParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible'>>;
     label?: string;
     autoFocus?: boolean;
-    children: C;
+    children: Partial<
+      {
+        [K in keyof V]: (
+          params: Pick<ScalarNode<V[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+        ) => O.Required<Partial<ScalarNode<V[K], S>>, 'View' | 'id'>;
+      }
+    >;
   }) {
-    return flow(withDynamicChildParent<GetVal<C> & { id: string }, S>(), vm => {
+    return flow(withDynamicChildParent<V, S>(), vm => {
       return pipe(
         vm,
         withId(),
@@ -47,9 +46,9 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
           children: pipe(
             keys(options.children),
             map(key => {
-              const instance = (options.children[key] as any)({
+              const instance = (options.children[key as keyof V] as any)({
                 ...vm,
-                value: computed(() => vm.value.get()[key]) as any,
+                value: computed(() => vm.value.get()[key as keyof V]) as any,
                 onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
                 index: key
               });

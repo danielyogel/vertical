@@ -37,8 +37,7 @@ const nodeaa = ArrayMainN({
                   child: ListItem({
                     children: {
                       province: StringN(),
-                      postalCode: NumberN(),
-                      isCapital: OneOfN({ items: (['yes', 'no', null] as const).map(k => ({ key: k, title: k })) })
+                      postalCode: NumberN()
                     }
                   }),
                   defaultValue: { province: '', postalCode: null, isCapital: null }

@@ -53,7 +53,7 @@ export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
 
 export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
   index: string | number;
-  onChange: (value: V) => void;
+  onChange: (value: Partial<V>) => void;
   remove: () => void;
   children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View'>>;
 };

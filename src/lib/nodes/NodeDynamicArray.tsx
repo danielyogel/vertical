@@ -19,8 +19,8 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
     autoFocus?: boolean;
     label?: string;
     child: (
-      params: Pick<DynamicArrayChildNode<V, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove'>
-    ) => O.Required<Partial<DynamicArrayChildNode<V, S>>, 'View' | 'id'>;
+      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove'>
+    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
     defaultValue: Omit<V, 'id'>;
   }) {
     return flow(withSkalarParent<V[], S>(), vm => {

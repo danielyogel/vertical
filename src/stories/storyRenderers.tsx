@@ -3,12 +3,14 @@ import NodeArrayChild from '../lib/nodes/NodeArrayChild';
 import NodeArrayChildLogical from '../lib/nodes/NodeArrayChildLogical';
 import { NodeScalar } from '../lib';
 import { Button, InputNumber, Space, Input, Radio, Divider, Typography } from 'antd';
-import { mapValues, pipe, mapWithIndexArr } from '../utils';
+import { pipe, mapWithIndexArr } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
 import NodeOneOf from '../lib/nodes/NodeOneOf';
 import classnames from 'classnames';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { LoaderOne, LoaderTwo } from './storyComponents';
+import DynamicArray from '../lib/nodes/NodeDynamicArray';
+import NodeDynamicArrayChild from '../lib/nodes/NodeDynamicArrayChild';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
   Render: ({ value, onChange, setLoading, isLoading, label }) => {
@@ -208,7 +210,7 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE>({
 
           <Divider />
 
-          <ul>
+          {/* <ul>
             {Object.entries(vm.store.get()).map(([k, v]) => {
               return (
                 <li key={k}>
@@ -219,8 +221,15 @@ export const ArrayN = NodeArray<typeof INITIAL_STATE>({
                 </li>
               );
             })}
-          </ul>
-          <Button type="primary" disabled={vm.isDisabled.get()} danger onClick={() => vm.onStoreChange(mapValues(vm.store.get(), () => null))}>
+          </ul> */}
+          <Button
+            type="primary"
+            disabled={vm.isDisabled.get()}
+            danger
+            onClick={() => {
+              // vm.onStoreChange(mapValues(vm.store.get(), () => null));
+            }}
+          >
             Clear All
           </Button>
         </Space>
@@ -257,6 +266,32 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
           )}
         </div>
       </div>
+    );
+  }
+});
+
+export const List = DynamicArray<typeof INITIAL_STATE>({
+  Render: ({ children }) => {
+    return (
+      <div style={{ border: '1px solid lightgray', padding: '5px' }}>
+        {children.get().map((currChild, currIndex) => {
+          return <currChild.View key={currIndex} />;
+        })}
+      </div>
+    );
+  }
+});
+
+export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
+  Render: ({ children, errors }) => {
+    const hasError = Boolean(errors.get().length);
+
+    return (
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'white' }}>
+        {Object.entries(children).map(([_, node]) => {
+          return <node.View key={node.id} />;
+        })}
+      </Space>
     );
   }
 });

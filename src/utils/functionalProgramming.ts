@@ -1,5 +1,5 @@
 export { flow, pipe } from 'fp-ts/function';
-export { map, reverse, filter, mapWithIndex as mapWithIndexArr } from 'fp-ts/Array';
+export { map, reverse, filter, mapWithIndex as mapWithIndexArr, unsafeUpdateAt } from 'fp-ts/Array';
 export { mapWithIndex, toArray } from 'fp-ts/Record';
 export { default as mapKeys } from 'lodash/mapKeys';
 export { default as mapValues } from 'lodash/mapValues';

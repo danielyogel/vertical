@@ -1,4 +1,4 @@
-import { computed } from 'mobx';
+import { computed, isBoxedObservable } from 'mobx';
 import { Node } from '../Interfaces';
 import { notUndefined } from '../../utils';
 
@@ -10,11 +10,13 @@ export type errors<V, S, VM extends PreviusVM<V, S>> = (node: VM) => Array<Error
 
 export default function withErrors<V, S, VM extends PreviusVM<V, S>>(errors?: errors<V, S, VM>) {
   return function (vm: VM) {
-    const { children } = vm;
+    const { children: _children } = vm;
 
     return {
       ...vm,
       errors: computed(() => {
+        const children = isBoxedObservable(_children) ? _children.get() : _children;
+
         const childrenErrors = children ? (Array.isArray(children) ? children : Object.values(children)).flatMap(vm => vm.errors?.get() ?? []) : [];
 
         const errrors = errors && errors(vm);

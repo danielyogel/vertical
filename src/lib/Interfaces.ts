@@ -47,12 +47,14 @@ export type ArrayNode<V, S> = BaseNode<V, S> &
 export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
   index: string | number;
   onChange: (value: V[]) => void;
+  add: () => void;
   children: IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View'>>>;
 };
 
 export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
   index: string | number;
   onChange: (value: V) => void;
+  remove: () => void;
   children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View'>>;
 };
 

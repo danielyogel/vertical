@@ -9,7 +9,7 @@ export const INITIAL_STATE = {
   birthday: 23 as number | null,
   birthdayz: 23 as number | null,
   locations: [
-    { province: 'Tel Aviv' as string | null, state: 'TA' as string | null },
-    { province: 'Jerusalem' as string | null, state: 'JLM' as string | null }
+    { id: 'T', province: 'Tel Aviv' as string | null, postalCode: null as number | null },
+    { id: 'J', province: 'Jerusalem' as string | null, postalCode: null as number | null }
   ]
 };

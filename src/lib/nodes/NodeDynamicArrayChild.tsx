@@ -13,7 +13,7 @@ import {
   withErrors,
   withMeta,
   withId,
-  withSkalarParent
+  withDynamicChildParent
 } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
@@ -37,7 +37,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     autoFocus?: boolean;
     children: C;
   }) {
-    return flow(withSkalarParent<GetVal<C>, S>(), vm => {
+    return flow(withDynamicChildParent<GetVal<C> & { id: string }, S>(), vm => {
       return pipe(
         vm,
         withId(),

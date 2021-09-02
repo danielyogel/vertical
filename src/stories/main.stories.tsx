@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure } from 'mobx';
+import { configure, toJS } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import { ArrayN, ArrayChild, StringN, NumberN, OneOfN, ArrayChildLogical, ArrayChildViewOnly, ArrayMainN, List, ListItem } from './storyRenderers';
@@ -33,7 +33,10 @@ const nodeaa = ArrayMainN({
                 phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
                 gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) }),
-                locations: List({ child: ListItem({ children: { province: StringN(), state: StringN() } }) })
+                locations: List({
+                  child: ListItem({ children: { province: StringN(), postalCode: NumberN() } }),
+                  defaultValue: { province: '', postalCode: null }
+                })
               }
             }),
             two: ArrayChildViewOnly({
@@ -166,6 +169,10 @@ const vm = nodeaa({
   store: computed(() => state.get()),
   onStoreChange: change => state.set({ ...state.get(), ...change }),
   index: 0
+});
+
+state.observe_(p => {
+  console.log(toJS(p.object.get().locations));
 });
 
 export default {

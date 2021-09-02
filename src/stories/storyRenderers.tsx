@@ -271,19 +271,26 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 });
 
 export const List = DynamicArray<typeof INITIAL_STATE>({
-  Render: ({ children }) => {
+  Render: ({ children, add }) => {
     return (
-      <div style={{ border: '1px solid lightgray', padding: '5px' }}>
-        {children.get().map((currChild, currIndex) => {
-          return <currChild.View key={currIndex} />;
-        })}
+      <div>
+        <div style={{ border: '1px solid lightgray', padding: '5px' }}>
+          {children.get().map((currChild, currIndex) => {
+            return <currChild.View key={currChild?.id ?? currIndex} />;
+          })}
+        </div>
+        <div>
+          <Button type="primary" onClick={() => add()}>
+            Add
+          </Button>
+        </div>
       </div>
     );
   }
 });
 
 export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
-  Render: ({ children, errors }) => {
+  Render: ({ children, errors, remove }) => {
     const hasError = Boolean(errors.get().length);
 
     return (
@@ -291,6 +298,7 @@ export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
         {Object.entries(children).map(([_, node]) => {
           return <node.View key={node.id} />;
         })}
+        <b onClick={remove}>remove</b>
       </Space>
     );
   }

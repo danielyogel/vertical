@@ -273,24 +273,24 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 export const List = DynamicArray<typeof INITIAL_STATE>({
   Render: ({ children, add, onChange, value }) => {
     return (
-      <div>
-        <div style={{ border: '1px solid lightgray', margin: '5px', padding: '5px' }}>
-          {children.get().map((currChild, currIndex) => {
-            return <currChild.View key={currChild?.id ?? currIndex} />;
-          })}
-        </div>
+      <div style={{ border: '1px solid green', borderRadius: '10px', padding: '20px 5px ' }}>
         <div>
-          <Button type="primary" onClick={() => add()}>
-            Add
+          <Button type="primary" onClick={() => add()} style={{ marginRight: '10px' }}>
+            Add List Item
           </Button>
           <Button
-            type="primary"
+            type="default"
             onClick={() => {
               onChange(sortBy(value.get(), 'id'));
             }}
           >
-            Reorder
+            Reorder List
           </Button>
+        </div>
+        <div style={{ margin: '5px', padding: '5px' }}>
+          {children.get().map((currChild, currIndex) => {
+            return <currChild.View key={currChild?.id ?? currIndex} />;
+          })}
         </div>
       </div>
     );
@@ -302,11 +302,13 @@ export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
     const hasError = Boolean(errors.get().length);
 
     return (
-      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'gray' }}>
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'lightgray', padding: '20px', margin: '10px' }}>
         {Object.entries(children).map(([_, node]) => {
           return <node.View key={node.id} />;
         })}
-        <b onClick={remove}>remove</b>
+        <Button type="default" color="red" onClick={remove} style={{ marginRight: '10px' }}>
+          Remove
+        </Button>
       </Space>
     );
   }

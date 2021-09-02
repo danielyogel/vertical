@@ -34,8 +34,14 @@ const nodeaa = ArrayMainN({
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
                 gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) }),
                 locations: List({
-                  child: ListItem({ children: { province: StringN(), postalCode: NumberN() } }),
-                  defaultValue: { province: '', postalCode: null }
+                  child: ListItem({
+                    children: {
+                      province: StringN(),
+                      postalCode: NumberN(),
+                      isCapital: OneOfN({ items: (['yes', 'no', null] as const).map(k => ({ key: k, title: k })) })
+                    }
+                  }),
+                  defaultValue: { province: '', postalCode: null, isCapital: null }
                 })
               }
             }),

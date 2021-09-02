@@ -8,8 +8,5 @@ export const INITIAL_STATE = {
   country: 'israel' as string | null,
   birthday: 23 as number | null,
   birthdayz: 23 as number | null,
-  locations: [
-    { id: 'T', province: 'Tel Aviv' as string | null, postalCode: null as number | null },
-    { id: 'J', province: 'Jerusalem' as string | null, postalCode: null as number | null }
-  ]
+  locations: [{ id: 'J', province: 'Jerusalem' as string | null, postalCode: null as number | null, isCapital: 'yes' as 'yes' | 'no' | null }]
 };

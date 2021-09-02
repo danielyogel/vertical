@@ -62,7 +62,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
             },
             {
               fireImmediately: true,
-              delay: 200,
+              delay: 50,
               equals: (a, b) =>
                 isEqual(
                   a.map(i => i.id),

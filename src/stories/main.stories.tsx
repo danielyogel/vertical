@@ -28,7 +28,11 @@ const nodeaa = ArrayMainN({
               isSelected: vm => vm.progress.get() !== 3233,
               errors: vm => vm.store.get().name === 'foo' && [{ message: 'foo' }],
               children: {
-                name: StringN({ errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }], isSelected: vm => vm.value.get() !== 'ad' }),
+                name: StringN({
+                  label: null,
+                  errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }],
+                  isSelected: vm => vm.value.get() !== 'ad'
+                }),
                 lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
                 phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),

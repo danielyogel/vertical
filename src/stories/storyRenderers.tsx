@@ -19,7 +19,7 @@ export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
 
     return (
       <Space>
-        <Typography.Title level={5}>{String(label.get())}</Typography.Title>
+        {label.get() && <Typography.Title level={5}>{label.get()}</Typography.Title>}
         <InputNumber value={!v ? undefined : v} onChange={onChange} />
         <Button type="primary" onClick={toggleLoading}>
           <div className="flex justify-center items-center">
@@ -39,7 +39,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE>({
 
     return (
       <Space>
-        <Typography.Title level={5}>{String(label.get())}</Typography.Title>
+        {label.get() && <Typography.Title level={5}>{label.get()}</Typography.Title>}
 
         <div>
           <Input value={v === null ? '' : v} onChange={e => onChange(e.target.value)} />

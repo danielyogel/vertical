@@ -24,7 +24,7 @@ export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'Vi
     errors?: errorsParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible'>>;
-    label?: string;
+    label?: string | null;
     autoFocus?: boolean;
   };
 

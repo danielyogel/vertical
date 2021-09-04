@@ -12,6 +12,7 @@
 8. Dependecy Injection
 9. Future: Dynamic children (for editors and similar), 
 10. Future: Auto Normalization/Denormalization of API response
+11. Backend' data driven UI
 
 ## Commands
 

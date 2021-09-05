@@ -2,7 +2,19 @@ import React from 'react';
 import { configure, toJS } from 'mobx';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
-import { ArrayN, ArrayChild, StringN, NumberN, OneOfN, ArrayChildLogical, ArrayChildViewOnly, ArrayMainN, List, ListItem } from './storyRenderers';
+import {
+  ArrayN,
+  ArrayChild,
+  StringN,
+  NumberN,
+  OneOfN,
+  ArrayChildLogical,
+  ArrayChildViewOnly,
+  ArrayMainN,
+  List,
+  ListItem,
+  ListItemEdit
+} from './storyRenderers';
 import { flow } from '../utils';
 import { withLoading, withMeta, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility, withId } from '../lib/mixins';
 import { INITIAL_STATE } from './INITIAL_STATE';
@@ -44,7 +56,12 @@ const nodeaa = ArrayMainN({
                       postalCode: NumberN()
                     }
                   }),
-                  defaultValue: { province: '', postalCode: null, isCapital: null }
+                  childEdit: ListItemEdit({
+                    children: {
+                      postalCode: NumberN()
+                    }
+                  }),
+                  defaultValue: { province: '', postalCode: null, isCapital: 'yes' }
                 })
               }
             }),
@@ -185,10 +202,10 @@ state.observe_(p => {
 });
 
 export default {
-  title: 'NodeObject',
+  title: 'Vertical',
   component: vm.View
 } as Meta;
 
 const Template: Story<{}> = args => <vm.View {...args} />;
 
-export const FirstStory = Template.bind({});
+export const Vertical = Template.bind({});

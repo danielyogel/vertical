@@ -19,7 +19,10 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
     autoFocus?: boolean;
     label?: string;
     child: (
-      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove'>
+      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'selectedId'>
+    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
+    childEdit?: (
+      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'selectedId'>
     ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
     defaultValue: Omit<V, 'id'>;
   }) {
@@ -29,6 +32,49 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
         withId(),
         vm => {
           const _children = observable.box<Array<ReturnType<typeof options['child']>>>([]);
+
+          const selectedId = observable.box<null | string>(null);
+
+          const _childEdit = observable.box<null | ReturnType<typeof options['child']>>(null);
+
+          reaction(
+            () => selectedId.get(),
+            id => {
+              const newLocal = options.childEdit;
+
+              const realId = _children
+                .get()
+                .find(vm => vm.id === id)
+                ?.value?.get().id;
+
+              if (!realId || !id || !newLocal) {
+                return _childEdit.set(null);
+              }
+
+              const indexTouse = () => vm.value.get().findIndex(i => i.id === realId);
+
+              const _vm = newLocal({
+                index: 0,
+                selectedId,
+                value: computed(() => {
+                  return vm.value.get()[indexTouse()];
+                }),
+                onChange: v => {
+                  return pipe(unsafeUpdateAt(indexTouse(), { ...vm.value.get()[indexTouse()], ...v }, vm.value.get()), vm.onChange);
+                },
+                remove: () => {
+                  _children.set(_children.get().filter(c => c.value?.get().id !== realId));
+                  _childEdit.set(null);
+                  vm.onChange(vm.value.get().filter(v => v.id !== realId));
+                },
+                onStoreChange: vm.onStoreChange,
+                store: vm.store
+              });
+
+              _childEdit.set(_vm);
+            },
+            { fireImmediately: true }
+          );
 
           reaction(
             () => vm.value.get(),
@@ -41,6 +87,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
                   _children.get().find(c => c.value?.get().id === item.id) ??
                   options.child({
                     index: 0,
+                    selectedId,
                     value: computed(() => {
                       return vm.value.get()[indexTouse()];
                     }),
@@ -78,6 +125,8 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
 
           return {
             ...vm,
+            childEdit: computed(() => _childEdit.get()),
+            selectedId,
             autoFocus: options?.autoFocus ?? false,
             add: _add,
             children: _children

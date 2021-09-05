@@ -1,4 +1,4 @@
-import { IComputedValue } from 'mobx';
+import { IComputedValue, IObservableValue } from 'mobx';
 
 export default function withDynamicChildParent<V, S>() {
   type Params = {
@@ -7,6 +7,7 @@ export default function withDynamicChildParent<V, S>() {
     store: IComputedValue<S>;
     onStoreChange: (change: Partial<S>) => void;
     index: string | number;
+    selectedId: IObservableValue<string | null>;
     remove: () => void;
   };
 

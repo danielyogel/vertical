@@ -271,7 +271,13 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 });
 
 export const List = DynamicArray<typeof INITIAL_STATE>({
-  Render: ({ children, add, onChange, value }) => {
+  Render: ({ children, add, onChange, value, childEdit, selectedId }) => {
+    const vm = childEdit.get();
+
+    if (vm) {
+      return <vm.View />;
+    }
+
     return (
       <div style={{ border: '1px solid green', borderRadius: '10px', padding: '20px 5px ' }}>
         <div>
@@ -289,7 +295,12 @@ export const List = DynamicArray<typeof INITIAL_STATE>({
         </div>
         <div style={{ margin: '5px', padding: '5px' }}>
           {children.get().map((currChild, currIndex) => {
-            return <currChild.View key={currChild?.id ?? currIndex} />;
+            return (
+              <div key={currChild?.id ?? currIndex}>
+                <div onClick={() => selectedId.set(currChild.id || null)}>edit</div>
+                <currChild.View />
+              </div>
+            );
           })}
         </div>
       </div>
@@ -308,6 +319,26 @@ export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
         })}
         <Button type="default" color="red" onClick={remove} style={{ marginRight: '10px' }}>
           Remove
+        </Button>
+      </Space>
+    );
+  }
+});
+
+export const ListItemEdit = NodeDynamicArrayChild<typeof INITIAL_STATE>({
+  Render: ({ children, errors, remove, selectedId }) => {
+    const hasError = Boolean(errors.get().length);
+
+    return (
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'lightgray', padding: '20px', margin: '10px' }}>
+        {Object.entries(children).map(([_, node]) => {
+          return <node.View key={node.id} />;
+        })}
+        <Button type="default" color="red" onClick={remove} style={{ marginRight: '10px' }}>
+          Remove
+        </Button>
+        <Button type="default" color="red" onClick={() => selectedId.set(null)} style={{ marginRight: '10px' }}>
+          Back
         </Button>
       </Space>
     );

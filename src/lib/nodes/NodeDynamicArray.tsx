@@ -123,12 +123,18 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
             vm.onChange([newItem, ...vm.value.get()]);
           };
 
+          const _removeById = (id: string) => {
+            _children.set(_children.get().filter(c => c.value?.get().id !== id));
+            vm.onChange(vm.value.get().filter(v => v.id !== id));
+          };
+
           return {
             ...vm,
             childEdit: computed(() => _childEdit.get()),
             selectedId,
             autoFocus: options?.autoFocus ?? false,
             add: _add,
+            removeById: _removeById,
             children: _children
           };
         },

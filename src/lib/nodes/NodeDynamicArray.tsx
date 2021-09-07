@@ -124,9 +124,12 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
           };
 
           const _removeById = (id: string) => {
-            const child = _children.get().find(c => c.id !== id);
+            const childReadID = _children
+              .get()
+              .find(c => c.id === id)
+              ?.value?.get().id;
             _children.set(_children.get().filter(c => c.id !== id));
-            vm.onChange(vm.value.get().filter(v => v.id !== child?.value?.get().id));
+            vm.onChange(vm.value.get().filter(v => v.id !== childReadID));
           };
 
           return {

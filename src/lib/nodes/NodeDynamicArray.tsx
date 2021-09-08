@@ -140,7 +140,14 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
             removeById: _removeById,
             allowChildEdit: !!options.childEdit,
             children: _children,
-            selectedId: _selectedId
+            selectedId: {
+              get() {
+                return _selectedId.get();
+              },
+              set(id: string | null) {
+                return _selectedId.set(id);
+              }
+            }
           };
         },
         withMeta({ label: options.label }),

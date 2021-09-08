@@ -80,10 +80,8 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
           );
 
           reaction(
-            () => {
-              return { id: _selectedId.get(), _children: _children.get() };
-            },
-            ({ id }) => {
+            () => _selectedId.get(),
+            id => {
               const newLocal = options.childEdit;
 
               const realId = _children
@@ -117,15 +115,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
 
               _selectedChild.set(_vm);
             },
-            {
-              fireImmediately: true,
-              equals: (a, b) =>
-                a.id === b.id &&
-                isEqual(
-                  a._children.map(c => c.id),
-                  b._children.map(c => c.id)
-                )
-            }
+            { fireImmediately: true }
           );
 
           const _add = () => {
@@ -155,7 +145,12 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
                 return _selectedId.get();
               },
               set(id: string | null) {
-                return _selectedId.set(id);
+                return _selectedId.set(
+                  _children
+                    .get()
+                    .find(c => c.id === id)
+                    ?.value?.get().id || null
+                );
               }
             }
           };

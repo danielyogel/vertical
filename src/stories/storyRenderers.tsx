@@ -271,8 +271,8 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 });
 
 export const List = DynamicArray<typeof INITIAL_STATE>({
-  Render: ({ children, add, onChange, value, childEdit, selectedId }) => {
-    const vm = childEdit.get();
+  Render: ({ children, add, onChange, value, selectedChild, selectedId }) => {
+    const vm = selectedChild.get();
 
     if (vm) {
       return <vm.View />;
@@ -326,7 +326,7 @@ export const ListItem = NodeDynamicArrayChild<typeof INITIAL_STATE>({
 });
 
 export const ListItemEdit = NodeDynamicArrayChild<typeof INITIAL_STATE>({
-  Render: ({ children, errors, remove, selectedId }) => {
+  Render: ({ children, errors, remove, setSelectedId }) => {
     const hasError = Boolean(errors.get().length);
 
     return (
@@ -337,7 +337,7 @@ export const ListItemEdit = NodeDynamicArrayChild<typeof INITIAL_STATE>({
         <Button type="default" color="red" onClick={remove} style={{ marginRight: '10px' }}>
           Remove
         </Button>
-        <Button type="default" color="red" onClick={() => selectedId.set(null)} style={{ marginRight: '10px' }}>
+        <Button type="default" color="red" onClick={() => setSelectedId(null)} style={{ marginRight: '10px' }}>
           Back
         </Button>
       </Space>

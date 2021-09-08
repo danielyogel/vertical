@@ -86,7 +86,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
 
               const realId = _children
                 .get()
-                .find(vm => vm.id === id)
+                .find(vm => vm.value?.get().id === id)
                 ?.value?.get().id;
 
               if (!realId || !id || !newLocal) {

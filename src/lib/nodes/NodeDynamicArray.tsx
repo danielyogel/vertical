@@ -39,45 +39,6 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
           const _selectedChild = observable.box<null | ReturnType<typeof options['child']>>(null);
 
           reaction(
-            () => _selectedId.get(),
-            id => {
-              const newLocal = options.childEdit;
-
-              const realId = _children
-                .get()
-                .find(vm => vm.id === id)
-                ?.value?.get().id;
-
-              if (!realId || !id || !newLocal) {
-                return _selectedChild.set(null);
-              }
-
-              const indexTouse = () => vm.value.get().findIndex(i => i.id === realId);
-
-              const _vm = newLocal({
-                index: 0,
-                setSelectedId: id => _selectedId.set(id),
-                value: computed(() => {
-                  return vm.value.get()[indexTouse()];
-                }),
-                onChange: v => {
-                  return pipe(unsafeUpdateAt(indexTouse(), { ...vm.value.get()[indexTouse()], ...v }, vm.value.get()), vm.onChange);
-                },
-                remove: () => {
-                  _children.set(_children.get().filter(c => c.value?.get().id !== realId));
-                  _selectedChild.set(null);
-                  vm.onChange(vm.value.get().filter(v => v.id !== realId));
-                },
-                onStoreChange: vm.onStoreChange,
-                store: vm.store
-              });
-
-              _selectedChild.set(_vm);
-            },
-            { fireImmediately: true }
-          );
-
-          reaction(
             () => vm.value.get(),
             items => {
               let newChildren: Array<ReturnType<typeof options['child']>> = [];
@@ -116,6 +77,45 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
                   b.map(i => i.id)
                 )
             }
+          );
+
+          reaction(
+            () => _selectedId.get(),
+            id => {
+              const newLocal = options.childEdit;
+
+              const realId = _children
+                .get()
+                .find(vm => vm.id === id)
+                ?.value?.get().id;
+
+              if (!realId || !id || !newLocal) {
+                return _selectedChild.set(null);
+              }
+
+              const indexTouse = () => vm.value.get().findIndex(i => i.id === realId);
+
+              const _vm = newLocal({
+                index: 0,
+                setSelectedId: id => _selectedId.set(id),
+                value: computed(() => {
+                  return vm.value.get()[indexTouse()];
+                }),
+                onChange: v => {
+                  return pipe(unsafeUpdateAt(indexTouse(), { ...vm.value.get()[indexTouse()], ...v }, vm.value.get()), vm.onChange);
+                },
+                remove: () => {
+                  _children.set(_children.get().filter(c => c.value?.get().id !== realId));
+                  _selectedChild.set(null);
+                  vm.onChange(vm.value.get().filter(v => v.id !== realId));
+                },
+                onStoreChange: vm.onStoreChange,
+                store: vm.store
+              });
+
+              _selectedChild.set(_vm);
+            },
+            { fireImmediately: true }
           );
 
           const _add = () => {

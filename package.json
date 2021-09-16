@@ -46,7 +46,7 @@
     "@storybook/addon-links": "^6.3.8",
     "@storybook/addons": "^6.3.8",
     "@storybook/react": "^6.3.8",
-    "@types/react": "^17.0.19",
+    "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.8",
     "antd": "^4.16.13",
     "babel-loader": "^8.2.2",
@@ -62,8 +62,8 @@
     "typescript": "4.4.3"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.172",
-    "fp-ts": "2.11.1",
+    "@types/lodash": "^4.14.173",
+    "fp-ts": "2.11.2",
     "io-ts": "^2.2.16",
     "lodash": "^4.17.21",
     "mobx": "^6.3.3",

@@ -22,7 +22,7 @@ import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
-  return function <V>(options: {
+  return function <V, OV extends V>(options: {
     isSelected?: isSelectedParams<
       any,
       S,
@@ -32,7 +32,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
     isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'Navigation'>>;
     label?: string | null;
-    nav?: FC<Except<DynamicArrayChildNode<V, S>, 'View' | 'Navigation'>>;
+    nav?: FC<Except<DynamicArrayChildNode<OV, S>, 'View' | 'Navigation'>>;
     autoFocus?: boolean;
     children: Partial<
       {

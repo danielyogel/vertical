@@ -27,7 +27,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
     isDisabled?: isDisabledParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
-    label?: string;
+    label?: string | null;
     children: ReadonlyArray<
       (
         parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>

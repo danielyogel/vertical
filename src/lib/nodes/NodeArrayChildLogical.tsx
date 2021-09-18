@@ -25,7 +25,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     errors?: errorsParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible'>>;
-    label?: string;
+    label?: string | null;
     autoFocus?: boolean;
     children: {
       [key: string]: (

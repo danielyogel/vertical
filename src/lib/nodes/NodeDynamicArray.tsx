@@ -21,7 +21,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
     isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
     isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'Navigation'>>;
     autoFocus?: boolean;
-    label?: string;
+    label?: string | null;
     nav?: FC<Except<DynamicArrayNode<V, S>, 'View' | 'Navigation'>>;
     child: (
       params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>

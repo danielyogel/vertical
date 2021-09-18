@@ -31,7 +31,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
     isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
     isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'Navigation'>>;
-    label?: string;
+    label?: string | null;
     nav?: FC<Except<DynamicArrayChildNode<V, S>, 'View' | 'Navigation'>>;
     autoFocus?: boolean;
     children: Partial<

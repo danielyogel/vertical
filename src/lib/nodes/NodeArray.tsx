@@ -13,30 +13,34 @@ import {
   withDisabled,
   withErrors,
   withMeta,
-  withId
+  withId,
+  withContext
 } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
+import { context as contextParams } from '../mixins/withContext';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
-export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>> }) {
-  return function (options: {
-    isSelected?: isSelectedParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible'>>;
+export default function <S>(params: { Render: FC<Except<ArrayNode<S, S, any>, 'View'>> }) {
+  return function <R>(options: {
+    context?: contextParams<any, S, Except<ArrayNode<S, S, any>, 'View' | 'isVisible'>, R>;
+    isSelected?: isSelectedParams<any, S, R, Except<ArrayNode<S, S, any>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, R, Except<ArrayNode<S, S, any>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, R, Except<ArrayNode<S, S, any>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, R, Except<ArrayNode<S, S, any>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
     label?: string;
     children: ReadonlyArray<
       (
-        parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
-      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>
+        parent: Pick<RecordNode<S, S, R>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
+      ) => O.Required<Partial<Node<Partial<S>, S, any>>, 'View' | 'id'>
     >;
   }) {
-    return flow(withArrayParent<S, S>(), vm => {
+    return flow(withArrayParent<S, S, any>(), vm => {
       return pipe(
         vm,
+        withContext(options.context),
         withId(),
         vm => {
           const currentIndex = observable.box(1);
@@ -64,6 +68,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
             })
           };
         },
+
         withMeta({ label: options.label }),
         withLoading(),
         withProgress(),

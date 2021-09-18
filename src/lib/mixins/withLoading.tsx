@@ -1,9 +1,9 @@
 import { observable, computed, isBoxedObservable } from 'mobx';
 import { Node } from '../Interfaces';
 
-type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'children'>;
+type PreviusVM<V, S, R> = Pick<Node<V, S, R>, 'value' | 'store' | 'children'>;
 
-export default function withLoading<V, S, VM extends PreviusVM<V, S>>() {
+export default function withLoading<V, S, R, VM extends PreviusVM<V, S, R>>() {
   return function (obj: VM) {
     const _isLoading = observable.box(false);
     const _children = obj.children;

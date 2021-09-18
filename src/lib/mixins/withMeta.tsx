@@ -2,14 +2,14 @@ import { computed } from 'mobx';
 import { startCase } from '../../utils';
 import { Node } from '../Interfaces';
 
-type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'index'>;
+type PreviusVM<V, S, R> = Pick<Node<V, S, R>, 'value' | 'store' | 'index'>;
 
 export type Params = {
   label?: string | null;
 };
 
 export default function withMeta(params?: Params) {
-  return function <V, S, VM extends PreviusVM<V, S>>(vm: VM) {
+  return function <V, S, R, VM extends PreviusVM<V, S, R>>(vm: VM) {
     const { index } = vm;
     return {
       ...vm,

@@ -19,24 +19,26 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
+import { context as contextParams } from '../mixins/withContext';
 
-export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
-  return function <V>(options: {
-    isSelected?: isSelectedParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible'>>;
+export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S, any>, 'View'>> }) {
+  return function <V, R>(options: {
+    context?: contextParams<any, S, Except<DynamicArrayChildNode<S, S, any>, 'View' | 'isVisible'>, R>;
+    isSelected?: isSelectedParams<any, S, Except<DynamicArrayChildNode<any, S, R>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S, R>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S, R>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S, R>, 'View' | 'isVisible'>>;
     label?: string;
     autoFocus?: boolean;
     children: Partial<
       {
         [K in keyof V]: (
-          params: Pick<ScalarNode<V[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<V[K], S>>, 'View' | 'id'>;
+          params: Pick<ScalarNode<V[K], S, R>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+        ) => O.Required<Partial<ScalarNode<V[K], S, any>>, 'View' | 'id'>;
       }
     >;
   }) {
-    return flow(withDynamicChildParent<V, S>(), vm => {
+    return flow(withDynamicChildParent<V, S, any>(), vm => {
       return pipe(
         vm,
         withId(),

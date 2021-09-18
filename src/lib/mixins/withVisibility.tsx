@@ -1,11 +1,11 @@
 import { computed } from 'mobx';
 import { Node } from '../Interfaces';
 
-type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'label'>;
+type PreviusVM<V, S, R> = Pick<Node<V, S, R>, 'value' | 'store' | 'label'>;
 
-export type isVisible<V, S, VM extends PreviusVM<V, S>> = (vm: VM) => boolean;
+export type isVisible<V, S, R, VM extends PreviusVM<V, S, R>> = (vm: VM) => boolean;
 
-export default function withVisibility<V, S, VM extends PreviusVM<V, S>>(isVisible?: isVisible<V, S, VM>) {
+export default function withVisibility<V, S, R, VM extends PreviusVM<V, S, R>>(isVisible?: isVisible<V, S, R, VM>) {
   return function (vm: VM) {
     return {
       ...vm,

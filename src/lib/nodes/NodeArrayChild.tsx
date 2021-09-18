@@ -19,24 +19,26 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
+import { context as contextParams } from '../mixins/withContext';
 
-export default function <S extends Record<string, any>>(params: { Render: FC<Except<RecordNode<S, S>, 'View'>> }) {
-  return function (options: {
-    isSelected?: isSelectedParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible'>>;
+export default function <S extends Record<string, any>>(params: { Render: FC<Except<RecordNode<S, S, any>, 'View'>> }) {
+  return function <R>(options: {
+    context?: contextParams<any, S, Except<RecordNode<S, S, any>, 'View' | 'isVisible'>, R>;
+    isSelected?: isSelectedParams<any, S, Except<RecordNode<any, S, R>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<RecordNode<any, S, R>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<RecordNode<any, S, any>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<RecordNode<any, S, any>, 'View' | 'isVisible'>>;
     label?: string;
     autoFocus?: boolean;
     children: Partial<
       {
         [K in keyof S]: (
-          params: Pick<ScalarNode<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<S[K], S>>, 'View' | 'id'>;
+          params: Pick<ScalarNode<S[K], S, R>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+        ) => O.Required<Partial<ScalarNode<S[K], S, any>>, 'View' | 'id'>;
       }
     >;
   }) {
-    return flow(withArrayChildParent<S, S>(), vm => {
+    return flow(withArrayChildParent<S, S, any>(), vm => {
       return pipe(
         vm,
         withId(),

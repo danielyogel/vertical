@@ -1,6 +1,6 @@
 import { IComputedValue } from 'mobx';
 
-export default function withDynamicChildParent<V, S>() {
+export default function withDynamicChildParent<V, S, R>() {
   type Params = {
     value: IComputedValue<V>;
     onChange: (value: Partial<V>) => void;
@@ -9,6 +9,7 @@ export default function withDynamicChildParent<V, S>() {
     index: string | number;
     setSelectedId: (id: string | null) => void;
     remove: () => void;
+    context: R;
   };
 
   return function (params: Params) {

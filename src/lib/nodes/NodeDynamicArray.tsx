@@ -9,25 +9,33 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import withVisibility, { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import withDisabled, { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import withErrors, { errors as errorsParams } from '../mixins/withErrors';
+import { context as contextParams } from '../mixins/withContext';
 
-export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>, 'View'>> }) {
-  return function <V extends { id: string }>(options: {
-    isSelected?: isSelectedParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible'>>;
+export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S, any>, 'View'>> }) {
+  return function <V extends { id: string }, R>(options: {
+    context?: contextParams<any, S, Except<DynamicArrayNode<V[], S, any>, 'View' | 'isVisible'>, R>;
+    isSelected?: isSelectedParams<any, S, Except<DynamicArrayNode<V, S, R>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<DynamicArrayNode<V, S, R>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S, R>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S, R>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
     label?: string;
     child: (
-      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>
-    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
+      params: Pick<
+        DynamicArrayChildNode<Omit<V, 'id'>, S, R>,
+        'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'
+      >
+    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S, any>>, 'View' | 'id'>;
     childEdit?: (
-      params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>
-    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
+      params: Pick<
+        DynamicArrayChildNode<Omit<V, 'id'>, S, R>,
+        'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'
+      >
+    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S, any>>, 'View' | 'id'>;
     defaultValue: Omit<V, 'id'>;
     selectedId?: { get: () => string | null; set: (id: string | null) => void };
   }) {
-    return flow(withSkalarParent<V[], S>(), vm => {
+    return flow(withSkalarParent<V[], S, any>(), vm => {
       return pipe(
         vm,
         withId(),

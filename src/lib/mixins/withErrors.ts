@@ -4,11 +4,11 @@ import { notUndefined } from '../../utils';
 
 type Error = { message: string };
 
-type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'children'>;
+type PreviusVM<V, S, R> = Pick<Node<V, S, R>, 'value' | 'store' | 'children'>;
 
-export type errors<V, S, VM extends PreviusVM<V, S>> = (node: VM) => Array<Error | undefined> | undefined | false;
+export type errors<V, S, R, VM extends PreviusVM<V, S, R>> = (node: VM) => Array<Error | undefined> | undefined | false;
 
-export default function withErrors<V, S, VM extends PreviusVM<V, S>>(errors?: errors<V, S, VM>) {
+export default function withErrors<V, S, R, VM extends PreviusVM<V, S, R>>(errors?: errors<V, S, R, VM>) {
   return function (vm: VM) {
     const { children: _children } = vm;
 

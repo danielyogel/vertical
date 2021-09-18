@@ -11,3 +11,4 @@ export { default as withDisabled } from './withDisabled';
 export { default as withErrors } from './withErrors';
 export { default as withMeta } from './withMeta';
 export { default as withId } from './withId';
+export { default as withContext } from './withContext';

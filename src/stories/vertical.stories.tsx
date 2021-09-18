@@ -50,6 +50,12 @@ const nodeaa = ArrayMainN({
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
                 gender: OneOfN({ items: (['male', 'female', null] as const).map(k => ({ key: k, title: k })) }),
                 locations: List({
+                  nav: vm => (
+                    <div onClick={() => vm.selectedId.set(null)}>
+                      <span>click</span>
+                      <button>back from nav</button>
+                    </div>
+                  ),
                   child: ListItem({
                     children: {
                       province: StringN(),

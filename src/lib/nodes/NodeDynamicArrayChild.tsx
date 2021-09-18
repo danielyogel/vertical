@@ -13,7 +13,8 @@ import {
   withErrors,
   withMeta,
   withId,
-  withDynamicChildParent
+  withDynamicChildParent,
+  withNavigation
 } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
@@ -22,11 +23,16 @@ import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
   return function <V>(options: {
-    isSelected?: isSelectedParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible'>>;
+    isSelected?: isSelectedParams<
+      any,
+      S,
+      Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
+    >;
+    errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
+    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
+    isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'Navigation'>>;
     label?: string;
+    nav?: FC<Except<DynamicArrayChildNode<V, S>, 'View' | 'Navigation'>>;
     autoFocus?: boolean;
     children: Partial<
       {
@@ -65,6 +71,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
         withErrors(options.errors),
         withDisabled(options.isDisabled),
         withVisibility(options.isVisible),
+        withNavigation(options.nav),
         withView(params.Render)
       );
     });

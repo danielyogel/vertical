@@ -53,6 +53,7 @@ export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
   children: IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>>;
   selectedChild: IComputedValue<null | O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
   allowChildEdit: boolean;
+  Navigation: null | FC<any>;
 };
 
 export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
@@ -60,6 +61,7 @@ export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
   setSelectedId: (id: string | null) => void;
   onChange: (value: Partial<V>) => void;
   remove: () => void;
+  Navigation: null | FC<any>;
   children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
 };
 

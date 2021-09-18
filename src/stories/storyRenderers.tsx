@@ -271,38 +271,45 @@ export const ArrayMainN = NodeArray<typeof INITIAL_STATE>({
 });
 
 export const List = DynamicArray<typeof INITIAL_STATE>({
-  Render: ({ children, add, onChange, value, selectedChild, selectedId }) => {
+  Render: ({ children, add, onChange, value, selectedChild, selectedId, Navigation }) => {
     const vm = selectedChild.get();
 
-    if (vm) {
-      return <vm.View />;
-    }
-
     return (
-      <div style={{ border: '1px solid green', borderRadius: '10px', padding: '20px 5px ' }}>
-        <div>
-          <Button type="primary" onClick={() => add()} style={{ marginRight: '10px' }}>
-            Add List Item
-          </Button>
-          <Button
-            type="default"
-            onClick={() => {
-              onChange(sortBy(value.get(), 'id'));
-            }}
-          >
-            Reorder List
-          </Button>
-        </div>
-        <div style={{ margin: '5px', padding: '5px' }}>
-          {children.get().map((currChild, currIndex) => {
+      <div>
+        {Navigation ? <Navigation /> : null}
+
+        {(() => {
+          if (vm) {
+            return <vm.View />;
+          } else
             return (
-              <div key={currChild?.id ?? currIndex}>
-                <div onClick={() => selectedId.set(currChild.id || null)}>edit</div>
-                <currChild.View />
+              <div style={{ border: '1px solid green', borderRadius: '10px', padding: '20px 5px ' }}>
+                <div>
+                  <Button type="primary" onClick={() => add()} style={{ marginRight: '10px' }}>
+                    Add List Item
+                  </Button>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      onChange(sortBy(value.get(), 'id'));
+                    }}
+                  >
+                    Reorder List
+                  </Button>
+                </div>
+                <div style={{ margin: '5px', padding: '5px' }}>
+                  {children.get().map((currChild, currIndex) => {
+                    return (
+                      <div key={currChild?.id ?? currIndex}>
+                        <div onClick={() => selectedId.set(currChild.id || null)}>edit</div>
+                        <currChild.View />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
-          })}
-        </div>
+        })()}
       </div>
     );
   }

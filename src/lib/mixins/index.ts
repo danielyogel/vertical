@@ -3,6 +3,7 @@ export { default as withDynamicChildParent } from './withDynamicChildParent';
 export { default as withArrayParent } from './withArrayParent';
 export { default as withSkalarParent } from './withSkalarParent';
 export { default as withView } from './withView';
+export { default as withNavigation } from './withNavigation';
 export { default as withVisibility } from './withVisibility';
 export { default as withSelected } from './withSelected';
 export { default as withLoading } from './withLoading';

@@ -4,7 +4,7 @@ import { O } from 'ts-toolbelt';
 import { nanoid } from 'nanoid';
 import { FC, flow, isEqual, pipe, unsafeUpdateAt } from '../../utils';
 import { DynamicArrayChildNode, DynamicArrayNode } from '../Interfaces';
-import { withLoading, withMeta, withId, withSkalarParent, withProgress, withSelected, withView } from '../mixins';
+import { withLoading, withMeta, withId, withSkalarParent, withProgress, withSelected, withView, withNavigation } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import withVisibility, { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import withDisabled, { isDisabled as isDisabledParams } from '../mixins/withDisabled';
@@ -12,12 +12,17 @@ import withErrors, { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>, 'View'>> }) {
   return function <V extends { id: string }>(options: {
-    isSelected?: isSelectedParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible'>>;
+    isSelected?: isSelectedParams<
+      any,
+      S,
+      Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
+    >;
+    errors?: errorsParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
+    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
+    isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'Navigation'>>;
     autoFocus?: boolean;
     label?: string;
+    nav?: FC<Except<DynamicArrayNode<V, S>, 'View' | 'Navigation'>>;
     child: (
       params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>
     ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
@@ -162,6 +167,7 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
         withErrors(options.errors),
         withDisabled(options.isDisabled),
         withVisibility(options.isVisible),
+        withNavigation(options.nav),
         withView(params.Render)
       );
     });

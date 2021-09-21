@@ -25,10 +25,10 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
     nav?: FC<Except<DynamicArrayNode<V, S>, 'View' | 'Navigation'>>;
     child: (
       params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>
-    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
+    ) => O.Required<Partial<DynamicArrayChildNode<V, S>>, 'View' | 'id'>;
     childEdit?: (
       params: Pick<DynamicArrayChildNode<Omit<V, 'id'>, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | 'remove' | 'setSelectedId'>
-    ) => O.Required<Partial<DynamicArrayChildNode<Partial<V>, S>>, 'View' | 'id'>;
+    ) => O.Required<Partial<DynamicArrayChildNode<V, S>>, 'View' | 'id'>;
     defaultValue: Omit<V, 'id'>;
     selectedId?: { get: () => string | null; set: (id: string | null) => void };
   }) {

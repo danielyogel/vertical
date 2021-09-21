@@ -9,6 +9,7 @@ import {
   NumberN,
   OneOfN,
   ArrayChildLogical,
+  NodeObjectN,
   ArrayChildViewOnly,
   ArrayMainN,
   List,
@@ -45,6 +46,7 @@ const nodeaa = ArrayMainN({
                   errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }],
                   isSelected: vm => vm.value.get() !== 'ad'
                 }),
+                details: NodeObjectN({ children: { future: StringN({}), past: StringN({}) } }),
                 lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
                 phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),
@@ -204,7 +206,7 @@ const vm = nodeaa({
 });
 
 state.observe_(p => {
-  console.log(toJS(p.object.get().locations));
+  console.log(toJS(p.object.get()));
 });
 
 export default {

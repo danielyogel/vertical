@@ -1,10 +1,10 @@
+import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
-import { ArrayChildNode, Node, ArrayProps } from '../Interfaces';
+import { ObjectNode, ScalarNode } from '../Interfaces';
 import {
   withLoading,
-  withArrayChildParent,
   withProgress,
   withSelected,
   withVisibility,
@@ -12,28 +12,31 @@ import {
   withDisabled,
   withErrors,
   withMeta,
-  withId
+  withId,
+  withRecordParent
 } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
-export default function <S extends Record<string, any>>(params: { Render: FC<Except<ArrayChildNode<S, S>, 'View'>> }) {
-  return function (options: {
-    isSelected?: isSelectedParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible'>>;
+export default function <S extends Record<string, any>>(params: { Render: FC<Except<ObjectNode<any, S>, 'View'>> }) {
+  return function <V extends Record<string, any>>(options: {
+    isSelected?: isSelectedParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible'>>;
     label?: string | null;
     autoFocus?: boolean;
-    children: {
-      [key: string]: (
-        params: Pick<ArrayChildNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
-      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>;
-    };
+    children: Partial<
+      {
+        [K in keyof V]: (
+          params: Pick<ScalarNode<V[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+        ) => O.Required<Partial<ScalarNode<V[K], S>>, 'View' | 'id'>;
+      }
+    >;
   }) {
-    return flow(withArrayChildParent<S, S>(), vm => {
+    return flow(withRecordParent<V, S>(), vm => {
       return pipe(
         vm,
         withId(),
@@ -45,8 +48,8 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
             map(key => {
               const instance = (options.children[key] as any)({
                 ...vm,
-                value: vm.value,
-                onChange: vm.onChange,
+                value: computed(() => vm.value.get()[key]) as any,
+                onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
                 index: key
               });
 

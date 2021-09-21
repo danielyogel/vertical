@@ -27,21 +27,30 @@ type BaseNode<V, S> = {
 export type ScalarNode<V, S> = BaseNode<V, S> & {
   index: string | number;
   onChange: (value: V) => void;
-  children: null | IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>>; //NOTE: "ScalarNode" may be DynamicArray - so it may have children
+  children:
+    | null
+    | IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>>
+    | Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>; //NOTE: "ScalarNode" may be DynamicArray | ObjectNode - so it may have children
 };
 
-export type RecordNode<V, S> = BaseNode<V, S> &
-  ArrayProps & {
-    index: string | number;
-    onChange: (value: Partial<V>) => void;
-    children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
-  };
+export type ObjectNode<V, S> = BaseNode<V, S> & {
+  index: string | number;
+  onChange: (value: V) => void;
+  children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
+};
 
 export type ArrayNode<V, S> = BaseNode<V, S> &
   ArrayProps & {
     index: string | number;
     onChange: (value: Partial<V>) => void;
     children: Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
+  };
+
+export type ArrayChildNode<V, S> = BaseNode<V, S> &
+  ArrayProps & {
+    index: string | number;
+    onChange: (value: Partial<V>) => void;
+    children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
   };
 
 export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
@@ -65,7 +74,7 @@ export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
   children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
 };
 
-export type Node<V, S> = ScalarNode<V, S> | RecordNode<V, S> | ArrayNode<V, S> | DynamicArrayNode<V, S>;
+export type Node<V, S> = ScalarNode<V, S> | ArrayChildNode<V, S> | ArrayNode<V, S> | DynamicArrayNode<V, S> | ObjectNode<V, S>;
 
 //
 // props

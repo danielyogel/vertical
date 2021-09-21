@@ -11,6 +11,7 @@ import { INITIAL_STATE } from './INITIAL_STATE';
 import { LoaderOne, LoaderTwo } from './storyComponents';
 import DynamicArray from '../lib/nodes/NodeDynamicArray';
 import NodeDynamicArrayChild from '../lib/nodes/NodeDynamicArrayChild';
+import NodeObject from '../lib/nodes/NodeObject';
 
 export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
   Render: ({ value, onChange, setLoading, isLoading, label }) => {
@@ -129,6 +130,20 @@ export const ArrayChild = NodeArrayChild<typeof INITIAL_STATE>({
 });
 
 export const ArrayChildViewOnly = NodeArrayChild<typeof INITIAL_STATE>({
+  Render: ({ children, errors }) => {
+    const hasError = Boolean(errors.get().length);
+
+    return (
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'white' }}>
+        {Object.entries(children).map(([_, node]) => {
+          return <node.View key={node.id} />;
+        })}
+      </Space>
+    );
+  }
+});
+
+export const NodeObjectN = NodeObject<typeof INITIAL_STATE>({
   Render: ({ children, errors }) => {
     const hasError = Boolean(errors.get().length);
 

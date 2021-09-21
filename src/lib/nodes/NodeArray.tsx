@@ -2,7 +2,7 @@ import { computed, observable } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
-import { ArrayNode, ArrayProps, Node, RecordNode } from '../Interfaces';
+import { ArrayNode, ArrayProps, Node, ArrayChildNode } from '../Interfaces';
 import {
   withLoading,
   withArrayParent,
@@ -30,7 +30,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
     label?: string | null;
     children: ReadonlyArray<
       (
-        parent: Pick<RecordNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
+        parent: Pick<ArrayChildNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
       ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>
     >;
   }) {

@@ -1,6 +1,6 @@
 {
   "name": "@daniely/vertical",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -46,7 +46,7 @@
     "@storybook/addon-links": "^6.3.8",
     "@storybook/addons": "^6.3.8",
     "@storybook/react": "^6.3.8",
-    "@types/react": "^17.0.21",
+    "@types/react": "^17.0.22",
     "@types/react-dom": "^17.0.8",
     "antd": "^4.16.13",
     "babel-loader": "^8.2.2",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.173",
-    "fp-ts": "2.11.2",
+    "fp-ts": "2.11.3",
     "io-ts": "^2.2.16",
     "lodash": "^4.17.21",
     "mobx": "^6.3.3",

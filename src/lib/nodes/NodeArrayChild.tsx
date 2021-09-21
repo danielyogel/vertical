@@ -2,7 +2,7 @@ import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
-import { RecordNode, ScalarNode } from '../Interfaces';
+import { ArrayChildNode, ScalarNode } from '../Interfaces';
 import {
   withLoading,
   withArrayChildParent,
@@ -20,12 +20,12 @@ import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
-export default function <S extends Record<string, any>>(params: { Render: FC<Except<RecordNode<S, S>, 'View'>> }) {
+export default function <S extends Record<string, any>>(params: { Render: FC<Except<ArrayChildNode<S, S>, 'View'>> }) {
   return function (options: {
-    isSelected?: isSelectedParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<RecordNode<any, S>, 'View' | 'isVisible'>>;
+    isSelected?: isSelectedParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible'>>;
     label?: string | null;
     autoFocus?: boolean;
     children: Partial<

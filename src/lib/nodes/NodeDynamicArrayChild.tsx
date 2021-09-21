@@ -1,4 +1,4 @@
-import { computed, IComputedValue } from 'mobx';
+import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
@@ -77,10 +77,3 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     });
   };
 }
-
-// Utils...
-type NodeInfer<F> = F extends (args: infer V) => any ? (V extends { value: IComputedValue<infer Z> } ? Z : never) : never;
-
-export type GetVal<T extends Record<string, any>> = {
-  [K in keyof T]: NodeInfer<T[K]>;
-};

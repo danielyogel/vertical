@@ -22,10 +22,10 @@ import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<ObjectNode<any, S>, 'View'>> }) {
   return function <V extends Record<string, any>>(options: {
-    isSelected?: isSelectedParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<any, S, Except<ObjectNode<any, S>, 'View' | 'isVisible'>>;
+    isSelected?: isSelectedParams<V, S, Except<ObjectNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
+    errors?: errorsParams<V, S, Except<ObjectNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
+    isDisabled?: isDisabledParams<V, S, Except<ObjectNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
+    isVisible?: isVisibleParams<V, S, Except<ObjectNode<V, S>, 'View' | 'isVisible'>>;
     label?: string | null;
     autoFocus?: boolean;
     children: Partial<

@@ -46,7 +46,7 @@ const nodeaa = ArrayMainN({
                   errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }],
                   isSelected: vm => vm.value.get() !== 'ad'
                 }),
-                details: NodeObjectN({ children: { future: StringN({}), past: StringN({}) } }),
+                details: NodeObjectN({ children: { future: StringN({}), past: StringN({}) }, errors: vm => vm.store.get() && [] }),
                 lastName: StringN({ isVisible: ({ store }) => store.get().age !== 3 }),
                 phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),

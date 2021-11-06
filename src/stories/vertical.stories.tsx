@@ -27,13 +27,23 @@ configure({ enforceActions: 'never' });
 
 const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
+const currentIndex = observable.box(1);
+
 const nodeaa = ArrayMainN({
   children: [
     () => {
-      return { View: () => <div>daniel</div>, id: 'ssdsd' };
+      return { View: () => <div>EMPTY TAB</div>, id: 'ssdsd' };
     },
     ArrayN({
       isSelected: vm => vm.progress.get() !== 33223 || vm.store.get().id === 21,
+      currentIndex: {
+        get() {
+          return currentIndex.get();
+        },
+        set(i) {
+          currentIndex.set(i);
+        }
+      },
       children: [
         ArrayChildLogical({
           children: {

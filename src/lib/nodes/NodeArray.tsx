@@ -28,6 +28,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
     isVisible?: isVisibleParams<any, S, Except<ArrayNode<S, S>, 'View' | 'isVisible'>>;
     autoFocus?: boolean;
     label?: string | null;
+    currentIndex?: { get: () => number; set: (id: number) => void };
     children: ReadonlyArray<
       (
         parent: Pick<ArrayChildNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
@@ -39,7 +40,7 @@ export default function <S>(params: { Render: FC<Except<ArrayNode<S, S>, 'View'>
         vm,
         withId(),
         vm => {
-          const currentIndex = observable.box(1);
+          const currentIndex = options.currentIndex || observable.box(1);
           const back = () => currentIndex.set(currentIndex.get() - 1);
           const next = () => currentIndex.set(currentIndex.get() + 1);
           return {

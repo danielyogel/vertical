@@ -17,7 +17,7 @@ type BaseNode<V, S> = {
   errors: IComputedValue<Array<{ message: string }>>;
   View: FC<any>;
   autoFocus: boolean;
-  currentIndex?: IObservableValue<number>;
+  currentIndex?: { get: () => number; set: (id: number) => void };
 };
 
 //
@@ -81,7 +81,7 @@ export type Node<V, S> = ScalarNode<V, S> | ArrayChildNode<V, S> | ArrayNode<V, 
 //
 
 export type ArrayProps = {
-  currentIndex: IObservableValue<number>;
+  currentIndex: { get: () => number; set: (id: number) => void };
   isFirst: IComputedValue<boolean>;
   isLast: IComputedValue<boolean>;
   back: () => void;

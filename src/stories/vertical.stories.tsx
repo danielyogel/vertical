@@ -69,6 +69,9 @@ const nodeaa = ArrayMainN({
                     </div>
                   ),
                   child: ListItem({
+                    isDisabled: vm => {
+                      return !!vm.value.get().isCapital;
+                    },
                     children: {
                       province: StringN(),
                       postalCode: NumberN()

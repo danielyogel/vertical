@@ -24,21 +24,21 @@ import { errors as errorsParams } from '../mixins/withErrors';
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
   return function <V, OV extends V>(options: {
     isSelected?: isSelectedParams<
-      any,
+      V,
       S,
-      Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
+      Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
     >;
-    errors?: errorsParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
-    isDisabled?: isDisabledParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
-    isVisible?: isVisibleParams<any, S, Except<DynamicArrayChildNode<any, S>, 'View' | 'isVisible' | 'Navigation'>>;
+    errors?: errorsParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
+    isDisabled?: isDisabledParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
+    isVisible?: isVisibleParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'Navigation'>>;
     label?: string | null;
-    nav?: FC<Except<DynamicArrayChildNode<OV, S>, 'View' | 'Navigation'>>;
+    nav?: FC<Except<DynamicArrayChildNode<V, S>, 'View' | 'Navigation'>>;
     autoFocus?: boolean;
     children: Partial<
       {
-        [K in keyof V]: (
-          params: Pick<ScalarNode<V[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<V[K], S>>, 'View' | 'id'>;
+        [K in keyof OV]: (
+          params: Pick<ScalarNode<OV[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+        ) => O.Required<Partial<ScalarNode<OV[K], S>>, 'View' | 'id'>;
       }
     >;
   }) {

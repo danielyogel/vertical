@@ -17,6 +17,7 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
+import { Params as metaParams } from '../mixins/withMeta';
 
 export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'View'>> }) {
   type Options = {
@@ -24,16 +25,15 @@ export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'Vi
     errors?: errorsParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible'>>;
-    label?: string | null;
     autoFocus?: boolean;
-  };
+  } & metaParams;
 
   return function (options?: Options) {
     return flow(withSkalarParent<V, S>(), vm => {
       return pipe(
         { ...vm, children: null, autoFocus: options?.autoFocus ?? false },
         withId(),
-        withMeta({ label: options?.label }),
+        withMeta({ label: options?.label, placeholder: options?.placeholder }),
         withLoading(),
         withProgress(),
         withSelected(options?.isSelected),

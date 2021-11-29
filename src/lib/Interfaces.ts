@@ -8,6 +8,7 @@ type BaseNode<V, S> = {
   store: IComputedValue<S>;
   onStoreChange: (change: Partial<S>) => void;
   label: IComputedValue<string>;
+  placeholder: IComputedValue<string>;
   isLoading: IComputedValue<boolean>;
   setLoading: (isLoading: boolean) => void;
   progress: IObservableValue<number>;

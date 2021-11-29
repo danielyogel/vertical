@@ -34,7 +34,7 @@ export const NumberN = NodeScalar<number | null, typeof INITIAL_STATE>({
 });
 
 export const StringN = NodeScalar<string | null, typeof INITIAL_STATE>({
-  Render: ({ value, onChange, setLoading, isLoading, errors, label }) => {
+  Render: ({ value, onChange, setLoading, isLoading, errors, label, placeholder }) => {
     const v = value.get();
     const toggleLoading = () => setLoading(!isLoading.get());
 
@@ -43,7 +43,7 @@ export const StringN = NodeScalar<string | null, typeof INITIAL_STATE>({
         {label.get() && <Typography.Title level={5}>{label.get()}</Typography.Title>}
 
         <div>
-          <Input value={v === null ? '' : v} onChange={e => onChange(e.target.value)} />
+          <Input value={v === null ? '' : v} onChange={e => onChange(e.target.value)} placeholder={placeholder.get()} />
         </div>
 
         <Button type="primary" onClick={toggleLoading} disabled={!!errors.get().length}>

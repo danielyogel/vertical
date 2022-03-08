@@ -3,33 +3,47 @@
   "version": "0.7.9",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/mylib.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=10"
-  },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
     "analyze": "size-limit --why",
+    "build": "dts build",
+    "build-storybook": "build-storybook",
+    "lint": "dts lint",
+    "prepare": "dts build",
+    "size": "size-limit",
+    "start": "dts watch",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "dts test --passWithNoTests"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "dts lint"
+    }
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   },
   "peerDependencies": {
     "react": ">=16"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
+  "engines": {
+    "node": ">=12"
   },
+  "size-limit": [
+    {
+      "path": "dist/mylib.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/mylib.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "prettier": {
     "printWidth": 150,
     "semi": true,
@@ -39,27 +53,30 @@
   },
   "author": "Daniel Yogel",
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@size-limit/preset-small-lib": "^4.12.0",
-    "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/addons": "^6.3.12",
-    "@storybook/react": "^6.3.12",
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
     "antd": "^4.16.13",
-    "babel-loader": "^8.2.3",
     "classnames": "^2.3.1",
-    "husky": "^4.3.8",
     "postcss": "^8.3.11",
+    "tsdx": "^0.14.1",
+    "@babel/core": "^7.17.5",
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-info": "^5.3.21",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/addons": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@tsconfig/create-react-app": "^1.0.2",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.13",
+    "babel-loader": "^8.2.3",
+    "dts-cli": "^1.4.0",
+    "husky": "^7.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
-    "size-limit": "^4.9.1",
-    "tsdx": "^0.14.1",
+    "size-limit": "^7.0.8",
     "tslib": "^2.3.1",
-    "typescript": "4.4.4"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
     "@types/lodash": "^4.14.176",

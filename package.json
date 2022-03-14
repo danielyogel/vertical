@@ -2,7 +2,7 @@
   "name": "@daniely/vertical",
   "description": "Vertical Abstract Software",
   "author": "Daniel Yogel",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "license": "MIT",
   "main": "./dist/vertical.umd.js",
   "module": "./dist/vertical.es.js",
@@ -14,8 +14,7 @@
   },
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "dev": "concurrently --raw \"vite\" \"tsc --noEmit --watch\" \"npm run storybook\"",

@@ -21,7 +21,7 @@ import { withLoading, withMeta, withProgress, withView, withSelected, withErrors
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { LoaderOne } from './storyComponents';
-import { pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/function';
 
 configure({ enforceActions: 'never' });
 

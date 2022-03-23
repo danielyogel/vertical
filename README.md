@@ -1,4 +1,4 @@
-# ~~ Vertical ~~
+# Vertical
 
 ## Objectives
 
@@ -10,24 +10,6 @@
 6. Statically typed data.
 7. 100% cusomizable - prefer composability over inheritence and/or big config.
 8. Dependecy Injection
-9. Future: Dynamic children (for editors and similar), 
+9. Future: Dynamic children (for editors and similar)
 10. Future: Auto Normalization/Denormalization of API response
 11. Backend' data driven UI
-
-## Commands
-
-```bash
-npm start # or yarn start
-```
-
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-Then run either Storybook or the example playground:
-
-### Storybook
-
-Run inside another terminal:
-
-```bash
-yarn storybook
-```

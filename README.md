@@ -1,6 +1,6 @@
 # Vertical
 
-## Objectives
+## Goals
 
 1. Declerative Ui description (full-stack planned)
 2. Auto parent child relationship - parent aggregates children data, children auto-pass parent data.

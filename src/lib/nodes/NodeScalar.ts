@@ -1,47 +1,18 @@
 import { Except } from 'type-fest';
-import { FC, flow, pipe } from '../../utils';
+import { FC, flow } from '../../utils';
 import { ScalarNode } from '../Interfaces';
-import {
-  withLoading,
-  withProgress,
-  withView,
-  withSelected,
-  withVisibility,
-  withDisabled,
-  withErrors,
-  withMeta,
-  withSkalarParent,
-  withId
-} from '../mixins';
-import { isSelected as isSelectedParams } from '../mixins/withSelected';
-import { isVisible as isVisibleParams } from '../mixins/withVisibility';
-import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
-import { errors as errorsParams } from '../mixins/withErrors';
-import { Params as metaParams } from '../mixins/withMeta';
+import { withView, withBase } from '../mixins';
+import { BaseParams } from '../mixins/withBase';
 
-export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'View'>> }) {
-  type Options = {
-    isSelected?: isSelectedParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
-    errors?: errorsParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
-    isDisabled?: isDisabledParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible' | 'isDisabled'>>;
-    isVisible?: isVisibleParams<V, S, Except<ScalarNode<V, S>, 'View' | 'isVisible'>>;
-    autoFocus?: boolean;
-  } & metaParams;
+export default function <V, S>(params: { Render: FC<Except<ScalarNode<V, S>, 'View' | 'progress'>> }) {
+  type ParentParams = Pick<ScalarNode<V, S>, 'value' | 'store' | 'onStoreChange' | 'onChange' | 'index'>;
 
-  return function (options?: Options) {
-    return flow(withSkalarParent<V, S>(), vm => {
-      return pipe(
-        { ...vm, children: null, autoFocus: options?.autoFocus ?? false },
-        withId(),
-        withMeta({ label: options?.label, placeholder: options?.placeholder }),
-        withLoading(),
-        withProgress(),
-        withSelected(options?.isSelected),
-        withErrors(options?.errors),
-        withDisabled(options?.isDisabled),
-        withVisibility(options?.isVisible),
-        withView(params.Render)
-      );
-    });
+  return function (options?: BaseParams<V, S, ParentParams & { children: null }>) {
+    return flow(
+      (vm: ParentParams) => vm,
+      vm => ({ ...vm, children: null }),
+      withBase(options),
+      withView(params.Render)
+    );
   };
 }

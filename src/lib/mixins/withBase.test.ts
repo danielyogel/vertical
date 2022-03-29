@@ -1,17 +1,18 @@
-import { assert, expect, test } from 'vitest';
+import { computed, observable } from 'mobx';
+import { expect, test } from 'vitest';
+import withBase from './withBase';
 
 test('withBase', () => {
-  expect(Math.sqrt(4)).toBe(2);
-  expect(Math.sqrt(144)).toBe(12);
-  expect(Math.sqrt(2)).toBe(Math.SQRT2);
+  const store = observable.box({ name: 'john' });
 
-  const input = {
-    foo: 'hello',
-    bar: 'world'
-  };
+  const INITIAL_VM = { children: null, index: 1, store: computed(() => store.get()), value: computed(() => 1) };
 
-  const output = JSON.stringify(input);
+  const RESULT = withBase()(INITIAL_VM);
 
-  expect(output).eq('{"foo":"hello","bar":"world"}');
-  assert.deepEqual(JSON.parse(output), input, 'matches original');
+  expect(RESULT.errors).toBeDefined();
+  expect(RESULT.isLoading).toBeDefined();
+  expect(RESULT.setLoading).toBeDefined();
+  expect(RESULT.label).toBeDefined();
+  expect(RESULT.placeholder).toBeDefined();
+  expect(RESULT.id).toBeDefined();
 });

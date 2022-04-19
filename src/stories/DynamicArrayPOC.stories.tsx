@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, configure, computed } from 'mobx';
 import { Observer } from 'mobx-react-lite';
 
@@ -85,11 +84,4 @@ function View() {
   );
 }
 
-export default {
-  title: 'DynamicArrayPOC',
-  component: View
-} as Meta;
-
-const Template: Story<{}> = args => <View {...args} />;
-
-export const FirstStory = Template.bind({});
+export const DynamicArray = () => <View />;

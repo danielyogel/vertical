@@ -1,6 +1,5 @@
 import React from 'react';
 import { configure, toJS } from 'mobx';
-import { Meta, Story } from '@storybook/react/types-6-0';
 import { observable, computed } from 'mobx';
 import {
   ArrayN,
@@ -22,6 +21,7 @@ import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { LoaderOne } from './storyComponents';
 import { pipe } from 'fp-ts/function';
+import 'antd/dist/antd.css';
 
 configure({ enforceActions: 'never' });
 
@@ -222,11 +222,4 @@ state.observe_(p => {
   console.log(toJS(p.object.get()));
 });
 
-export default {
-  title: 'Vertical',
-  component: vm.View
-} as Meta;
-
-const Template: Story<{}> = args => <vm.View {...args} />;
-
-export const Vertical = Template.bind({});
+export const Vertical = () => <vm.View />;

@@ -17,13 +17,13 @@
     "dist"
   ],
   "scripts": {
-    "dev": "concurrently  --group  --raw \"vite\" \"tsc --noEmit --watch\" \"npm run storybook\" \"npm run test\"",
+    "dev": "concurrently  --group  --raw \"vite\" \"tsc --noEmit --watch\" \"npm run ladle\" \"npm run test\"",
     "build": "concurrently --raw \"vite build\" \"npm run build:types\"",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
     "typecheck": "tsc --noEmit",
     "prepare": "npm run build",
-    "storybook": "start-storybook -p 6006",
-    "storybook:build": "build-storybook",
+    "ladle": "npx ladle serve",
+    "ladle:build": "npx ladle build --out dist-ladle",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -42,10 +42,9 @@
     "react": ">=16"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^6.4.22",
-    "@storybook/addons": "^6.4.22",
-    "@storybook/react": "^6.4.22",
+    "@ladle/react": "^0.12.0",
     "@types/lodash": "^4.14.182",
+    "@types/node": "^17.0.25",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "antd": "^4.19.5",
@@ -55,7 +54,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
-    "storybook-builder-vite": "^0.1.22",
     "ts-toolbelt": "9.6.0",
     "tslib": "^2.3.1",
     "type-fest": "2.12.2",

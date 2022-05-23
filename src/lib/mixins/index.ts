@@ -1,8 +1,8 @@
-export { default as withRecordParent } from './withRecordParent';
-export { default as withArrayChildParent } from './withArrayChildParent';
-export { default as withDynamicChildParent } from './withDynamicChildParent';
-export { default as withArrayParent } from './withArrayParent';
-export { default as withSkalarParent } from './withSkalarParent';
+export { default as withRecordParent } from './record/withRecordParent';
+export { default as withArrayChildParent } from './array/withArrayChildParent';
+export { default as withDynamicChildParent } from './dynamicArray/withDynamicChildParent';
+export { default as withArrayParent } from './array/withArrayParent';
+export { default as withSkalarParent } from './skalar/withSkalarParent';
 export { default as withView } from './withView';
 export { default as withNavigation } from './withNavigation';
 export { default as withVisibility } from './withVisibility';

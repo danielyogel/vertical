@@ -1,5 +1,5 @@
 import { IComputedValue } from 'mobx';
-import { ArrayProps } from '../Interfaces';
+import { ArrayProps } from '../../Interfaces';
 
 export default function withArrayChildParent<V, S>() {
   type Params = ArrayProps & {

@@ -12,11 +12,7 @@ import withErrors, { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>, 'View'>> }) {
   return function <V extends { id: string }>(options: {
-    isSelected?: isSelectedParams<
-      any,
-      S,
-      Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
-    >;
+    isSelected?: isSelectedParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>>;
     errors?: errorsParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
     isDisabled?: isDisabledParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
     isVisible?: isVisibleParams<any, S, Except<DynamicArrayNode<V, S>, 'View' | 'isVisible' | 'Navigation'>>;

@@ -28,10 +28,7 @@ type BaseNode<V, S> = {
 
 export type ScalarNode<V, S> = BaseNode<V, S> & {
   onChange: (value: V) => void;
-  children:
-    | null
-    | IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>>
-    | Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>; //NOTE: "ScalarNode" may be DynamicArray | ObjectNode - so it may have children
+  children: null | IObservableValue<Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>> | Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>; //NOTE: "ScalarNode" may be DynamicArray | ObjectNode - so it may have children
 };
 
 export type ObjectNode<V, S> = BaseNode<V, S> & {

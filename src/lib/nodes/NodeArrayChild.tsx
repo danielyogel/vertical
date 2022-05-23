@@ -3,18 +3,7 @@ import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, map, pipe, keys } from '../../utils';
 import { ArrayChildNode, ScalarNode } from '../Interfaces';
-import {
-  withLoading,
-  withArrayChildParent,
-  withProgress,
-  withSelected,
-  withVisibility,
-  withView,
-  withDisabled,
-  withErrors,
-  withMeta,
-  withId
-} from '../mixins';
+import { withLoading, withArrayChildParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta, withId } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
@@ -28,13 +17,11 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     isVisible?: isVisibleParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible'>>;
     label?: string | null;
     autoFocus?: boolean;
-    children: Partial<
-      {
-        [K in keyof S]: (
-          params: Pick<ScalarNode<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<S[K], S>>, 'View' | 'id'>;
-      }
-    >;
+    children: Partial<{
+      [K in keyof S]: (
+        params: Pick<ScalarNode<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+      ) => O.Required<Partial<ScalarNode<S[K], S>>, 'View' | 'id'>;
+    }>;
   }) {
     return flow(withArrayChildParent<S, S>(), vm => {
       return pipe(

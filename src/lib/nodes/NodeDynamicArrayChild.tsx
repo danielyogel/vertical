@@ -23,24 +23,18 @@ import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<DynamicArrayChildNode<any, S>, 'View'>> }) {
   return function <V, OV extends V>(options: {
-    isSelected?: isSelectedParams<
-      V,
-      S,
-      Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>
-    >;
+    isSelected?: isSelectedParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled' | 'Navigation'>>;
     errors?: errorsParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled' | 'Navigation'>>;
     isDisabled?: isDisabledParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'isDisabled' | 'Navigation'>>;
     isVisible?: isVisibleParams<V, S, Except<DynamicArrayChildNode<V, S>, 'View' | 'isVisible' | 'Navigation'>>;
     label?: string | null;
     nav?: FC<Except<DynamicArrayChildNode<V, S>, 'View' | 'Navigation'>>;
     autoFocus?: boolean;
-    children: Partial<
-      {
-        [K in keyof OV]: (
-          params: Pick<ScalarNode<OV[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-        ) => O.Required<Partial<ScalarNode<OV[K], S>>, 'View' | 'id'>;
-      }
-    >;
+    children: Partial<{
+      [K in keyof OV]: (
+        params: Pick<ScalarNode<OV[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+      ) => O.Required<Partial<ScalarNode<OV[K], S>>, 'View' | 'id'>;
+    }>;
   }) {
     return flow(withDynamicChildParent<V, S>(), vm => {
       return pipe(

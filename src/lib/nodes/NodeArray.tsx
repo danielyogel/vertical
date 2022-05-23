@@ -3,18 +3,7 @@ import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { FC, flow, pipe } from '../../utils';
 import { ArrayNode, ArrayProps, Node, ArrayChildNode } from '../Interfaces';
-import {
-  withLoading,
-  withArrayParent,
-  withProgress,
-  withSelected,
-  withVisibility,
-  withView,
-  withDisabled,
-  withErrors,
-  withMeta,
-  withId
-} from '../mixins';
+import { withLoading, withArrayParent, withProgress, withSelected, withVisibility, withView, withDisabled, withErrors, withMeta, withId } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';

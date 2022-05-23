@@ -1,8 +1,9 @@
 import { IComputedValue, IObservableValue } from 'mobx';
 import { O } from 'ts-toolbelt';
-import { FC } from '../utils';
+import { FC } from '../../utils';
 
 type BaseNode<V, S> = {
+  index: string | number;
   id: string;
   value: IComputedValue<V>;
   store: IComputedValue<S>;
@@ -26,7 +27,6 @@ type BaseNode<V, S> = {
 //
 
 export type ScalarNode<V, S> = BaseNode<V, S> & {
-  index: string | number;
   onChange: (value: V) => void;
   children:
     | null
@@ -35,27 +35,23 @@ export type ScalarNode<V, S> = BaseNode<V, S> & {
 };
 
 export type ObjectNode<V, S> = BaseNode<V, S> & {
-  index: string | number;
   onChange: (value: V) => void;
   children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
 };
 
 export type ArrayNode<V, S> = BaseNode<V, S> &
   ArrayProps & {
-    index: string | number;
     onChange: (value: Partial<V>) => void;
     children: Array<O.Required<Partial<BaseNode<any, S>>, 'View' | 'id'>>;
   };
 
 export type ArrayChildNode<V, S> = BaseNode<V, S> &
   ArrayProps & {
-    index: string | number;
     onChange: (value: Partial<V>) => void;
     children: Record<string, O.Required<Partial<ScalarNode<any, S>>, 'View' | 'id'>>;
   };
 
 export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
-  index: string | number;
   selectedId: { get: () => string | null; set: (id: string | null) => void };
   onChange: (value: V[]) => void;
   add: () => void;
@@ -67,7 +63,6 @@ export type DynamicArrayNode<V, S> = BaseNode<V[], S> & {
 };
 
 export type DynamicArrayChildNode<V, S> = BaseNode<V, S> & {
-  index: string | number;
   setSelectedId: (id: string | null) => void;
   onChange: (value: Partial<V>) => void;
   remove: () => void;

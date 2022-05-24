@@ -9,7 +9,7 @@ import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<ArrayChildNode<S, S>, 'View'>> }) {
-  return function (options: {
+  return function <V>(options: {
     isSelected?: isSelectedParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
@@ -18,11 +18,11 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     autoFocus?: boolean;
     children: {
       [key: string]: (
-        params: Pick<ArrayChildNode<S, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
-      ) => O.Required<Partial<Node<Partial<S>, S>>, 'View' | 'id'>;
+        params: Pick<ArrayChildNode<V, S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index' | keyof ArrayProps>
+      ) => O.Required<Partial<Node<Partial<V>, S>>, 'View' | 'id'>;
     };
   }) {
-    return flow(withArrayChildParent<S, S>(), vm => {
+    return flow(withArrayChildParent<V, S>(), vm => {
       return pipe(
         vm,
         withId(),

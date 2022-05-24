@@ -56,7 +56,36 @@ const nodeaa = ArrayMainN({
                   errors: vm => vm.value.get() === 'wrong' && [{ message: 'asd' }],
                   isSelected: vm => vm.value.get() !== 'ad'
                 }),
-                details: NodeObjectN({ children: { future: StringN({}), past: StringN({}) }, errors: vm => vm.store.get() && [] }),
+                details: NodeObjectN({
+                  children: {
+                    future: StringN({}),
+                    past: StringN({}),
+                    locations: List({
+                      nav: vm => (
+                        <div onClick={() => vm.selectedId.set(null)}>
+                          <span>click</span>
+                          <button>back from nav</button>
+                        </div>
+                      ),
+                      child: ListItem({
+                        isDisabled: vm => {
+                          return !!vm.value.get().isCapital;
+                        },
+                        children: {
+                          province: StringN(),
+                          postalCode: NumberN()
+                        }
+                      }),
+                      childEdit: ListItemEdit({
+                        children: {
+                          postalCode: NumberN()
+                        }
+                      }),
+                      defaultValue: { province: '', postalCode: null, isCapital: 'yes' }
+                    })
+                  },
+                  errors: vm => vm.store.get() && []
+                }),
                 lastName: StringN({ placeholder: ({ label }) => `Enter ${label}`, isVisible: ({ store }) => store.get().age !== 3 }),
                 phone: NumberN({ label: 'Phone Custom Title', isVisible: ({ store }) => store.get().name !== 'daniel' }),
                 id: NumberN({ isDisabled: vm => vm.store.get().age === 3 }),

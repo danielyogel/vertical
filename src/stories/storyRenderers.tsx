@@ -148,7 +148,7 @@ export const NodeObjectN = NodeObject<typeof INITIAL_STATE>({
     const hasError = Boolean(errors.get().length);
 
     return (
-      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'white' }}>
+      <Space direction="vertical" style={{ backgroundColor: hasError ? 'red' : 'green', margin: '30px' }}>
         {Object.entries(children).map(([_, node]) => {
           return <node.View key={node.id} />;
         })}

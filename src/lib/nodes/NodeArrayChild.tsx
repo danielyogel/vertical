@@ -10,7 +10,7 @@ import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<ArrayChildNode<S, S>, 'View'>> }) {
-  return function (options: {
+  return function <V, OV extends V>(options: {
     isSelected?: isSelectedParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
@@ -18,12 +18,12 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     label?: string | null;
     autoFocus?: boolean;
     children: Partial<{
-      [K in keyof S]: (
-        params: Pick<ScalarNode<S[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
-      ) => O.Required<Partial<ScalarNode<S[K], S>>, 'View' | 'id'>;
+      [K in keyof OV]: (
+        params: Pick<ScalarNode<OV[K], S>, 'onChange' | 'onStoreChange' | 'store' | 'value' | 'index'>
+      ) => O.Required<Partial<ScalarNode<OV[K], S>>, 'View' | 'id'>;
     }>;
   }) {
-    return flow(withArrayChildParent<S, S>(), vm => {
+    return flow(withArrayChildParent<V, S>(), vm => {
       return pipe(
         vm,
         withId(),
@@ -33,9 +33,9 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
           children: pipe(
             keys(options.children),
             map(key => {
-              const instance = (options.children[key] as any)({
+              const instance = (options.children[key as keyof V] as any)({
                 ...vm,
-                value: computed(() => vm.value.get()[key]) as any,
+                value: computed(() => vm.value.get()[key as keyof V]) as any,
                 onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
                 index: key
               });

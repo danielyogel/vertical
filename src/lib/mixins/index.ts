@@ -1,5 +1,6 @@
 export { default as withRecordParent } from './record/withRecordParent';
 export { default as withArrayChildParent } from './array/withArrayChildParent';
+export * from './array/withArrayChildren';
 export { default as withDynamicChildParent } from './dynamicArray/withDynamicChildParent';
 export { default as withArrayParent } from './array/withArrayParent';
 export { default as withSkalarParent } from './skalar/withSkalarParent';

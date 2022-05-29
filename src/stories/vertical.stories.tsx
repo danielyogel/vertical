@@ -29,7 +29,7 @@ const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 const currentIndex = observable.box(1);
 
-const nodeaa = ArrayMainN({
+const nodeaa = ArrayMainN<typeof INITIAL_STATE>({
   children: [
     () => {
       return { View: () => <div>EMPTY TAB</div>, id: 'ssdsd' };

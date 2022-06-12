@@ -1,3 +1,4 @@
+export * from './nodes/NodeContainer';
 export { default as NodeArrayChildLogical } from './nodes/NodeArrayChildLogical';
 export { default as NodeArray } from './nodes/NodeArray';
 export { default as NodeArrayChild } from './nodes/NodeArrayChild';

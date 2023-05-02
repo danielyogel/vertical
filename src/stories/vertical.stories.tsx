@@ -1,5 +1,4 @@
-import React from 'react';
-import { configure, toJS } from 'mobx';
+import { configure } from 'mobx';
 import { observable, computed } from 'mobx';
 import {
   ArrayN,
@@ -22,7 +21,6 @@ import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { LoaderOne } from './storyComponents';
 import { pipe } from 'fp-ts/function';
-import 'antd/dist/antd.css';
 
 configure({ enforceActions: 'never' });
 
@@ -243,8 +241,9 @@ const nodeContainer = NodeContainer({
   })
 });
 
-state.observe_(p => {
-  console.log(toJS(p.object.get()));
-});
+// reaction(
+//   () => state.get(),
+//   r => console.log(r)
+// );
 
 export const Vertical = () => <nodeContainer.View />;

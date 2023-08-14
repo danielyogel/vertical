@@ -1,5 +1,5 @@
 import { computed } from 'mobx';
-import { startCase } from '../../utils';
+import { startCase } from '../utils';
 import { Node } from '../Interfaces';
 
 type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'index'>;

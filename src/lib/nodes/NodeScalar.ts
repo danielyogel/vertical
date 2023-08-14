@@ -1,5 +1,5 @@
 import { Except } from 'type-fest';
-import { FC, flow } from '../../utils';
+import { FC, flow } from '../utils';
 import { ScalarNode } from '../Interfaces';
 import { withView, withBase, withSkalarParent } from '../mixins';
 import { BaseParams } from '../mixins/withBase';

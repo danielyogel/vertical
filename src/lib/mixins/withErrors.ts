@@ -1,6 +1,6 @@
 import { computed, isBoxedObservable } from 'mobx';
 import { Node } from '../Interfaces';
-import { notUndefined } from '../../utils';
+import { notUndefined } from '../utils';
 
 type Error = { message: string };
 

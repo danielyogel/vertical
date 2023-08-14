@@ -1,9 +1,10 @@
-import React from 'react';
+import { pipe } from 'fp-ts/function';
+import { mapWithIndex as mapWithIndexArr } from 'fp-ts/Array';
+import { default as sortBy } from 'lodash/sortBy';
 import NodeArrayChild from '../lib/nodes/NodeArrayChild';
 import NodeArrayChildLogical from '../lib/nodes/NodeArrayChildLogical';
 import { NodeScalar } from '../lib';
 import { Button, InputNumber, Space, Input, Radio, Divider, Typography } from 'antd';
-import { pipe, mapWithIndexArr, sortBy } from '../utils';
 import NodeArray from '../lib/nodes/NodeArray';
 import NodeOneOf from '../lib/nodes/NodeOneOf';
 import classnames from 'classnames';

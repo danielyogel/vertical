@@ -1,6 +1,6 @@
 import React from 'react';
 import { Observer, observer } from 'mobx-react-lite';
-import { FC } from '../../utils';
+import { FC } from '../utils';
 import { Node } from '../Interfaces';
 
 type PreviusVM = Partial<Node<any, any>>;

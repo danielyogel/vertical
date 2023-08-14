@@ -1,6 +1,6 @@
 import { IComputedValue, IObservableValue } from 'mobx';
 import { O } from 'ts-toolbelt';
-import { FC } from '../../utils';
+import { FC } from '../utils';
 
 type BaseNode<V, S> = {
   index: string | number;

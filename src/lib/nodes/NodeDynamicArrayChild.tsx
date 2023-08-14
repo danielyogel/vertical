@@ -1,7 +1,7 @@
 import { computed } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
-import { FC, flow, map, pipe, keys } from '../../utils';
+import { FC, flow, map, pipe, keys } from '../utils';
 import { DynamicArrayChildNode, ScalarNode } from '../Interfaces';
 import {
   withLoading,

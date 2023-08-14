@@ -2,7 +2,7 @@ import { computed, observable, reaction } from 'mobx';
 import { Except } from 'type-fest';
 import { O } from 'ts-toolbelt';
 import { nanoid } from 'nanoid';
-import { FC, flow, isEqual, pipe, unsafeUpdateAt } from '../../utils';
+import { FC, flow, isEqual, pipe, unsafeUpdateAt } from '../utils';
 import { DynamicArrayChildNode, DynamicArrayNode } from '../Interfaces';
 import { withLoading, withMeta, withId, withSkalarParent, withProgress, withSelected, withView, withNavigation } from '../mixins';
 import { isSelected as isSelectedParams } from '../mixins/withSelected';
@@ -33,16 +33,16 @@ export default function <S>(params: { Render: FC<Except<DynamicArrayNode<any, S>
         vm,
         withId(),
         vm => {
-          const _children = observable.box<Array<ReturnType<typeof options['child']>>>([]);
+          const _children = observable.box<Array<ReturnType<(typeof options)['child']>>>([]);
 
           const _selectedId = options.selectedId || observable.box<null | string>(null);
 
-          const _selectedChild = observable.box<null | ReturnType<typeof options['child']>>(null);
+          const _selectedChild = observable.box<null | ReturnType<(typeof options)['child']>>(null);
 
           reaction(
             () => vm.value.get(),
             items => {
-              let newChildren: Array<ReturnType<typeof options['child']>> = [];
+              let newChildren: Array<ReturnType<(typeof options)['child']>> = [];
               items.forEach((item, index) => {
                 const indexTouse = () => vm.value.get().findIndex(i => i.id === item.id);
 

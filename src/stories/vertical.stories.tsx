@@ -14,13 +14,12 @@ import {
   ListItem,
   ListItemEdit
 } from './storyRenderers';
-import { flow } from '../utils';
 import { withLoading, withMeta, withProgress, withView, withSelected, withErrors, withDisabled, withVisibility, withId } from '../lib/mixins';
 import { NodeContainer } from '../lib';
 import { INITIAL_STATE } from './INITIAL_STATE';
 import { Button, InputNumber, Space } from 'antd';
 import { LoaderOne } from './storyComponents';
-import { pipe } from 'fp-ts/function';
+import { pipe, flow } from 'fp-ts/function';
 
 configure({ enforceActions: 'never' });
 

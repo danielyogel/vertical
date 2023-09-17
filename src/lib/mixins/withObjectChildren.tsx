@@ -13,21 +13,19 @@ export type Children<V, S> = Partial<{
   [K in keyof V]: ChildFunction<V, K, S>;
 }>;
 
-export default function withObjectChildren<V, S, VM extends PreviusVM<any, any>, C extends Children<V, S>>(options: { children: C }) {
-  return function (prevVM: VM) {
+export default function withObjectChildren<V extends Record<string, any>, S, VM extends PreviusVM<any, any>>(options: { children: Children<V, S> }) {
+  return function (vm: VM) {
     const _children = options.children as any;
 
     return {
-      ...prevVM,
+      ...vm,
       children: pipe(
         keys(options.children),
         map(key => {
-          const _value = prevVM.value.get() as any;
-
-          const instance = (_children[key] as any)({
-            ...prevVM,
-            value: computed(() => _value[key]) as any,
-            onChange: (val: any) => prevVM.onChange({ ...prevVM.value.get(), [key]: val } as any) as any,
+          const instance = (options.children[key] as any)({
+            ...vm,
+            value: computed(() => vm.value.get()[key]) as any,
+            onChange: (val: any) => vm.onChange({ ...vm.value.get(), [key]: val }) as any,
             index: key
           });
 

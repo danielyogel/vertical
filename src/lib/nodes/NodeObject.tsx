@@ -36,9 +36,9 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
       return pipe(
         vm,
         withObjectChildren({ children: options.children }),
+        vm => ({ autoFocus: options?.autoFocus ?? false, ...vm }),
         withId(),
         withLoading(),
-        vm => ({ autoFocus: options?.autoFocus ?? false, ...vm }),
         withMeta({ label: options.label }),
         withProgress(),
         withSelected(options.isSelected),

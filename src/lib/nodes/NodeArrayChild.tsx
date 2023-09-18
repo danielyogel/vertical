@@ -33,7 +33,7 @@ export default function <S extends Record<string, any>>(params: { Render: FC<Exc
     return flow(withArrayChildParent<V, S>(), vm => {
       return pipe(
         vm,
-        withObjectChildren({ children: options.children }),
+        withObjectChildren(options),
         vm => ({ autoFocus: options?.autoFocus ?? false, ...vm }),
         withId(),
         withLoading(),

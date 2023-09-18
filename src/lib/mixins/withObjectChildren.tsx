@@ -15,8 +15,6 @@ export type Children<V, S> = Partial<{
 
 export default function withObjectChildren<V extends Record<string, any>, S, VM extends PreviusVM<any, any>>(options: { children: Children<V, S> }) {
   return function (vm: VM) {
-    const _children = options.children as any;
-
     return {
       ...vm,
       children: pipe(

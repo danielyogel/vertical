@@ -80,3 +80,5 @@ export type ArrayProps = {
   back: () => void;
   next: () => void;
 };
+
+export * from './Children';

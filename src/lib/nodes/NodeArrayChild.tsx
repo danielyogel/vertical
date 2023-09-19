@@ -18,17 +18,17 @@ import { isSelected as isSelectedParams } from '../mixins/withSelected';
 import { isVisible as isVisibleParams } from '../mixins/withVisibility';
 import { isDisabled as isDisabledParams } from '../mixins/withDisabled';
 import { errors as errorsParams } from '../mixins/withErrors';
-import { Children } from '../mixins/withObjectChildren';
+import { Children } from '../Interfaces/Children';
 
 export default function <S extends Record<string, any>>(params: { Render: FC<Except<ArrayChildNode<S, S>, 'View'>> }) {
-  return function <V, C extends Children<V, S>>(options: {
+  return function <V extends Record<string, any>, OV extends V>(options: {
     isSelected?: isSelectedParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isSelected' | 'isDisabled'>>;
     errors?: errorsParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'errors' | 'isDisabled'>>;
     isDisabled?: isDisabledParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible' | 'isDisabled'>>;
     isVisible?: isVisibleParams<any, S, Except<ArrayChildNode<any, S>, 'View' | 'isVisible'>>;
     label?: string | null;
     autoFocus?: boolean;
-    children: C;
+    children: Children<OV, S>;
   }) {
     return flow(withArrayChildParent<V, S>(), vm => {
       return pipe(

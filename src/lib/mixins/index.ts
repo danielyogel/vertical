@@ -17,3 +17,4 @@ export { default as withMeta } from './withMeta';
 export { default as withId } from './withId';
 export { default as withObjectChildren } from './withObjectChildren';
 export { default as withObjectLogicalChildren } from './withObjectLogicalChildren';
+export { default as withDynamicArrayChildren } from './withDynamicArrayChildren';

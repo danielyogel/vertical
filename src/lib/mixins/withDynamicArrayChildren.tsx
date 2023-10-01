@@ -2,7 +2,6 @@ import { O } from 'ts-toolbelt';
 import { IObservableValue, computed, observable, reaction } from 'mobx';
 import { DynamicArrayChildNode, DynamicArrayNode, Node } from '../Interfaces';
 import { isEqual, pipe, unsafeUpdateAt } from '../utils';
-import { nanoid } from 'nanoid';
 
 type PreviusVM<V, S> = Pick<DynamicArrayNode<V, S>, 'value' | 'store' | 'onChange' | 'onStoreChange'>;
 
@@ -29,7 +28,7 @@ export default function withDynamicArrayChildren<V extends { id: string }, S, VM
     const _selectedId: IObservableValue<null | string> = options.selectedId || observable.box(null);
 
     const add = () => {
-      const newItem = { ...options.defaultValue, id: nanoid() } as V;
+      const newItem = { ...options.defaultValue, id: crypto.randomUUID() } as V;
       vm.onChange([newItem, ...vm.value.get()]);
     };
 

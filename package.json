@@ -66,7 +66,6 @@
     "@nextui-org/react": "^2.1.13",
     "fp-ts": "^2.16.1",
     "framer-motion": "^10.16.4",
-    "io-ts": "^2.2.20",
     "lodash": "^4.17.21",
     "mobx": "^6.10.2",
     "mobx-react-lite": "^4.0.5",

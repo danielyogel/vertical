@@ -1,7 +1,7 @@
 import { configure } from 'mobx';
 import { observable } from 'mobx';
 import './index.css';
-import { Button, ButtonGroup } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 
 import { INITIAL_STATE } from './INITIAL_STATE';
 

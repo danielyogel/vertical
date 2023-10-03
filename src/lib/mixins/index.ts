@@ -1,4 +1,3 @@
-export { default as withRecordParent } from './record/withRecordParent';
 export { default as withArrayChildParent } from './array/withArrayChildParent';
 export * from './array/withArrayChildren';
 export { default as withDynamicChildParent } from './dynamicArray/withDynamicChildParent';

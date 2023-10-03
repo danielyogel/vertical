@@ -4,11 +4,11 @@ import { keys, map, pipe } from '../utils';
 
 type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'onChange'>;
 
-type Params<V extends Record<string, any>, S extends Record<string, any>> = {
+type Params<V extends Record<string, any>, S> = {
   children: Children<V, S>;
 };
 
-export default function withObjectChildren<V extends Record<string, any>, S extends Record<string, any>, VM extends PreviusVM<any, any>>(options: Params<V, S>) {
+export default function withObjectChildren<V extends Record<string, any>, S, VM extends PreviusVM<any, any>>(options: Params<V, S>) {
   return function (vm: VM) {
     return {
       ...vm,

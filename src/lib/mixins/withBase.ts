@@ -1,5 +1,5 @@
 import { pipe } from '../utils/functionalProgramming';
-import { ArrayChildNode, Node } from '../Interfaces';
+import { Node } from '../Interfaces';
 import withMeta, { Params as MetaParams } from './withMeta';
 import withId from './withId';
 import withLoading from './withLoading';

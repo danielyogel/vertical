@@ -41,11 +41,11 @@
     "react": ">=16"
   },
   "devDependencies": {
-    "@ladle/react": "^3.1.0",
+    "@ladle/react": "^3.2.1",
     "@types/lodash": "^4.14.199",
-    "@types/node": "^20.8.0",
+    "@types/node": "^20.8.2",
     "@types/react": "^18.2.24",
-    "@types/react-dom": "^18.2.8",
+    "@types/react-dom": "^18.2.9",
     "@types/uuid": "^9.0.4",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "classnames": "^2.3.2",
@@ -59,7 +59,7 @@
     "tslib": "^2.6.2",
     "type-fest": "^4.3.3",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
+    "vite": "^4.4.10",
     "vitest": "^0.34.6"
   },
   "dependencies": {

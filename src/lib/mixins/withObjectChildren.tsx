@@ -1,8 +1,8 @@
 import { computed } from 'mobx';
-import { Children, Node } from '../Interfaces';
+import { Children, Node, ObjectNode } from '../Interfaces';
 import { keys, map, pipe } from '../utils';
 
-type PreviusVM<V, S> = Pick<Node<V, S>, 'value' | 'store' | 'onChange'>;
+type PreviusVM<V, S> = Pick<ObjectNode<V, S>, 'value' | 'store' | 'onChange'>;
 
 type Params<V extends Record<string, any>, S> = {
   children: Children<V, S>;

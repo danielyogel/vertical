@@ -15,7 +15,7 @@ export function NodeObject<V extends Record<string, any>, S>(params: BaseParams<
       const hasError = Boolean(errors.get().length);
 
       return (
-        <section className="p-3 border" style={{ borderColor: hasError ? 'red' : 'green' }}>
+        <section className="p-3 border-2 rounded" style={{ borderColor: hasError ? 'red' : 'lightgray' }}>
           {Object.entries(children).map(([_, node]) => {
             return (
               <div key={node.id} className="mb-2">

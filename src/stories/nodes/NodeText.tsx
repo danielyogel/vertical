@@ -13,7 +13,8 @@ export function NodeText<S>(options: BaseParams<string | null, S, ParentVM<S>>) 
     withBase(options),
     withView(({ value, onChange, label, errors }) => {
       const _v = value.get();
-      return <Input value={_v === null ? undefined : _v} onValueChange={onChange} label={label.get()} errorMessage={errors.get().length ? 'zz' : null} />;
+      const firstError = errors.get()[0];
+      return <Input value={_v === null ? undefined : _v} onValueChange={onChange} label={label.get()} errorMessage={firstError ? firstError.message : null} />;
     })
   );
 }

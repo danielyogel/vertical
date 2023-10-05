@@ -1,22 +1,22 @@
-import { configure } from 'mobx';
+import { reaction, toJS } from 'mobx';
 import { observable } from 'mobx';
 import './index.css';
-import { init } from '../lib';
 import { INITIAL_STATE } from './INITIAL_STATE';
-import { NodeText, NodeObject } from './nodes';
+import { initialize } from './nodeTree';
 
-configure({ enforceActions: 'never' });
+export const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
-const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
+reaction(
+  () => state.get(),
+  s => console.log(toJS(s)),
+  { delay: 1000 }
+);
 
-const nodeTree = init({
-  state: state,
-  node: NodeObject({ children: { name: NodeText({ errors: vm => vm.value.get() === 'daniel' && [{ message: 'errorMessage' }] }), lastName: NodeText({}) } })
-});
+const nodeTree = initialize(state);
 
 export const Vertical = () => {
   return (
-    <div>
+    <div className='w-full h-full'>
       <nodeTree.View />
     </div>
   );

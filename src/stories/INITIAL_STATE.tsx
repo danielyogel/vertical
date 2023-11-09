@@ -1,3 +1,5 @@
+import { observable } from 'mobx';
+
 export const INITIAL_STATE = {
   name: 'John Doe' as string | null,
   gender: null as null | 'male' | 'female',
@@ -15,3 +17,5 @@ export const INITIAL_STATE = {
   birthdayz: 23 as number | null,
   locations: [{ id: 'J', province: 'Jerusalem' as string | null, postalCode: null as number | null, isCapital: 'yes' as 'yes' | 'no' | null }]
 };
+
+export const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);

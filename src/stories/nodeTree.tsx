@@ -1,6 +1,6 @@
 import { init } from '../lib';
 import { NodeText, NodeObject, NodeNumber } from './nodes';
-import { state as s } from './vertical.stories';
+import { state as s } from './INITIAL_STATE';
 
 export function initialize(state: typeof s) {
   return init({
@@ -11,7 +11,8 @@ export function initialize(state: typeof s) {
           errors: vm => vm.value.get() === 'bla' && [{ message: 'bla is not valid name' }]
         }),
         lastName: NodeText({}),
-        age: NodeNumber({})
+        age: NodeNumber({}),
+        details: NodeObject({ children: { future: NodeText({}) } })
       }
     })
   });

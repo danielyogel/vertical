@@ -1,10 +1,7 @@
 import { reaction, toJS } from 'mobx';
-import { observable } from 'mobx';
 import './index.css';
-import { INITIAL_STATE } from './INITIAL_STATE';
+import { state } from './INITIAL_STATE';
 import { initialize } from './nodeTree';
-
-export const state = observable.box<typeof INITIAL_STATE>(INITIAL_STATE);
 
 reaction(
   () => state.get(),

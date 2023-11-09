@@ -6,7 +6,7 @@ import { flow } from '../../lib/utils';
 
 type _node<V, S> = Pick<ObjectNode<V, S>, 'value' | 'store' | 'onStoreChange' | 'onChange' | 'index' | 'children'>;
 
-export function NodeObject<V extends Record<string, any>, S>(params: BaseParams<V, S, _node<V, S>> & { children: Children<V, S> }) {
+export function NodeObject<V extends Record<string, any>, S extends Record<string, any>>(params: BaseParams<V, S, _node<V, S>> & { children: Children<V, S> }) {
   return flow(
     withSkalarParent<V, S>(),
     withObjectChildren({ children: params.children }),

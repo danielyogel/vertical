@@ -60,8 +60,8 @@
     "tslib": "^2.6.3",
     "type-fest": "^4.23.0",
     "typescript": "^5.5.4",
-    "vite": "^4.4.11",
-    "vitest": "^0.34.6"
+    "vite": "^5.3.5",
+    "vitest": "^2.0.4"
   },
   "dependencies": {
     "@effect/data": "^0.18.7",
